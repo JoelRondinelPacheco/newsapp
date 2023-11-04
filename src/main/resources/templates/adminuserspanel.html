@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Usuarios')}"></div>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<main  class="container">
+
+        <section th:each="reporter : ${reporters}"  >
+            <form th:action="@{/admin/edit/{reporterId}(reporterId=${reporter.id})}" method="post" class="row mb-2">
+            <div class="col-2" th:text="${reporter.name}"></div>
+            <div class="col-3" th:text="${reporter.email}"></div>
+            <div class="col-4"><input class="form-control" type="text" th:value="${reporter.monthlysalary}" name="salary"></div>
+            <div class="col-2"><select class="form-select" aria-label="Default select example" name="active">
+                <option value="true" th:selected="${reporter.enabled == true}">Activo</option>
+                <option value="false" th:selected="${reporter.enabled == false}">Inactivo</option>
+            </select>
+            </div>
+            <div class="col-1"><button type="submit"  class="btn btn-primary">Actualizar</button></div>
+            </form>
+        </section>
+
+
+    </section>
+</main>
+</body>
+</html>

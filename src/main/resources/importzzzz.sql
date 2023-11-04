@@ -1,0 +1,3 @@
+INSERT INTO users(email,name,password,roles) VALUES ('admin@admin','Admin','$2a$10$A.LJd.E8J59u4MIpQA7es.BMaBLvLvOrdFlNdI1fbrnVEXlka7YHu','ADMIN');
+INSERT INTO users(email,name,password,roles) VALUES ('user@user','User','$2a$10$i6mee98IDSDqI0IZrqu5C.mAN9qzIjilZEU.ShHgJgA9uTZVSA5mq','USER');
+INSERT INTO users(email,name,password,roles) VALUES ('repo@repo','Reporter','$2a$10$1CrUsSS3VaVEKwOIfmXCpeS3rpplQzCL7ZweddmMpob5YNNzcaO4i','REPORTER');

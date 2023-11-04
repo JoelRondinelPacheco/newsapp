@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Editar noticia')}"></div>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="container">
+    <h1>Agregar Noticia</h1>
+    <div class="d-flex justify-content-center">
+        <form class="justify-content-center w-75" th:action="@{/news/edit/{idNew}(idNew=${noticia.id})}" method="post">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Titulo</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" th:value="${noticia.title}" name="title">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Cuerpo de la noticia</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" th:text="${noticia.body}" name="body"></textarea>
+            </div>
+            <div class="mb-3">
+                <select class="form-select" aria-label="Default select example" name="category">
+                    <option value="BUILDINGS" th:selected="${noticia.category==BUILDINGS}">Edificios</option>
+                    <option value="FOOD" th:selected="${noticia.category==FOOD}">Comida</option>
+                    <option value="NATURE" th:selected="${noticia.category==NATURE}">Naturaleza</option>
+                    <option value="PEOPLE" th:selected="${noticia.category==PEOPLE}">Personas</option>
+                    <option value="TECHNOLOGY" th:selected="${noticia.category==TECHNOLOGY}">Tecnologia</option>
+                </select>
+
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Publicar</button>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>
