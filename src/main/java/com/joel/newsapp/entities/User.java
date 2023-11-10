@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User extends Base implements UserDetails {
     private String name;
+    private String lastname;
     @Column(unique = true)
     private String email;
     private String password;

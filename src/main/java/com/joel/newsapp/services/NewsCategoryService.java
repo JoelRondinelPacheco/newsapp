@@ -6,11 +6,16 @@ import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsCategoryRepository;
 import com.joel.newsapp.services.interfaces.ICrudService;
+import com.joel.newsapp.services.interfaces.INewsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-public class NewsCategoryService implements ICrudService<NewsCategory, NCategoryPostReqDTO, NCategoryEditReqDTO, String> {
+@Service
+public class NewsCategoryService implements INewsCategoryService {
 
     @Autowired
     private INewsCategoryRepository newsCategoryRepository;
@@ -37,5 +42,9 @@ public class NewsCategoryService implements ICrudService<NewsCategory, NCategory
     @Override
     public String deleteById(String s) {
         return null;
+    }
+    @Override
+    public List<String> getAllCategories() {
+        return this.newsCategoryRepository.findAllCategories();
     }
 }

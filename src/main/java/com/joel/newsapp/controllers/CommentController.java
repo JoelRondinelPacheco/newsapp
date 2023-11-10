@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.comment.CommentPostReqDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,11 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/add/{id}")
-    public String addComment(@PathVariable Long id, @RequestParam String comment, ModelMap model){
+    public String addComment(@PathVariable String id, @RequestParam String comment, ModelMap model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String user = auth.getName();
-        Comment newComment = this.commentService.save(comment, id, user);
+        CommentPostReqDTO commentDTO = new CommentPostReqDTO(comment, id, user);
+        Comment newComment = this.commentService.save(commentDTO);
         model.put("commentOk", "Comentario agregado");
         return "index.html";
     }

@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PutMapping("/roles")
-    public String roles(@RequestParam Role rol, @RequestParam Long id) throws NotFoundException {
+    public String roles(@RequestParam Role rol, @RequestParam String id) throws NotFoundException {
         System.out.println(id);
         User u1 = this.userService.getById(id);
         System.out.println(u1);

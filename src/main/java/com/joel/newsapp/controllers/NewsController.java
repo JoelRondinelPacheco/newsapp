@@ -30,7 +30,7 @@ public class NewsController {
 
 
     @GetMapping("/{id}")
-    public String getNewById(@PathVariable Long id, ModelMap model) {
+    public String getNewById(@PathVariable String id, ModelMap model) {
         try {
             News news = this.newsService.getById(id);
             List<Comment> comments = this.commentService.getAllNewsComments(id);
@@ -43,7 +43,7 @@ public class NewsController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editarNoticia(@PathVariable Long id, ModelMap model){
+    public String editarNoticia(@PathVariable String id, ModelMap model){
         try {
             News noticia = this.newsService.getById(id);
             model.addAttribute("noticia", noticia);
@@ -55,12 +55,12 @@ public class NewsController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editarNoticiaDB(@PathVariable Long id, @RequestParam String title, @RequestParam String body, @RequestParam List<String> categories, MultipartFile image, ModelMap model){
+    public String editarNoticiaDB(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, MultipartFile image, ModelMap model){
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
             Boolean isAdmin = auth.getAuthorities().contains("ROLE_"+Role.ADMIN);
-            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, body, categories, author, image, id, isAdmin);
+            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, author, image, id, isAdmin);
 
             this.newsService.edit(newsDTO);
 

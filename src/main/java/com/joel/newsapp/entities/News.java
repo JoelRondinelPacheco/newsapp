@@ -13,14 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class News {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    @CreationTimestamp
-    @Temporal(TemporalType.TIME)
-    private Date created;
-
+public class News extends Base{
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Reporter author;

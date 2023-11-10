@@ -43,4 +43,14 @@ public class ReporterService implements ICrudService<Reporter, ReporterPostReqDT
         }
         throw new NotFoundException("Reporter not found");
     }
+
+    public String updateSalaryAndEnabled(Integer salary, boolean active, String id){
+        int filas =this.reporterRepository.updateSalaryAndEnabled(salary, active, id);
+        if (filas != 0) {
+            System.out.println("encontro");
+            return "Updated";
+        }
+        System.out.println("no encontro");
+        return "Updated failed";
+    }
 }

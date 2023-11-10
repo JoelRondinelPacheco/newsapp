@@ -24,7 +24,7 @@ public class ImageService {
                 Image image = new Image();
                 image.setMime(archive.getContentType());
                 image.setName(archive.getName());
-                image.setContenido(archive.getBytes());
+                image.setContent(archive.getBytes());
                 return this.imageRepository.save(image);
 
             } catch (Exception e) {
@@ -49,7 +49,7 @@ public class ImageService {
 
                 image.setMime(archive.getContentType());
                 image.setName(archive.getName());
-                image.setContenido(archive.getBytes());
+                image.setContent(archive.getBytes());
 
                 return this.imageRepository.save(image);
 

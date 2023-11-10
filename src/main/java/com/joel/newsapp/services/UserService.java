@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements ICrudService<User, UserPostReqDTO, UserEditReqDTO, Long> {
+public class UserService implements ICrudService<User, UserPostReqDTO, UserEditReqDTO, String> {
 
     @Autowired
     private IUserRepository userRepository;
@@ -36,21 +36,21 @@ public class UserService implements ICrudService<User, UserPostReqDTO, UserEditR
 
 
     @Override
-    public User getById(Long id) throws NotFoundException {
+    public User getById(String id) throws NotFoundException {
         Optional<User> userEOptional = this.userRepository.findById(id);
         if (userEOptional.isPresent()) {
             return userEOptional.get();
         }
         throw new NotFoundException("Usuario no encontrado");
     }
-
-    public UserLoginDTO infoDTOById(Long id) throws NotFoundException {
+/*
+    public UserLoginDTO infoDTOById(String id) throws NotFoundException {
         Optional<UserLoginDTO> userO = this.userRepository.infoDTOById(id);
         if (userO.isPresent()) {
             return userO.get();
         }
         throw new NotFoundException("Usuario no encontrado");
-    }
+    }*/
     public User findByEmail(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = this.userRepository.findUser(username);
         if(userOptional.isPresent()) {
@@ -59,7 +59,7 @@ public class UserService implements ICrudService<User, UserPostReqDTO, UserEditR
         throw new UsernameNotFoundException("User not found");
 
     };
-
+/*
     public UserLoginDTO findByUsername(String username) throws UsernameNotFoundException {
         Optional<UserLoginDTO> userOptional = this.userRepository.findByUsername(username);
 
@@ -69,22 +69,11 @@ public class UserService implements ICrudService<User, UserPostReqDTO, UserEditR
 
         throw new UsernameNotFoundException("User not found");
 
-    };
+    };*/
 
     @Override
     public User edit(UserEditReqDTO userEditReqDTO) throws NotFoundException {
         return null;
-    }
-
-    public String updateSalaryAndEnabled(Integer salary, boolean active, Long id){
-       int filas =this.userRepository.updateSalaryAndEnabled(salary, active, id);
-        if (filas != 0) {
-            System.out.println("encontro");
-            return "Updated";
-        }
-        System.out.println("no encontro");
-        return "Updated failed";
-
     }
 
     public List<User> getAllUsers() {
@@ -103,11 +92,11 @@ public class UserService implements ICrudService<User, UserPostReqDTO, UserEditR
     }
 
     @Override
-    public String deleteById(Long aLong) {
+    public String deleteById(String id) {
         return null;
     }
 
-    public User roles(Role rol, Long id) throws NotFoundException {
+    public User roles(Role rol, String id) throws NotFoundException {
         User user = this.getById(id);
         user.setRole(rol);
         return this.userRepository.save(user);

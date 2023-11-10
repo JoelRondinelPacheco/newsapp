@@ -14,17 +14,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="images")
 @ToString
-public class Image {
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name="uuid", strategy = "uuid2")
-    private String id;
-
+public class Image extends Base {
     private String mime;
     private String name;
 
     @Lob
-    @Column(name = "contenido", columnDefinition="MEDIUMBLOB")
+    @Column(name = "content", columnDefinition="MEDIUMBLOB")
     @Basic(fetch = FetchType.LAZY)
-    private byte[] contenido;
+    private byte[] content;
 }
