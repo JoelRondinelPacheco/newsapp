@@ -13,7 +13,7 @@ import java.util.List;
 @SuperBuilder
 @DiscriminatorValue("category")
 public class NewsCategory extends Base {
-    private String category;
+    private String name;
 
     @ManyToMany
     @JoinTable(name = "rel_category_news", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "news_id"))

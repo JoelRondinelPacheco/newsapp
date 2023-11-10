@@ -3,10 +3,12 @@ package com.joel.newsapp.controllers;
 import com.joel.newsapp.dtos.news.NewsEditReqDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
+import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.CommentService;
-import com.joel.newsapp.services.NewsService;
+import com.joel.newsapp.services.interfaces.INewsCategoryService;
+import com.joel.newsapp.services.interfaces.INewsService;
 import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,15 +21,28 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
-@RequestMapping("/news")
+@RequestMapping("/")
 public class NewsController {
     @Autowired
-    private NewsService newsService;
+    private INewsService newsService;
     @Autowired
     private INewsRepository newsRepository;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private INewsCategoryService categoryService;
 
+    @GetMapping("/{category}")
+    public String getByCategory(@PathVariable String category) {
+        try {
+            NewsCategory categoryEntiy = this.categoryService.findByName(category);
+            List<News> news = this.newsService
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "news_category";
+    }
 
     @GetMapping("/{id}")
     public String getNewById(@PathVariable String id, ModelMap model) {

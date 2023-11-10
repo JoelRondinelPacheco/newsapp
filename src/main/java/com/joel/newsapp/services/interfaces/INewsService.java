@@ -10,6 +10,9 @@ import java.util.List;
 public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEditReqDTO, String>{
     List<News> getAll();
     List<News> getNewsByUser(String userId);
-    News featured() throws NotFoundException;
+    News mainFeatured() throws NotFoundException;
+    List<News> featuredByCategory(String category) throws NotFoundException;
     List<News> findByCategory(String category, int quantity);
+    List<News> latest(int quantity);
+    List<News> latestByCategory(String category, int quantity) throws NotFoundException;
 }

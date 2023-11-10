@@ -47,4 +47,13 @@ public class NewsCategoryService implements INewsCategoryService {
     public List<String> getAllCategories() {
         return this.newsCategoryRepository.findAllCategories();
     }
+
+    @Override
+    public NewsCategory findByName(String name) throws NotFoundException {
+        Optional<NewsCategory> categoryOptional = this.newsCategoryRepository.findByName(name);
+        if (categoryOptional.isPresent()) {
+            return categoryOptional.get();
+        }
+        throw new NotFoundException("Category not found");
+    }
 }

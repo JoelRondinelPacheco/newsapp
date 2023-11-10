@@ -25,21 +25,27 @@ public class HomeController {
 
         try {
             // DESTACADA crear categoria destacada
-            News featured = this.newsService.featured();
+            News mainFeatured = this.newsService.mainFeatured();
             // LISTA DE CATEGORIAS
             List<String> categories = this.categoryService.getAllCategories();
             List<List<News>> news = new ArrayList<>();
             // 10? DE CADA CATEGORIA
-            for(String category : categories) {
+            for (String category : categories) {
                 //TODO POR FECHA?
                 news.add(this.newsService.findByCategory(category, 10));
             }
             // 5 ULTIMAS NOTICIAS
-
+            List<News> latest = this.newsService.latest(5);
+            model.addAttribute("featured", mainFeatured);
+            model.addAttribute("categories", categories);
+            model.addAttribute("news", news);
+            model.addAttribute("latest", latest);
+            return "index";
         } catch (NotFoundException ex) {
-
+            model.put("error", ex.getMessage());
+            return "index.html";
         }
+    }
 
-        model.addAttribute("news", news);
-        return "index.html"; }
+
 }
