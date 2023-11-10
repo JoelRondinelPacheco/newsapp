@@ -6,6 +6,7 @@ import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.ICrudService;
+import com.joel.newsapp.services.interfaces.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NewsService implements ICrudService<News, NewsPostReqDTO, NewsEditReqDTO, Long> {
+public class NewsService implements INewsService {
     @Autowired
     private INewsRepository newsRepository;
     @Autowired
@@ -35,7 +36,7 @@ public class NewsService implements ICrudService<News, NewsPostReqDTO, NewsEditR
 
 
     @Override
-    public News getById(Long id) throws NotFoundException {
+    public News getById(String id) throws NotFoundException {
         Optional<News> newsOptional = this.newsRepository.findById(id);
         if (newsOptional.isPresent()) {
             return newsOptional.get();
@@ -65,24 +66,33 @@ public class NewsService implements ICrudService<News, NewsPostReqDTO, NewsEditR
         throw new NotFoundException("News not found");
     }
 
+    @Override
+    public String deleteById(String id) {
+        this.newsRepository.deleteById(id);
+        return "News deleted";
+    }
+    @Override
     public List<News> getAll() {
         List<News> news = this.newsRepository.findAll();
         return news;
-       /* if (!news.isEmpty()) {
-            return news;
-        }
-        throw new NotFoundException("No se encontraron noticias");*/
     }
-    public List<News> getNewsByUser(Long idUser){
-        List<News> news = this.newsRepository.getNewsByAuthorId(idUser);
+    @Override
+    public List<News> getNewsByUser(String userId){
+        List<News> news = this.newsRepository.getNewsByAuthorId(userId);
         return news;
 
     }
-
     @Override
-    public String deleteById(Long id) {
-        this.newsRepository.deleteById(id);
-        return "News deleted";
+    public News featured() throws NotFoundException {
+        Optional<News> newsOptional = this.newsRepository.findByCategoriesCategory("Featured");
+        if(newsOptional.isPresent()){
+            return newsOptional.get();
+        }
+        throw new NotFoundException("News not found");
+    }
+    @Override
+    public List<News> findByCategory(String category, int quantity) {
+        return this.newsRepository.findByCategory(category, quantity);
     }
 
     private List<NewsCategory> findCategories(List<String> categories) {

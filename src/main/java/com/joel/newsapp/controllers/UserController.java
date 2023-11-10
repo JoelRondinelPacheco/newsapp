@@ -35,15 +35,10 @@ public class UserController {
 
     @Autowired
     private NewsService newsService;
-    @GetMapping("/")
-    public String index(ModelMap model) {
-        List<News> news = this.newsService.getAll();
-        model.addAttribute("news", news);
-        return "index.html"; }
 
     @GetMapping("/publicimg")
     public ResponseEntity<byte[]> imagenUsuario () throws NotFoundException {
-        byte[] imagen= this.imageService.getById("20e1392a-4bc6-433a-a114-361c534c02b5").getContenido();
+        byte[] imagen= this.imageService.getById("20e1392a-4bc6-433a-a114-361c534c02b5").getContent();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

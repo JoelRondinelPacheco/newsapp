@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Table
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder

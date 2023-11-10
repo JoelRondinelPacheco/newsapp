@@ -6,6 +6,7 @@ import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.ImageService;
 import com.joel.newsapp.services.NewsService;
+import com.joel.newsapp.services.ReporterService;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,12 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private NewsService newsService;
-
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private ReporterService reporterService;
 
     @GetMapping("/news")
     public String newsPanel(ModelMap model) throws NotFoundException {
@@ -57,8 +58,8 @@ public class AdminController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editUser(@PathVariable Long id, @RequestParam String salary, @RequestParam String active, ModelMap model){
-        String response = this.userService.updateSalaryAndEnabled(Integer.parseInt(salary), (active.equals("true") ? true : false), id);
+    public String editUser(@PathVariable String id, @RequestParam String salary, @RequestParam String active, ModelMap model){
+        String response = this.reporterService.updateSalaryAndEnabled(Integer.parseInt(salary), (active.equals("true") ? true : false), id);
         model.put("response", response);
         return "index.html";
     }

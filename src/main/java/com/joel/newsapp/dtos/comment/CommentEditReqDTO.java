@@ -1,4 +1,4 @@
-package com.joel.newsapp.dtos.authentication;
+package com.joel.newsapp.dtos.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class AuthRequest {
-    private String email;
-    private String password;
+public class CommentEditReqDTO {
+    private String test;
 }

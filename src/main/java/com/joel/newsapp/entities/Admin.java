@@ -8,8 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 @DiscriminatorValue("admin")
-public class Admin extends Reporter {
+public class Admin extends User {
 }

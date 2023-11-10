@@ -22,10 +22,10 @@ public class ImageController {
 
 
     @GetMapping("/perfil/{id}")
-    public ResponseEntity<byte[]> getImageByUserId (@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<byte[]> getImageByUserId (@PathVariable String id) throws NotFoundException {
         User usuario = userService.getById(id);
 
-        byte[] imagen= usuario.getImage().getContenido();
+        byte[] imagen= usuario.getImage().getContent();
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -37,7 +37,7 @@ public class ImageController {
     @GetMapping("/img/{id}")
     public ResponseEntity<byte[]> getNewsImage (@PathVariable String id) throws NotFoundException {
         System.out.println(id);
-        byte[] imagen= this.imageService.getById(id).getContenido();
+        byte[] imagen= this.imageService.getById(id).getContent();
 
         HttpHeaders headers = new HttpHeaders();
 

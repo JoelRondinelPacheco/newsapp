@@ -11,27 +11,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface IUserRepository extends JpaRepository<User, String> {
     @Query("SELECT user FROM User user WHERE user.email = :username")
     Optional<User> findUser(@Param("username") String email);
+    /*
     @Query("SELECT NEW com.joel.eggnews.dtos.users.UserLoginDTO(u.email, u.password, u.role) FROM User u WHERE u.email = :username")
     Optional<UserLoginDTO> findByUsername(@Param("username") String username);
     @Query("SELECT NEW com.joel.eggnews.dtos.users.UserLoginDTO(u.email, u.password, u.role) FROM User u WHERE u.id = :userId")
-    Optional<UserLoginDTO> infoDTOById(@Param("userId") Long id);
+    Optional<UserLoginDTO> infoDTOById(@Param("userId") String id);*/
     @Query("SELECT Image i from User u WHERE u.id = :userId")
     Image getImageById(@Param("userId") Long userId) throws NotFoundException;
-    @Modifying
-    @Transactional
-    @Query("UPDATE User u SET u.monthlysalary = :salary, u.enabled = :active WHERE u.id = :idU")
-    int updateSalaryAndEnabled(@Param("salary") Integer salary, @Param("active") boolean active, @Param("idU") Long id);
     @Query("SELECT reporter FROM User reporter WHERE reporter.role = REPORTER")
     List<User> finAllReporters();
     @Query("SELECT reporter FROM User reporter WHERE reporter.role = ADMIN")
     List<User> finAllAdmins();
     @Query("SELECT reporter FROM User reporter WHERE reporter.role = USER")
     List<User> finAllUsers();
+
+    Optional<User> findByEmail(String email);
 }
