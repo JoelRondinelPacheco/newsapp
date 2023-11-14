@@ -5,20 +5,30 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+    <div><button><a th:href="@{/admin/dashboard}">Activos</a></button>
+        <button><a th:href="@{/admin/dashboard/reporters}">Inactivos</a></button>
+        <button><a>Todos</a></button></div>
+    <button><a th:href="@{/admin/register}">Agregar</a></button></div>
     <section>
-        <table>
+        <table class="table">
             <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Rol</th>
-                <th>Estado</th>
+            <tr class="table-primary">
+                <th scope="col">Nombre</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Salario mensual</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="reporter : ${reporters}">
-                <th th:text="${reporter.name}"></th>
+                <th th:text="${reporter.name}+' '+${reporter.lastname}"></th>
+                <th th:text="${reporter.displayName}"></th>
+                <th th:text="${reporter.email}"></th>
                 <th th:text="${reporter.role}"></th>
                 <th th:text="${reporter.enabled}"></th>
+                <th th:text="${reporter.monthlySalary}"></th>
             </tr>
             </tbody>
         </table>

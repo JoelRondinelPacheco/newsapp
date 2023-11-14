@@ -86,4 +86,9 @@ public class AdminController {
         model.put("response", response);
         return "index.html";
     }
+
+    @GetMapping("/register")
+    public String adminPostUser() {
+        return "/admin_dashboard/admin_register";
+    }
 }
