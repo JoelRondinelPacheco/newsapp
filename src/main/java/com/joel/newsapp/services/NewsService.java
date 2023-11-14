@@ -8,6 +8,8 @@ import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.ICrudService;
 import com.joel.newsapp.services.interfaces.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -83,16 +85,49 @@ public class NewsService implements INewsService {
 
     }
     @Override
-    public News featured() throws NotFoundException {
-        Optional<News> newsOptional = this.newsRepository.findByCategoriesCategory("Featured");
+    public News mainFeatured() throws NotFoundException {
+        Optional<News> newsOptional = this.newsRepository.findByMainFeatured(true);
         if(newsOptional.isPresent()){
             return newsOptional.get();
         }
         throw new NotFoundException("News not found");
     }
+
+    @Override
+    public List<News> featuredByCategory(String category) throws NotFoundException {
+        this.newsCategoryService.findByName(category);
+        //List<News> news = this.newsRepository.findByFeaturedAndCategory_Name(true, category);
+        //return news;
+        return null;
+    }
+
     @Override
     public List<News> findByCategory(String category, int quantity) {
-        return this.newsRepository.findByCategory(category, quantity);
+        //return this.newsRepository.findByCategory(category, quantity);
+        return null;
+    }
+    @Override
+    public List<News> latest(int quantity) {
+        Pageable pageable = PageRequest.of(0, quantity);
+        return this.newsRepository.findLatest(pageable);
+    }
+
+    @Override
+    public List<News> latestByCategory(String category, int quantity) throws NotFoundException {
+        this.newsCategoryService.findByName(category);
+        Pageable pageable = PageRequest.of(0, quantity);
+       // return this.newsRepository.findByCategory_NameOrderByCreatedAtDesc(category, pageable);
+        return null;
+    }
+
+    @Override
+    public News categoryFeatured(String category) throws NotFoundException {
+        this.newsCategoryService.findByName(category);
+        //TODO MANAGE MULTIPLE MAIN FEATURED
+       // List<News> news = this.newsRepository.findByFeaturedCategoryAndCategories_Name(true, category);
+        //return news.get(0);
+        return null;
+
     }
 
     private List<NewsCategory> findCategories(List<String> categories) {

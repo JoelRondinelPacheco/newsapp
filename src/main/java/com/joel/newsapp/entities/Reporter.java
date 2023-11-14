@@ -1,8 +1,7 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -12,8 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @DiscriminatorValue("reporter")
+@Getter
+@Setter
 public class Reporter extends User {
-    private Integer monthlySalary;
+    private Double monthlySalary;
 
     //@OneToMany(fetch=FetchType.EAGER)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)

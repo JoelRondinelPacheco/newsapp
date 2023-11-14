@@ -45,7 +45,6 @@ public class User extends Base implements UserDetails {
 
     @PrePersist
     private void prePersist() {
-        this.role = Role.USER;
         this.enabled = true;
     }
 

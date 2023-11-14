@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Egg News')}"></div>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="container">
+    <div th:if="${success != null}">
+        <h3 th:text="${success}"></h3>
+    </div>
+    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+    <form th:action="@{/admin/category/save}" method="post">
+        <label for="category">Categoria nueva</label>
+        <input type="text" id="category" name="category">
+        <input type="submit" value="enviar">
+    </form>
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>nombre</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <th th:text="${category.id}"></th>
+                <th th:text="${category.name}"></th>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+</body>
+</html>

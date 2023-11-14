@@ -4,27 +4,8 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-<main>
-    <div  th:if="${response != null}" >
-    <h1 th:text="${response}"></h1>
-    </div>
-    <h2 th:if="${exito != null}" th:text="${exito}"></h2>
-    <h2 th:if="${commentOk != null}" th:text="${commentOk}"></h2>
-    <section th:if="${news != null}"  class="d-flex justify-content-between gap-3">
 
-        <div th:each="newss : ${news}" style="width: 30%;">
-            <div class="card w-100"  style="height: 400px;">
-                <img th:src="@{/img/{id}(id=${newss.image.id})}" class="card-img-top img-responsive full-width h-100">
-                <div class="card-body">
-                    <h5 class="card-title"  th:text="${newss.title}"></h5>
-                    <p class="card-text" th:text="${newss.body}"></p>
-                    <div  class="text-end">
-                    <a th:href="@{/news/{id}(id = ${newss.id})}" class="btn btn-primary">Leer</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 </main>
+
 </body>
 </html>

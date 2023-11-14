@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Egg News')}"></div>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="container">
+    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reporter : ${reporters}">
+                <th th:text="${reporter.name}"></th>
+                <th th:text="${reporter.role}"></th>
+                <th th:text="${reporter.enabled}"></th>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+</body>
+</html>
