@@ -33,6 +33,9 @@ public class ImageService {
         }
         return null;
     }
+    public Image saveDb(Image image) {
+        return this.imageRepository.save(image);
+    }
 
     public Image update(MultipartFile archive, String id) {
         if ( archive != null) {

@@ -19,10 +19,10 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
     //User info DTO
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.email, u.role, u.enabled, u.image.id AS profilePictureId) FROM User u WHERE u.id = :userId")
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled) FROM User u WHERE u.id = :userId")
     Optional<UserInfoDTO> getUserInfoDTO(@Param("userId") String userId);
     //get all users info
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.email, u.role, u.enabled, u.image.id AS profilePictureId) FROM User u WHERE u.role = 'USER'")
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled) FROM User u WHERE u.role = 'USER'")
     List<UserInfoDTO> getAllUsers();
     @Query("SELECT user FROM User user WHERE user.email = :username")
     Optional<User> findUser(@Param("username") String email);

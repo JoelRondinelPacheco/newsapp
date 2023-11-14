@@ -1,9 +1,6 @@
 package com.joel.newsapp.services;
 
-import com.joel.newsapp.dtos.users.EditUserDTO;
-import com.joel.newsapp.dtos.users.UserEditReqDTO;
-import com.joel.newsapp.dtos.users.RegisterUserDTO;
-import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.*;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.services.interfaces.IUserService;
@@ -11,11 +8,15 @@ import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +25,10 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
-
     @Autowired
     private ImageService imageService;
+    private static final String IMAGE_DIRECTORY = "static/img/user.jpeg";
+
 
     @Override
     public UserInfoDTO save(RegisterUserDTO userDTO){
@@ -38,6 +40,35 @@ public class UserService implements IUserService {
             user.setImage(image);
         }
         user.setName(userDTO.getName());
+        user.setLastname(userDTO.getLastname());
+
+        if (userDTO.getName().isEmpty()) {
+            user.setDisplayName(userDTO.getLastname());
+        } else if(userDTO.getLastname().isEmpty()) {
+            user.setDisplayName(userDTO.getName());
+        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
+            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
+        } else {
+            user.setDisplayName("");
+        }
+
+        if(userDTO.getProfilePicture().isEmpty()) {
+            Image img = new Image();
+            ClassPathResource imagePath = new ClassPathResource(IMAGE_DIRECTORY);
+            img.setName("default");
+            try {
+                img.setContent(Files.readAllBytes(Path.of(imagePath.getURI())));
+            } catch (IOException e) {
+                System.out.println("ERROR: " +e.getMessage());
+            }
+            img.setMime("image/jpeg");
+            Image imgSaved = this.imageService.saveDb(img);
+            user.setImage(imgSaved);
+        } else {
+            Image img = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(img);
+        }
+
         user.setEmail(userDTO.getEmail());
         user.setRole(Role.USER);
         User userSaved = this.userRepository.save(user);
@@ -92,26 +123,47 @@ public class UserService implements IUserService {
         return this.userRepository.getAllUsers();
     }
 
-    public User findByEmail(String username) throws UsernameNotFoundException {
+    public UserInfoDTO findByEmail(String username) throws NotFoundException {
         Optional<User> userOptional = this.userRepository.findUser(username);
         if(userOptional.isPresent()) {
+            return this.createUserInfoDTO(userOptional.get());
+        }
+        throw new NotFoundException("User not found");
+
+    }
+
+    @Override
+    public User findUserByEmail(String email) throws UsernameNotFoundException  {
+        Optional<User> userOptional = this.userRepository.findUser(email);
+        if (userOptional.isPresent()) {
             return userOptional.get();
         }
-        throw new UsernameNotFoundException("User not found");
+        throw new UsernameNotFoundException ("User not found");
+    }
 
-    };
+    @Override
+    public UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException {
+        User user = this.findUserByEmail(email);
+        return this.createUserProfileInfo(user);
+    }
 
 
-
-/*
-    public User roles(Role rol, String id) throws NotFoundException {
-        User user = this.getById(id);
-        user.setRole(rol);
-        return this.userRepository.save(user);
-    }*/
 
     private UserInfoDTO createUserInfoDTO(User user) {
-        return new UserInfoDTO(user.getName(), user.getLastname(), user.getEmail(), user.getRole(), user.getEnabled(), user.getImage().getId());
+        if (user.getImage() != null) {
+            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled());
+        } else {
+            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), "publicimg", user.getRole(), user.getEnabled());
+        }
+    }
 
+    private UserProfileInfoDTO createUserProfileInfo(User user) {
+        UserProfileInfoDTO info = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName() == null ? "" : user.getDisplayName(), user.getEmail());
+        if (user.getImage() != null) {
+            info.setProfilePictureId(user.getImage().getId());
+        } else {
+            info.setProfilePictureId("publicimg");
+        }
+        return info;
     }
 }

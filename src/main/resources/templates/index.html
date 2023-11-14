@@ -4,7 +4,9 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-
+<div th:if="${creado != null}">
+    <h1 th:text="${creado}"></h1th:text>
+</div>
 </main>
 
 </body>

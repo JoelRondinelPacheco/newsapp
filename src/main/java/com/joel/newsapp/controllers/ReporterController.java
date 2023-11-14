@@ -2,9 +2,11 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
 import com.joel.newsapp.entities.News;
+import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
+import com.joel.newsapp.services.NewsCategoryService;
 import com.joel.newsapp.services.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,9 +28,10 @@ public class ReporterController {
 
     @Autowired
     private NewsService newsService;
-
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private NewsCategoryService categoryService;
 
     @GetMapping("/panel")
     public String newsPanel(ModelMap model) {
@@ -49,7 +52,10 @@ public class ReporterController {
     }
 
     @GetMapping("/form")
-    public String formNews() {
+    public String formNews(ModelMap model) {
+        List<NewsCategory> categories = this.categoryService.findAll();
+        model.addAttribute("categories", categories);
+
         return "form_news.html";
     }
 

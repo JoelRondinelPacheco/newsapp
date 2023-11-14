@@ -19,41 +19,34 @@
     </div>
 
     <div class="mb-3">
-        <label for="imagecaption" class="form-label">Pie de fotografia</label>
-        <input type="text" class="form-control" id="imagecaption" name="imagecaption">
+        <label for="imageCaption" class="form-label">Pie de fotografia</label>
+        <input type="text" class="form-control" id="imageCaption" name="imageCaption">
     </div>
 
     <div class="mb-3">
         <label for="body" class="form-label">Cuerpo de la noticia</label>
-        <input class="form-control" id="body" rows="3" name="body" type="hidden"></input>
-        <div id="editor"></div>
+        <input class="form-control" id="body" rows="3" name="body">
     </div>
     <div class="mb-3">
     <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
     </div>
     <div class="mb-3">
-        <select class="form-select" aria-label="Default select example" name="category">
-            <option selected>Seleccione una categoria</option>
-            <option value="BUILDINGS">Edificios</option>
-            <option value="FOOD">Comida</option>
-            <option value="NATURE">Naturaleza</option>
-            <option value="PEOPLE">Personas</option>
-            <option value="TECHNOLOGY">Tecnologia</option>
-        </select>
+        <div th:each="category : ${categories}" class="form-check">
+            <input class="form-check-input" type="checkbox" th:value="${category.id}" th:id="${category.name}" name="category">
+            <label class="form-check-label" th:for="${category.name}" th:text="${category.name}"></label>
+        </div>
 
     </div>
 
 <div class="text-end">
-    <button type="submit" class="btn btn-primary">Publicar</button>
+    <button type="submit" class="btn btn-primary">Agregar</button>
 </div>
 </form>
 </div>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <!-- Create the editor container -->
-    <!-- Include the Quill library -->
+    <!--
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-    <!-- Initialize Quill editor -->
     <script>
         var quill = new Quill('#editor', {
           theme: 'snow'
@@ -71,7 +64,7 @@ form.onsubmit = function() {
   alert('Open the console to see the submit data!')
   return false;
 };
-    </script>
+    </script> -->
 
 </main>
 </body>

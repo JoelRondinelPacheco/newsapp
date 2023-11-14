@@ -16,10 +16,10 @@ import java.util.Optional;
 @Repository
 public interface IReporterRepository extends JpaRepository<Reporter, String> {
     //Reporter info dto
-    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.email, r.role, r.enabled, r.image.id AS profilePictureId, r.monthlySalary) FROM Reporter r WHERE r.id = :reporterId")
+    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.displayName, r.email, r.image.id AS profilePictureId, r.role, r.enabled, r.monthlySalary) FROM Reporter r WHERE r.id = :reporterId")
     Optional<ReporterInfoDTO> getReporterInfoDTO(@Param("reporterId") String reporterId);
     //All reporter info dto
-    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.email, r.role, r.enabled, r.image.id AS profilePictureId, r.monthlySalary) FROM Reporter r")
+    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.displayName, r.email, r.image.id AS profilePictureId, r.role, r.enabled, r.monthlySalary) FROM Reporter r")
     List<ReporterInfoDTO> getAllReporterInfo();
     Optional<Reporter> findByEmail(String email);
     @Modifying

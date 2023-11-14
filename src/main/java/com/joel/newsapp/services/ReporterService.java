@@ -32,6 +32,7 @@ public class ReporterService implements IReporterService {
         Reporter rep = Reporter.builder()
                 .name(reporterDTO.getName())
                 .lastname(reporterDTO.getLastname())
+                .displayName("")
                 .email(reporterDTO.getEmail())
                 .monthlySalary(reporterDTO.getMonthlySalary())
                 .role(Role.REPORTER)
@@ -91,6 +92,6 @@ public class ReporterService implements IReporterService {
     }
 
     private ReporterInfoDTO createReporterInfoDTO(Reporter reporter) {
-        return new ReporterInfoDTO(reporter.getName(), reporter.getLastname(), reporter.getEmail(), reporter.getRole(), reporter.getEnabled(), reporter.getImage().getId(), reporter.getMonthlySalary());
+            return new ReporterInfoDTO(reporter.getName(), reporter.getLastname(), reporter.getDisplayName(), reporter.getEmail(), reporter.getImage().getId(), reporter.getRole(), reporter.getEnabled(), reporter.getMonthlySalary());
     }
 }

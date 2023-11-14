@@ -52,6 +52,7 @@ public class HomeController {
             model.put("error", ex.getMessage());
             return "index.html";
         }*/
+        System.out.println("entro");
         return "index";
     }
 

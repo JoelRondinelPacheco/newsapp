@@ -6,17 +6,21 @@
 <main class="container">
     <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
     <section>
-        <table>
+        <table class="table">
             <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Rol</th>
-                <th>Estado</th>
+            <tr class="table-primary">
+                <th scope="col">Nombre</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
             </tr>
             </thead>
             <tbody>
                 <tr th:each="user : ${users}">
-                    <th th:text="${user.name}"></th>
+                    <th th:text="${user.name}+' '+${user.lastname}"></th>
+                    <th th:text="${user.displayName}"></th>
+                    <th th:text="${user.email}"></th>
                     <th th:text="${user.role}"></th>
                     <th th:text="${user.enabled}"></th>
                 </tr>

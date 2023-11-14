@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private HomeController homeController;
 
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) String error, ModelMap model) {
@@ -26,15 +28,17 @@ public class AuthController {
     public String register() { return "register.html"; }
 
     @PostMapping("/register/save")
-    public String registro(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam String confirmpassword, ModelMap model, MultipartFile archive) {
+    public String registro(@RequestParam String name, @RequestParam  String lastname, @RequestParam String email, @RequestParam String password, @RequestParam String confirmpassword, ModelMap model, MultipartFile archive) {
         if (!password.equals(confirmpassword)) {
             model.put("passworderror", "Las contraseñas no coinciden");
             return "register.html";
         }
-        RegisterUserDTO userDTO = new RegisterUserDTO(name, email, password, archive);
+        RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive);
         this.userService.save(userDTO);
         model.put("creado", "Usuario creado correctamente");
-        return "index.html";
+        System.out.println("enotr register");
+        //Todo post register page
+        return "redirect:/";
     }
 
 

@@ -7,10 +7,11 @@
 <main class="container">
     <form th:action="@{/register/save}" method="post" enctype="multipart/form-data" class="container w-50">
 
-        <div class="container mb-3  text-center">
+        <div class="mb-3  text-center">
             <div class="d-inline-block">
                 <figure class="position-relative">
-                    <img class="logo rounded-circle" id="image"  th:src="@{/perfil/{id}(id=${user.id})}" >
+                    <img class="logo rounded-circle" id="image" th:src="@{${user.profilePictureId == 'publicimg' ? '/img/user.jpeg' : '/image/' + user.profilePictureId}}"
+                    >
                     <figcaption type="button" class="position-absolute top-0 end-0">
                         <button type="button" class="btn-close" aria-label="Close"></button>
                     </figcaption>
@@ -22,13 +23,22 @@
             </div>
         </div>
 
-        <div class="container mb-3">
-            <input type="text" class="form-control" id="inputNombre" name="name" placeholder="Nombre" th:value="${user.name}">
+        <div class="row">
+            <div class="col">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
+            </div>
+            <div class="col">
+                <label for="lastname" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" th:value="${user.lastname}">
+            </div>
         </div>
 
-        <div class="container mb-3">
-            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" th:value="${user.email}">
+        <div class="mb-3">
+            <label for="displayname" class="form-label">Display name</label>
+            <input type="text" class="form-control" id="displayname" name="displayname" th:value="${user.displayName}">
         </div>
+
         <!-- IMPLEMETAR CAMBIO DE CONTRASEÑA
         <div class="container mb-3">
             <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Contraseña">
@@ -36,7 +46,7 @@
         <div class="container mb-3">
             <input type="password" class="form-control" id="inputConfirmPassword" name="confirmpassword" placeholder="Repetir contraseña">
         </div> -->
-        <div class="container mb-3 text-center">
+        <div class="mb-3 text-center">
             <button type="submit" class="btn btn-primary w-50">Registrarse</button>
         </div>
     </form>

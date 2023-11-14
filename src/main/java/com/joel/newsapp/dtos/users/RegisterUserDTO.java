@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class RegisterUserDTO {
     private String name;
+    private String lastname;
     private String email;
     private String password;
     private MultipartFile profilePicture;
