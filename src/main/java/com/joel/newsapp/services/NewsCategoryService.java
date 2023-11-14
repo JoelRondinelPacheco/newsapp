@@ -20,8 +20,9 @@ public class NewsCategoryService implements INewsCategoryService {
     @Autowired
     private INewsCategoryRepository newsCategoryRepository;
     @Override
-    public NewsCategory save(NCategoryPostReqDTO nCategoryPostReqDTO) {
-        return null;
+    public NewsCategory save(String category) {
+        NewsCategory cat = new NewsCategory(category);
+        return this.newsCategoryRepository.save(cat);
     }
 
     @Override
@@ -45,9 +46,13 @@ public class NewsCategoryService implements INewsCategoryService {
     }
     @Override
     public List<String> getAllCategories() {
-        return this.newsCategoryRepository.findAllCategories();
+        //return this.newsCategoryRepository.findAllCategories();
+        return null;
     }
 
+    public List<NewsCategory> findAll() {
+        return this.newsCategoryRepository.findAll();
+    }
     @Override
     public NewsCategory findByName(String name) throws NotFoundException {
         Optional<NewsCategory> categoryOptional = this.newsCategoryRepository.findByName(name);

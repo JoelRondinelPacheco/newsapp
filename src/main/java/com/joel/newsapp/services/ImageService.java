@@ -46,7 +46,6 @@ public class ImageService {
                       image = res.get();
                     }
                 }
-
                 image.setMime(archive.getContentType());
                 image.setName(archive.getName());
                 image.setContent(archive.getBytes());

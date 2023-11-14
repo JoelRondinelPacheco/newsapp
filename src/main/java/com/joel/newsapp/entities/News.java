@@ -28,6 +28,7 @@ public class News extends Base{
     // TODO install TipTap
     private String body;
     private Boolean featured;
+    private Boolean featuredCategory;
     private Boolean mainFeatured;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)

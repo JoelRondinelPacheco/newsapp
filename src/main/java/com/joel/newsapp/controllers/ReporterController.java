@@ -45,28 +45,14 @@ public class ReporterController {
             model.addAttribute("noticias", userNews);
 
         }*/
-        return "newspanel.html";
+        return "news_panel.html";
     }
 
     @GetMapping("/form")
     public String formNews() {
-        return "form-news.html";
+        return "form_news.html";
     }
 
-    @PostMapping("/add")
-    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categoryId, MultipartFile image, ModelMap model) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
-            NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categoryId, username, image);
-            News news = this.newsService.save(newsDTO);
-            model.put("titulo", news.getTitle());
-            model.put("body", news.getBody());
-            return "form-news.html";
-        } catch (NotFoundException ex) {
-            model.put("error", "Error al cargar noticia");
-            return "form-news.html";
-        }
-    }
+
 
 }

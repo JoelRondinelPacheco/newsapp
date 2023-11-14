@@ -10,9 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Setter
 @Getter
-public class UserPostReqDTO {
+public class RegisterUserDTO {
     private String name;
     private String email;
     private String password;
-    private MultipartFile image;
+    private MultipartFile profilePicture;
+
 }

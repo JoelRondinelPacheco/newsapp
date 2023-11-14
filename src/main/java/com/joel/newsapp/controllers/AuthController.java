@@ -1,6 +1,6 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.users.UserPostReqDTO;
+import com.joel.newsapp.dtos.users.RegisterUserDTO;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@RequestMapping("/")
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -30,21 +31,11 @@ public class AuthController {
             model.put("passworderror", "Las contraseñas no coinciden");
             return "register.html";
         }
-        UserPostReqDTO userDTO = new UserPostReqDTO(name, email, password, archive);
+        RegisterUserDTO userDTO = new RegisterUserDTO(name, email, password, archive);
         this.userService.save(userDTO);
         model.put("creado", "Usuario creado correctamente");
         return "index.html";
     }
 
-    @PutMapping("/roles")
-    public String roles(@RequestParam Role rol, @RequestParam String id) throws NotFoundException {
-        System.out.println(id);
-        User u1 = this.userService.getById(id);
-        System.out.println(u1);
-        System.out.println("nombre antes dle cambio: " + u1.getName() + " rol: " + u1.getRole() + " id: " + u1.getId());
-        User u = this.userService.roles(rol, id);
-        System.out.println("nombre despues: " + u.getName() + " rol: " + u.getRole() + " id: " + u.getId());
-        return "Rola cambiado a: " + rol.toString();
 
-    }
 }

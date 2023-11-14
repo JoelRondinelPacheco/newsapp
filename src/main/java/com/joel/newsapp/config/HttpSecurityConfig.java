@@ -29,7 +29,7 @@ public class HttpSecurityConfig {
                 //.authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/css/*", "/js/*", "/img/*", "/**").permitAll()
+                        .requestMatchers("/css/*", "/scripts/**", "/img/**", "/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/", "/register","/login", "/error", "/publicimg").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register/save", "/login").permitAll()
                         .requestMatchers("/error", "/roles").permitAll()
@@ -41,7 +41,7 @@ public class HttpSecurityConfig {
                         .requestMatchers("/news/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/comment/add/**").hasRole(Role.USER.name())
                         .requestMatchers(HttpMethod.GET, "/perfil/**").authenticated()
-                        .anyRequest().denyAll())
+                        .anyRequest().permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")

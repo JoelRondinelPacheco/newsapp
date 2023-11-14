@@ -1,5 +1,6 @@
 package com.joel.newsapp.repositories;
 
+import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserLoginDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
@@ -17,6 +18,12 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
+    //User info DTO
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.email, u.role, u.enabled, u.image.id AS profilePictureId) FROM User u WHERE u.id = :userId")
+    Optional<UserInfoDTO> getUserInfoDTO(@Param("userId") String userId);
+    //get all users info
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.email, u.role, u.enabled, u.image.id AS profilePictureId) FROM User u WHERE u.role = 'USER'")
+    List<UserInfoDTO> getAllUsers();
     @Query("SELECT user FROM User user WHERE user.email = :username")
     Optional<User> findUser(@Param("username") String email);
     /*

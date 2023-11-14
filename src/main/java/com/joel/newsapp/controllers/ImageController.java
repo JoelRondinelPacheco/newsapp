@@ -1,5 +1,7 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.ImageService;
@@ -12,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/image")
 public class ImageController {
     @Autowired
     private UserService userService;
@@ -21,28 +25,29 @@ public class ImageController {
     private ImageService imageService;
 
 
-    @GetMapping("/perfil/{id}")
+    @GetMapping("/profile/{id}")
     public ResponseEntity<byte[]> getImageByUserId (@PathVariable String id) throws NotFoundException {
-        User usuario = userService.getById(id);
-
-        byte[] imagen= usuario.getImage().getContent();
+        //TODO REFACTOR
+        UserInfoDTO user = userService.getById(id);
+        Image img = this.imageService.getById(user.getProfilePictureId());
+        byte[] image = img.getContent();
 
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(imagen,headers, HttpStatus.OK);
+        return new ResponseEntity<>(image,headers, HttpStatus.OK);
     }
 
-    @GetMapping("/img/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<byte[]> getNewsImage (@PathVariable String id) throws NotFoundException {
         System.out.println(id);
-        byte[] imagen= this.imageService.getById(id).getContent();
+        byte[] image = this.imageService.getById(id).getContent();
 
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(imagen,headers, HttpStatus.OK);
+        return new ResponseEntity<>(image,headers, HttpStatus.OK);
     }
 }

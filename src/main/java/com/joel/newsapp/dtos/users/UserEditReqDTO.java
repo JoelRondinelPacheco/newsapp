@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class UserEditReqDTO extends UserPostReqDTO {
+public class UserEditReqDTO extends RegisterUserDTO {
     private Role rol;
     private Boolean active;
 }
