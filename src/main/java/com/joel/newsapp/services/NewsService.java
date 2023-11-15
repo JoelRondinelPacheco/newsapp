@@ -5,7 +5,6 @@ import com.joel.newsapp.dtos.news.NewsPostReqDTO;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
-import com.joel.newsapp.services.interfaces.ICrudService;
 import com.joel.newsapp.services.interfaces.INewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +22,13 @@ public class NewsService implements INewsService {
     @Autowired
     private ImageService imageService;
     @Autowired
-    private ReporterService reporterService;
+    private ReporterService employeeService;
     @Autowired
     private NewsCategoryService newsCategoryService;
 
     @Override
     public News save(NewsPostReqDTO newsDTO) throws NotFoundException{
-        Reporter reporter = this.reporterService.findByEmail(newsDTO.getReporterUsername());
+        Reporter reporter = this.employeeService.findByEmail(newsDTO.getReporterUsername());
         Image image = this.imageService.save(newsDTO.getImage());
         List<NewsCategory> categories = this.findCategories(newsDTO.getCategories());
         News news = new News(newsDTO.getTitle(), newsDTO.getSubtitle(), newsDTO.getImageCaption(), newsDTO.getBody(), categories, reporter, image);

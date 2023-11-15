@@ -5,6 +5,7 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+    <div class="row"><button>Activos</button><button>Inactivos</button></div>
     <section>
         <table class="table">
             <thead>
@@ -14,6 +15,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Rol</th>
                 <th scope="col">Estado</th>
+                <th scope="col">Cambiar estado</th>
             </tr>
             </thead>
             <tbody>
@@ -21,8 +23,18 @@
                     <th th:text="${user.name}+' '+${user.lastname}"></th>
                     <th th:text="${user.displayName}"></th>
                     <th th:text="${user.email}"></th>
-                    <th th:text="${user.role}"></th>
                     <th th:text="${user.enabled}"></th>
+                    <th>
+                        <select name="role" id="role">
+                            <option value="Usuario" th:selected="${user.role == 'USER'}">Cliente</option>
+                            <option value="Periodista" th:selected="${user.role == 'REPORTER'}">Periodista</option>
+                            <option value="Moderador" th:selected="${user.role == 'MODERATOR'}">Moderador</option>
+                            <option value="Adminstrador" th:selected="${user.role == 'ADMIN'}">Adminstrador</option>
+                        </select>
+                    </th>
+                    <th>
+                        <button class="btn btn-primary"><a th:href="@{'/admin/delete/' + ${user.id}}">Dar de baja</a></button>
+                    </th>
                 </tr>
             </tbody>
         </table>

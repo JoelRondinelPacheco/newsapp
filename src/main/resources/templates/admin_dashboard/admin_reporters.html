@@ -26,7 +26,14 @@
                 <th th:text="${reporter.name}+' '+${reporter.lastname}"></th>
                 <th th:text="${reporter.displayName}"></th>
                 <th th:text="${reporter.email}"></th>
-                <th th:text="${reporter.role}"></th>
+                <th>
+                    <select name="role" id="role">
+                        <option value="Usuario" th:selected="${user.role == 'USER'}">Cliente</option>
+                        <option value="Periodista" th:selected="${user.role == 'REPORTER'}">Periodista</option>
+                        <option value="Moderador" th:selected="${user.role == 'MODERATOR'}">Moderador</option>
+                        <option value="Adminstrador" th:selected="${user.role == 'ADMIN'}">Adminstrador</option>
+                    </select>
+                </th>
                 <th th:text="${reporter.enabled}"></th>
                 <th th:text="${reporter.monthlySalary}"></th>
             </tr>

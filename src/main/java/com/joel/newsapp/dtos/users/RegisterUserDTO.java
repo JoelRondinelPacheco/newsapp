@@ -7,14 +7,15 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
-public class RegisterUserDTO {
-    private String name;
-    private String lastname;
-    private String email;
-    private String password;
+public class RegisterUserDTO extends RegisterBaseDTO {
+
     private MultipartFile profilePicture;
+
+    public RegisterUserDTO(String name, String lastname, String email, String password, MultipartFile profilePicture) {
+        super(name, lastname, email, password);
+        this.profilePicture = profilePicture;
+    }
 
 }

@@ -1,13 +1,15 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
+import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,12 +41,7 @@ public class AdminController {
         return "newspanel.html";
     }
 
-    @GetMapping("/dashboard")
-    public String usersPanel(ModelMap model) {
-        List<UserInfoDTO> users = this.userService.getAllUsers();;
-        model.addAttribute("users", users);
-        return "/admin_dashboard/admin_dashboard";
-    }
+
 
     @GetMapping("/dashboard/reporters")
     public String getAllReporters(ModelMap model) {
@@ -88,7 +85,57 @@ public class AdminController {
     }
 
     @GetMapping("/register")
-    public String adminPostUser() {
+    public String adminPostUserForm() {
         return "/admin_dashboard/admin_register";
+    }
+
+    @PostMapping("/register")
+    public String adminPostUser(@RequestParam String name,
+                                @RequestParam String lastname,
+                                @RequestParam String email,
+                                @RequestParam String password,
+                                @RequestParam String confirmpassword,
+                                @RequestParam Role rol,
+                                @RequestParam(required = false) Double monthlySalary,
+                                ModelMap model) {
+
+        if (!password.equals(confirmpassword)) {
+            System.out.println("Error password");
+        }
+        if(rol.equals(Role.REPORTER)) {
+            AdminRegisterReporterDTO reporter = new AdminRegisterReporterDTO(name, lastname, email, password, rol, monthlySalary);
+            this.reporterService.adminRegister(reporter);
+            model.put("success", "Reporter created successfully");
+            return "redirect:/";
+        } else if (rol.equals(Role.USER) || rol.equals(Role.MODERATOR) || rol.equals(Role.ADMIN)) {
+            AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, password, rol);
+            this.userService.adminRegister(user);
+            model.put("success", "User created successfully");
+            return "redirect:/";
+        } else {
+            System.out.println("Rol not valid");
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable String userId) {
+        try {
+            this.userService.adminActiveState(userId, false);
+            return "redirect:/";
+        } catch (NotFoundException e) {
+            return "redirect:/";
+
+        }
+    }
+
+    @GetMapping("/activate/{userId}")
+    public String activateUser(@PathVariable String userId) {
+        try {
+            this.userService.adminActiveState(userId, false);
+            return "redirect:/";
+        } catch (NotFoundException e) {
+            return "redirect:/";
+        }
     }
 }

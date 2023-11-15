@@ -7,6 +7,7 @@ import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
+import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,13 +28,14 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
     @Autowired
     private ImageService imageService;
-    private static final String IMAGE_DIRECTORY = "static/img/user.jpeg";
+    @Autowired
+    private Utils utils;
 
 
     @Override
     public UserInfoDTO save(RegisterUserDTO userDTO){
         User user = new User();
-        String pass = new BCryptPasswordEncoder().encode(userDTO.getPassword());
+        String pass = this.utils.encryptPassword(userDTO.getPassword());
         user.setPassword(pass);
         if (!userDTO.getProfilePicture().isEmpty()) {
             Image image = this.imageService.save(userDTO.getProfilePicture());
@@ -53,7 +55,10 @@ public class UserService implements IUserService {
         }
 
         if(userDTO.getProfilePicture().isEmpty()) {
-            Image img = new Image();
+            Image img = this.imageService.defaultImage();
+            user.setImage(img);
+
+            /*Image img = new Image();
             ClassPathResource imagePath = new ClassPathResource(IMAGE_DIRECTORY);
             img.setName("default");
             try {
@@ -63,7 +68,7 @@ public class UserService implements IUserService {
             }
             img.setMime("image/jpeg");
             Image imgSaved = this.imageService.saveDb(img);
-            user.setImage(imgSaved);
+            user.setImage(imgSaved);*/
         } else {
             Image img = this.imageService.save(userDTO.getProfilePicture());
             user.setImage(img);
@@ -111,16 +116,24 @@ public class UserService implements IUserService {
     public String deleteById(String id) throws NotFoundException {
         boolean exists = this.userRepository.existsById(id);
         if (exists) {
-            this.userRepository.deleteById(id);
+            User user = this.userRepository.findById(id).get();
+            user.setEnabled(true);
+            this.userRepository.save(user);
             return "User deleted";
         } else {
             throw new NotFoundException("User not found");
         }
     }
 
+
     @Override
     public List<UserInfoDTO> getAllUsers() {
         return this.userRepository.getAllUsers();
+    }
+
+    @Override
+    public List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role) {
+        return this.userRepository.getAllUsersByEnabledAndRole(role, enabled);
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
@@ -147,14 +160,38 @@ public class UserService implements IUserService {
         return this.createUserProfileInfo(user);
     }
 
+    @Override
+    public UserInfoDTO adminRegister(AdminRegisterUserDTO userDTO) {
+        String password = this.utils.encryptPassword(userDTO.getPassword());
+        User user = User.builder()
+                .name(userDTO.getName())
+                .lastname(userDTO.getLastname())
+                .displayName(userDTO.getName() + "." + userDTO.getLastname())
+                .email(userDTO.getEmail())
+                .password(password)
+                .role(userDTO.getRole())
+                .build();
+        user.setImage(this.imageService.defaultImage());
+        User userSaved = this.userRepository.save(user);
+        return this.createUserInfoDTO(userSaved);
+    }
+
+    @Override
+    public String adminActiveState(String id, Boolean state) throws NotFoundException {
+        boolean exists = this.userRepository.existsById(id);
+        if (exists) {
+            User user = this.userRepository.findById(id).get();
+            user.setEnabled(state);
+            this.userRepository.save(user);
+            return "User deleted";
+        }
+        throw new NotFoundException("User not found");
+    }
 
 
     private UserInfoDTO createUserInfoDTO(User user) {
-        if (user.getImage() != null) {
-            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled());
-        } else {
-            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), "publicimg", user.getRole(), user.getEnabled());
-        }
+
+            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
     }
 
     private UserProfileInfoDTO createUserProfileInfo(User user) {

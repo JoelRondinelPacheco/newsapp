@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class ReporterInfoDTO extends UserInfoDTO {
     private Double monthlySalary;
-    public ReporterInfoDTO(String name, String lastname, String displayName, String email, String profilePicture, Role role, Boolean enabled, Double monthlySalary) {
-        super(name, lastname, displayName, email, profilePicture, role, enabled);
+    public ReporterInfoDTO(String name, String lastname, String displayName, String email, String profilePicture, Role role, Boolean enabled, Double monthlySalary, String id) {
+        super(name, lastname, displayName, email, profilePicture, role, enabled, id);
         this.monthlySalary = monthlySalary;
     }
 }

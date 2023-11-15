@@ -5,6 +5,7 @@ import com.joel.newsapp.dtos.users.UserLoginDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
+import com.joel.newsapp.utils.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,11 +20,15 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
     //User info DTO
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled) FROM User u WHERE u.id = :userId")
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.id = :userId")
     Optional<UserInfoDTO> getUserInfoDTO(@Param("userId") String userId);
     //get all users info
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled) FROM User u WHERE u.role = 'USER'")
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.role = 'USER'")
     List<UserInfoDTO> getAllUsers();
+    //Get all users by enabled
+    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.role = :role AND u.enabled = :enabled")
+    List<UserInfoDTO> getAllUsersByEnabledAndRole(@Param("role") Role role, @Param("enabled") Boolean enabled);
+
     @Query("SELECT user FROM User user WHERE user.email = :username")
     Optional<User> findUser(@Param("username") String email);
     /*

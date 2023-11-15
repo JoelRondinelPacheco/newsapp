@@ -9,7 +9,7 @@
     Invalid username and password.</div>
   <div th:if="${param.logout}">
     You have been logged out.</div>
-  <form th:action="@{/admin/register/save}" method="post" enctype="multipart/form-data" class="container w-50">
+  <form th:action="@{/admin/register}" method="post" enctype="multipart/form-data" class="container w-50">
 
     <div class="mb-3  text-center">
       <div class="d-inline-block">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="input-group mb-3">
-    <select class="form-select" aria-label="Default select example">
+    <select class="form-select" aria-label="Default select example" name="rol">
       <option selected>Seleccione el Rol</option>
       <option value="CLIENT">Cliente</option>
       <option value="REPORTER">Periodista</option>
