@@ -19,21 +19,25 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each="user : ${users}">
-                    <th th:text="${user.name}+' '+${user.lastname}"></th>
-                    <th th:text="${user.displayName}"></th>
-                    <th th:text="${user.email}"></th>
-                    <th th:text="${user.enabled}"></th>
+                <tr th:each="admin : ${admins}">
+                    <th th:text="${admin.name}+' '+${admin.lastname}"></th>
+                    <th th:text="${admin.displayName}"></th>
+                    <th th:text="${admin.email}"></th>
+                    <th th:text="${admin.enabled}"></th>
                     <th>
                         <select name="role" id="role">
-                            <option value="Usuario" th:selected="${user.role == 'USER'}">Cliente</option>
-                            <option value="Periodista" th:selected="${user.role == 'REPORTER'}">Periodista</option>
-                            <option value="Moderador" th:selected="${user.role == 'MODERATOR'}">Moderador</option>
-                            <option value="Adminstrador" th:selected="${user.role == 'ADMIN'}">Adminstrador</option>
+                            <option value="Usuario" th:selected="${admin.role == 'USER'}">Cliente</option>
+                            <option value="Periodista" th:selected="${admin.role == 'REPORTER'}">Periodista</option>
+                            <option value="Moderador" th:selected="${admin.role == 'MODERATOR'}">Moderador</option>
+                            <option value="Adminstrador" th:selected="${admin.role == 'ADMIN'}">Adminstrador</option>
                         </select>
                     </th>
                     <th>
-                        <button class="btn btn-primary"><a th:href="@{'/admin/delete/' + ${user.id}}">Dar de baja</a></button>
+                        <a class="btn"
+                           th:classappend="${admin.enabled ? 'btn-danger' : 'btn-success'}"
+                           th:href="@{'/admin/active/' + ${admin.id} + '?active=' + ${admin.enabled ? 'false' : 'true'}}"
+                           th:text="${admin.enabled ? 'Dar de baja' : 'Dar de alta'}">
+                        </a>
                     </th>
                 </tr>
             </tbody>

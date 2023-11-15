@@ -26,14 +26,19 @@
                 <th th:text="${user.enabled}"></th>
                 <th>
                     <select name="role" id="role">
-                        <option value="Usuario" th:selected="${user.role == 'USER'}">Cliente</option>
-                        <option value="Periodista" th:selected="${user.role == 'REPORTER'}">Periodista</option>
-                        <option value="Moderador" th:selected="${user.role == 'MODERATOR'}">Moderador</option>
-                        <option value="Adminstrador" th:selected="${user.role == 'ADMIN'}">Adminstrador</option>
+                        <option value="User" th:selected="${user.role == 'USER'}">Client</option>
+                        <option value="Reporter" th:selected="${user.role == 'REPORTER'}">Reporter</option>
+                        <option value="Moderator" th:selected="${user.role == 'MODERATOR'}">Moderator</option>
+                        <option value="Administrator" th:selected="${user.role == 'ADMIN'}">Administrator</option>
                     </select>
                 </th>
                 <th>
-                    <button class="btn btn-primary"><a th:href="@{'/admin/delete/' + ${user.id}}">Dar de baja</a></button>
+
+                    <a class="btn"
+                       th:classappend="${user.enabled ? 'btn-danger' : 'btn-success'}"
+                       th:href="@{'/admin/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'}}"
+                       th:text="${user.enabled ? 'Dar de baja' : 'Dar de alta'}">
+                    </a>
                 </th>
             </tr>
             </tbody>

@@ -3,9 +3,16 @@
 <div th:replace="~{fragments/head :: head (title ='Noticias')}"></div>
 
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
+
 <main class="container">
+    <h2>Noticia destacada principal</h2>
+    <h3>Noticia destacada categoria 1</h3>
+    <h3>Noticia destacada categoria 2</h3>
+    <h3>Noticia destacada categoria 3</h3>
+    <h3>Noticia destacada categoria 4</h3>
+    <h3>Noticia destacada categoria 5</h3>
     <h1 th:if="${message != null}" th:text="${message}"></h1>
-    <div th:replace="~{fragments/header :: header}"></div>
     <section th:each="noticia : ${noticias}" class="row" >
             <div class="col-2" th:text="${noticia.title}"></div>
             <div class="col-3" th:text="${noticia.body}"></div>

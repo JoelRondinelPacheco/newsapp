@@ -1,9 +1,7 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
-import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -33,35 +31,21 @@ public class AdminController {
     private ReporterService reporterService;
     @Autowired
     private NewsCategoryService categoryService;
+    @Autowired
+    private AdminDashboardController dashboardControllor;
 
     @GetMapping("/news")
     public String newsPanel(ModelMap model) throws NotFoundException {
         List<News> news = this.newsService.getAll();
         model.addAttribute("noticias", news);
-        return "newspanel.html";
-    }
-
-
-
-    @GetMapping("/dashboard/reporters")
-    public String getAllReporters(ModelMap model) {
-        List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
-        model.addAttribute("reporters", reporters);
-        return "/admin_dashboard/admin_reporters";
-    }
-
-    @GetMapping("/dashboard/categories")
-    public String getAllCategories(ModelMap model) {
-        List<NewsCategory> categories = this.categoryService.findAll();
-        model.addAttribute("categories", categories);
-        return "/admin_dashboard/admin_categories";
+        return "admin_news.html";
     }
 
     @PostMapping("/category/save")
     public String createCategory(@RequestParam String category, ModelMap model) {
         NewsCategory cat = this.categoryService.save(category);
         model.put("success", "Category saved");
-        return this.getAllCategories(model);
+        return this.dashboardControllor.getAllCategories(model);
     }
 
     @GetMapping("/image")
@@ -84,10 +68,6 @@ public class AdminController {
         return "index.html";
     }
 
-    @GetMapping("/register")
-    public String adminPostUserForm() {
-        return "/admin_dashboard/admin_register";
-    }
 
     @PostMapping("/register")
     public String adminPostUser(@RequestParam String name,
@@ -118,10 +98,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/delete/{userId}")
-    public String deleteUser(@PathVariable String userId) {
+    @GetMapping("/active/{userId}")
+    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
         try {
-            this.userService.adminActiveState(userId, false);
+            this.userService.adminActiveState(userId, active);
             return "redirect:/";
         } catch (NotFoundException e) {
             return "redirect:/";
@@ -129,13 +109,4 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/activate/{userId}")
-    public String activateUser(@PathVariable String userId) {
-        try {
-            this.userService.adminActiveState(userId, false);
-            return "redirect:/";
-        } catch (NotFoundException e) {
-            return "redirect:/";
-        }
-    }
 }
