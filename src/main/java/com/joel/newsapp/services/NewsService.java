@@ -31,7 +31,8 @@ public class NewsService implements INewsService {
         Reporter reporter = this.employeeService.findByEmail(newsDTO.getReporterUsername());
         Image image = this.imageService.save(newsDTO.getImage());
         List<NewsCategory> categories = this.findCategories(newsDTO.getCategories());
-        News news = new News(newsDTO.getTitle(), newsDTO.getSubtitle(), newsDTO.getImageCaption(), newsDTO.getBody(), categories, reporter, image);
+        NewsCategory mainCategory = this.newsCategoryService.getById(newsDTO.getMainCategory());
+        News news = new News(newsDTO.getTitle(), newsDTO.getSubtitle(), newsDTO.getImageCaption(), newsDTO.getBody(), categories, mainCategory, reporter, image);
         return this.newsRepository.save(news);
     }
 
@@ -89,20 +90,25 @@ public class NewsService implements INewsService {
         if(newsOptional.isPresent()){
             return newsOptional.get();
         }
-        throw new NotFoundException("News not found");
+        throw new NotFoundException("Main featured new not found");
+    }
+
+
+    @Override
+    public News featuredByCategory(String category) throws NotFoundException {
+        // TODO CKECK CATEGORY EXISTS
+        News news = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, category);
+        return news;
     }
 
     @Override
-    public List<News> featuredByCategory(String category) throws NotFoundException {
-        this.newsCategoryService.findByName(category);
-        //List<News> news = this.newsRepository.findByFeaturedAndCategory_Name(true, category);
-        //return news;
-        return null;
+    public List<News> allFeaturedByCategory() {
+        return this.newsRepository.findByFeaturedCategory(true);
     }
 
     @Override
     public List<News> findByCategory(String category, int quantity) {
-        //return this.newsRepository.findByCategory(category, quantity);
+        //List<News> news = this.newsRepository.findByMainCategory
         return null;
     }
     @Override
@@ -119,15 +125,7 @@ public class NewsService implements INewsService {
         return null;
     }
 
-    @Override
-    public News categoryFeatured(String category) throws NotFoundException {
-        this.newsCategoryService.findByName(category);
-        //TODO MANAGE MULTIPLE MAIN FEATURED
-       // List<News> news = this.newsRepository.findByFeaturedCategoryAndCategories_Name(true, category);
-        //return news.get(0);
-        return null;
 
-    }
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();

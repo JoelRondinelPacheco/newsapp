@@ -33,12 +33,12 @@ public class NewsController {
     @Autowired
     private INewsCategoryService categoryService;
 
-    @PostMapping("/create")
-    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> category, MultipartFile image, ModelMap model) {
+    @PostMapping("/save")
+    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model) {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
-            NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, category, username, image);
+            NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, username, image);
             News news = this.newsService.save(newsDTO);
             model.put("title", news.getTitle());
             model.put("body", news.getBody());

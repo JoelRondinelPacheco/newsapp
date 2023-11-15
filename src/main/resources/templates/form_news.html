@@ -8,7 +8,7 @@
 <main class="container">
 <h1>Agregar Noticia</h1>
 <div class="d-flex justify-content-center">
-<form class="justify-content-center w-75" th:action="@{/reporter/add}" method="POST" enctype="multipart/form-data">
+<form class="justify-content-center w-75" th:action="@{/news/save}" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="title" class="form-label">Titulo</label>
         <input type="text" class="form-control" id="title" name="title">
@@ -16,6 +16,10 @@
     <div class="mb-3">
         <label for="subtitle" class="form-label">Subtitulo</label>
         <input type="text" class="form-control" id="subtitle" name="subtitle">
+    </div>
+
+    <div class="mb-3">
+        <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
     </div>
 
     <div class="mb-3">
@@ -27,12 +31,18 @@
         <label for="body" class="form-label">Cuerpo de la noticia</label>
         <input class="form-control" id="body" rows="3" name="body">
     </div>
+
+    <select class="form-select mb-3" aria-label="Default select example" name="mainCategory">
+        <option value="empty" selected>Seleccione la categoria principal</option>
+        <option th:each="categorySelected : ${categories}" th:value="${categorySelected.id}" th:text="${categorySelected.name}"></option>
+    </select>
+
     <div class="mb-3">
-    <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
-    </div>
-    <div class="mb-3">
+        <div class="mb-1">
+        <span class="form-label">Categorias secundarias</span>
+        </div>
         <div th:each="category : ${categories}" class="form-check">
-            <input class="form-check-input" type="checkbox" th:value="${category.id}" th:id="${category.name}" name="category">
+            <input class="form-check-input" type="checkbox" th:value="${category.id}" th:id="${category.name}" name="categories">
             <label class="form-check-label" th:for="${category.name}" th:text="${category.name}"></label>
         </div>
 

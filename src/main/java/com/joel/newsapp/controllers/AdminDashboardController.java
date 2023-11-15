@@ -2,8 +2,11 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
+import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.INewsCategoryService;
+import com.joel.newsapp.services.interfaces.INewsService;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
@@ -26,8 +29,10 @@ public class AdminDashboardController {
     private IReporterService reporterService;
     @Autowired
     private INewsCategoryService categoryService;
+    @Autowired
+    private INewsService newsService;
 
-    @GetMapping({"/", ""})
+    @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
         return this.users("clients", true, model);
     }
@@ -86,7 +91,22 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/news")
-    public String adminNews(){
+    public String adminNews(ModelMap model){
+        // TODO Handle, all categories has one and only one featured news
+        // TODO manage if returns more than one
+        try {
+            News mainFeatured = this.newsService.mainFeatured();
+            model.addAttribute("mainFeatured", mainFeatured);
+        } catch (NotFoundException e) {
+            model.put("mainFeaturedError", e.getMessage());
+        }
+        List<News> featuredByCategory = this.newsService.allFeaturedByCategory();
+        System.out.println(featuredByCategory.size());
+        if (featuredByCategory.size() > 0) {
+            model.addAttribute("featuredByCategory", featuredByCategory);
+        } else {
+            model.addAttribute("featuredError", "No hay noticias destacadas de las categorias");
+        }
         return "admin_dashboard/admin_news";
     }
 

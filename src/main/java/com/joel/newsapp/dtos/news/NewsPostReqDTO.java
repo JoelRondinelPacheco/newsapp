@@ -18,6 +18,7 @@ public class NewsPostReqDTO {
     private String imageCaption;
     private String body;
     private List<String> categories;
+    private String mainCategory;
     private String reporterUsername;
     private MultipartFile image;
 }
