@@ -27,10 +27,10 @@
                     <th th:text="${admin.enabled}"></th>
                     <th>
                         <select name="role" id="role">
-                            <option value="Usuario" th:selected="${admin.role == 'USER'}">Cliente</option>
-                            <option value="Periodista" th:selected="${admin.role == 'REPORTER'}">Periodista</option>
-                            <option value="Moderador" th:selected="${admin.role == 'MODERATOR'}">Moderador</option>
-                            <option value="Adminstrador" th:selected="${admin.role == 'ADMIN'}">Adminstrador</option>
+                            <option value="Usuario" th:selected="${admin.role.name == 'USER'}">Cliente</option>
+                            <option value="Periodista" th:selected="${admin.role.name == 'REPORTER'}">Periodista</option>
+                            <option value="Moderador" th:selected="${admin.role.name == 'MODERATOR'}">Moderador</option>
+                            <option value="Adminstrador" th:selected="${admin.role.name == 'ADMIN'}">Adminstrador</option>
                         </select>
                     </th>
                     <th>

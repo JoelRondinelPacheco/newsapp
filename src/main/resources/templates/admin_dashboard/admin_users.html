@@ -27,10 +27,10 @@
                 <th th:text="${user.enabled}"></th>
                 <th>
                     <select name="role" id="role">
-                        <option value="User" th:selected="${user.role == 'USER'}">Client</option>
-                        <option value="Reporter" th:selected="${user.role == 'REPORTER'}">Reporter</option>
-                        <option value="Moderator" th:selected="${user.role == 'MODERATOR'}">Moderator</option>
-                        <option value="Administrator" th:selected="${user.role == 'ADMIN'}">Administrator</option>
+                        <option value="User" th:selected="${user.role.name == 'USER'}">Client</option>
+                        <option value="Reporter" th:selected="${user.role.name == 'REPORTER'}">Reporter</option>
+                        <option value="Moderator" th:selected="${user.role.name == 'MODERATOR'}">Moderator</option>
+                        <option value="Administrator" th:selected="${user.role.name == 'ADMIN'}">Administrator</option>
                     </select>
                 </th>
                 <th>
@@ -44,6 +44,9 @@
             </tr>
             </tbody>
         </table>
+
+        <div>
+
     </section>
 </main>
 

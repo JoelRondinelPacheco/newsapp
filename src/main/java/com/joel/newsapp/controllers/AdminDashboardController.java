@@ -54,6 +54,9 @@ public class AdminDashboardController {
                 return "admin_dashboard/admin_users";
             case "reporters":
                 List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
+                for (ReporterInfoDTO u : reporters) {
+                    System.out.println(u.getName() + " " + u.getLastname() + " " + u.getRole() + " " + u.getEmail());
+                }
                 model.addAttribute("reporters", reporters);
                 model.addAttribute("active", active);
                 return "admin_dashboard/admin_reporters";
@@ -108,6 +111,17 @@ public class AdminDashboardController {
             model.addAttribute("featuredError", "No hay noticias destacadas de las categorias");
         }
         return "admin_dashboard/admin_news";
+    }
+
+    @GetMapping("/news/all")
+    public String adminNewsAll(ModelMap model) {
+        List<News> news = this.newsService.getAll();
+        if(news.size() > 0) {
+            model.addAttribute("news", news);
+        } else {
+            model.addAttribute("allNewsError", "No hay noticias cargadas");
+        }
+        return "admin_dashboard/admin_news_all";
     }
 
 

@@ -59,7 +59,9 @@ public class NewsService implements INewsService {
                 String imageId = news.getImage().getId();
                 this.imageService.update(body.getImage(), imageId);
                 List<NewsCategory> categories = this.findCategories(body.getCategories());
+                NewsCategory mainCategory = this.newsCategoryService.getById(body.getMainCategory());
                 news.setCategories(categories);
+                news.setMainCategory(mainCategory);
                 return this.newsRepository.save(news);
             }
         } catch (NotFoundException ex) {

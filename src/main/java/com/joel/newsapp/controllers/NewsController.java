@@ -65,12 +65,12 @@ public class NewsController {
     }
 
     @PostMapping("/edit/{id}")
-    public String postEditNews(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, MultipartFile image, ModelMap model){
+    public String postEditNews(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model){
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
             Boolean isAdmin = auth.getAuthorities().contains("ROLE_"+Role.ADMIN);
-            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, author, image, id, isAdmin);
+            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, author, image, id, isAdmin);
 
             this.newsService.edit(newsDTO);
 

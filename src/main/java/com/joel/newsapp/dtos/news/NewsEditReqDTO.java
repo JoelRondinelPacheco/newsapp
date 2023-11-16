@@ -15,8 +15,8 @@ import java.util.List;
 public class NewsEditReqDTO extends NewsPostReqDTO{
     private String id;
     private Boolean isAdmin;
-    public NewsEditReqDTO(String title, String subtitle, String imageCaption, String body, List<String> categories, String reporterUsername, MultipartFile image, String id, Boolean isAdmin) {
-        super(title, subtitle, imageCaption, body, categories, reporterUsername, image);
+    public NewsEditReqDTO(String title, String subtitle, String imageCaption, String body, List<String> categories, String mainCategory, String reporterUsername, MultipartFile image, String id, Boolean isAdmin) {
+        super(title, subtitle, imageCaption, body, categories, mainCategory, reporterUsername, image);
         this.id = id;
         this.isAdmin = isAdmin;
     }
