@@ -1,5 +1,7 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -17,11 +19,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -35,35 +39,28 @@ public class UserController {
 
     @Autowired
     private NewsService newsService;
-    @GetMapping("/")
-    public String index(ModelMap model) {
-        List<News> news = this.newsService.getAll();
-        model.addAttribute("news", news);
-        return "index.html"; }
 
-    @GetMapping("/publicimg")
-    public ResponseEntity<byte[]> imagenUsuario () throws NotFoundException {
-        byte[] imagen= this.imageService.getById("20e1392a-4bc6-433a-a114-361c534c02b5").getContenido();
+    @GetMapping("/public-img")
+    public ResponseEntity<byte[]> userImage () throws NotFoundException {
+        byte[] image = this.imageService.getById("20e1392a-4bc6-433a-a114-361c534c02b5").getContent();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(imagen,headers, HttpStatus.OK);
+        return new ResponseEntity<>(image,headers, HttpStatus.OK);
     }
 
     @GetMapping("/panel")
     public String panel(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Optional<User> userOptional = this.userRepository.findUser(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        try {
+            UserProfileInfoDTO user = this.userService.userProfileInfo(username);
             model.addAttribute("user", user);
-                    return "userpanel.html";
+            return "user_panel.html";
+        } catch (NotFoundException e) {
+            model.put("error", e.getMessage());
+            return "user_panel.html";
         }
-
-        model.put("error", "User not found");
-
-        return "userpanel.html";
     }
     /*
       @Query("SELECT u FROM User u WHERE u.country = :userCountry")

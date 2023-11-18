@@ -1,12 +1,13 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
-import com.joel.newsapp.entities.User;
+import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
-import com.joel.newsapp.services.ImageService;
-import com.joel.newsapp.services.NewsService;
-import com.joel.newsapp.services.UserService;
+import com.joel.newsapp.services.*;
+import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,25 +23,29 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private NewsService newsService;
-
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private ReporterService reporterService;
+    @Autowired
+    private NewsCategoryService categoryService;
+    @Autowired
+    private AdminDashboardController dashboardControllor;
 
     @GetMapping("/news")
     public String newsPanel(ModelMap model) throws NotFoundException {
         List<News> news = this.newsService.getAll();
         model.addAttribute("noticias", news);
-        return "newspanel.html";
+        return "admin_news.html";
     }
 
-    @GetMapping("/users")
-    public String usersPanel(ModelMap model) {
-        List<User> reporters = this.userService.getAllReporters();;
-        model.addAttribute("reporters", reporters);
-        return "adminuserspanel.html";
+    @PostMapping("/category/save")
+    public String createCategory(@RequestParam String category, ModelMap model) {
+        NewsCategory cat = this.categoryService.save(category);
+        model.put("success", "Category saved");
+        return this.dashboardControllor.getAllCategories(model);
     }
 
     @GetMapping("/image")
@@ -57,9 +62,51 @@ public class AdminController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editUser(@PathVariable Long id, @RequestParam String salary, @RequestParam String active, ModelMap model){
-        String response = this.userService.updateSalaryAndEnabled(Integer.parseInt(salary), (active.equals("true") ? true : false), id);
+    public String editUser(@PathVariable String id, @RequestParam String salary, @RequestParam String active, ModelMap model){
+        String response = this.reporterService.updateSalaryAndEnabled(Integer.parseInt(salary), (active.equals("true") ? true : false), id);
         model.put("response", response);
         return "index.html";
     }
+
+
+    @PostMapping("/register")
+    public String adminPostUser(@RequestParam String name,
+                                @RequestParam String lastname,
+                                @RequestParam String email,
+                                @RequestParam String password,
+                                @RequestParam String confirmpassword,
+                                @RequestParam Role rol,
+                                @RequestParam(required = false) Double monthlySalary,
+                                ModelMap model) {
+
+        if (!password.equals(confirmpassword)) {
+            System.out.println("Error password");
+        }
+        if(rol.equals(Role.REPORTER)) {
+            AdminRegisterReporterDTO reporter = new AdminRegisterReporterDTO(name, lastname, email, password, rol, monthlySalary);
+            this.reporterService.adminRegister(reporter);
+            model.put("success", "Reporter created successfully");
+            return "redirect:/";
+        } else if (rol.equals(Role.USER) || rol.equals(Role.MODERATOR) || rol.equals(Role.ADMIN)) {
+            AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, password, rol);
+            this.userService.adminRegister(user);
+            model.put("success", "User created successfully");
+            return "redirect:/";
+        } else {
+            System.out.println("Rol not valid");
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping("/active/{userId}")
+    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
+        try {
+            this.userService.adminActiveState(userId, active);
+            return "redirect:/";
+        } catch (NotFoundException e) {
+            return "redirect:/";
+
+        }
+    }
+
 }

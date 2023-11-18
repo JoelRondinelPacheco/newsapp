@@ -5,9 +5,13 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IImageRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Service
@@ -15,6 +19,7 @@ public class ImageService {
 
     @Autowired
     private IImageRepository imageRepository;
+    private static final String IMAGE_DIRECTORY = "static/img/user.jpeg";
 
     @Transactional
     public Image save(MultipartFile archive) {
@@ -24,7 +29,7 @@ public class ImageService {
                 Image image = new Image();
                 image.setMime(archive.getContentType());
                 image.setName(archive.getName());
-                image.setContenido(archive.getBytes());
+                image.setContent(archive.getBytes());
                 return this.imageRepository.save(image);
 
             } catch (Exception e) {
@@ -32,6 +37,21 @@ public class ImageService {
             }
         }
         return null;
+    }
+    public Image saveDb(Image image) {
+        return this.imageRepository.save(image);
+    }
+    public Image defaultImage() {
+        Image img = new Image();
+        ClassPathResource imagePath = new ClassPathResource(IMAGE_DIRECTORY);
+        img.setName("default");
+        try {
+            img.setContent(Files.readAllBytes(Path.of(imagePath.getURI())));
+        } catch (IOException e) {
+            System.out.println("ERROR: " +e.getMessage());
+        }
+        img.setMime("image/jpeg");
+        return this.imageRepository.save(img);
     }
 
     public Image update(MultipartFile archive, String id) {
@@ -46,10 +66,9 @@ public class ImageService {
                       image = res.get();
                     }
                 }
-
                 image.setMime(archive.getContentType());
                 image.setName(archive.getName());
-                image.setContenido(archive.getBytes());
+                image.setContent(archive.getBytes());
 
                 return this.imageRepository.save(image);
 

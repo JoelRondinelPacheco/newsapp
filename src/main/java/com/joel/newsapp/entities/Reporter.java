@@ -1,24 +1,30 @@
 package com.joel.newsapp.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Table
+@Entity(name="reporters")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@DiscriminatorValue("reporter")
-public class Reporter extends User {
-    private Integer monthlySalary;
+@Getter
+@Setter
+public class Reporter extends Base {
+    @OneToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
+    private Double monthlySalary;
+    private Boolean enabled;
 
     //@OneToMany(fetch=FetchType.EAGER)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<News> myNews;
+
+    @PrePersist
+    private void prePersist() {
+        this.enabled = true;
+    }
 }

@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import java.util.Date;
+
 import java.util.List;
 
 @Entity
@@ -13,14 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class News {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    @CreationTimestamp
-    @Temporal(TemporalType.TIME)
-    private Date created;
-
+public class News extends Base{
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Reporter author;
@@ -35,20 +27,26 @@ public class News {
     // TODO install TipTap
     private String body;
     private Boolean featured;
+    private Boolean featuredCategory;
     private Boolean mainFeatured;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @OneToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private NewsCategory mainCategory;
+
     @ManyToMany(mappedBy = "news")
     private List<NewsCategory> categories;
 
-    public News(String title, String subtitle, String imageCaption, String body, List<NewsCategory> categories, Reporter author, Image image) {
+    public News(String title, String subtitle, String imageCaption, String body, List<NewsCategory> categories, NewsCategory mainCategory, Reporter author, Image image) {
         this.title = title;
         this.subtitle = subtitle;
         this.imageCaption = imageCaption;
         this.body = body;
         this.categories = categories;
+        this.mainCategory = mainCategory;
         this.author = author;
         this.image = image;
     }

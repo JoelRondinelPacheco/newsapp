@@ -3,13 +3,17 @@ package com.joel.newsapp.entities;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Entity
-@AllArgsConstructor
+@Entity(name = "admins")
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
-@DiscriminatorValue("admin")
-public class Admin extends Reporter {
+@Getter
+@Setter
+public class Admin extends Base {
+    private String test;
 }
