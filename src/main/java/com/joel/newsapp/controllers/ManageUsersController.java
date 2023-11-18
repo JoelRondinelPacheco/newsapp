@@ -35,6 +35,7 @@ public class ManageUsersController {
             employee.setRole(rol);
         }
         this.adminService.createEmployee(employee);
+        return "index";
 
     }
 
