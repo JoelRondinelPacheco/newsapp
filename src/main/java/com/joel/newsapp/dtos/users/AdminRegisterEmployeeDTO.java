@@ -7,14 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
-public class AdminRegisterReporterDTO extends AdminRegisterUserDTO {
+public class AdminRegisterEmployeeDTO extends AdminRegisterUserDTO {
     private Double monthlySalary;
 
-    public AdminRegisterReporterDTO(String name, String lastname, String email, Role role, Double monthlySalary) {
+    public AdminRegisterEmployeeDTO(String name, String lastname, String email, Role role) {
+        super(name, lastname, email, role);
+    }
+    public AdminRegisterEmployeeDTO(String name, String lastname, String email, Role role, Double monthlySalary) {
         super(name, lastname, email, role);
         this.monthlySalary = monthlySalary;
     }
+
 }

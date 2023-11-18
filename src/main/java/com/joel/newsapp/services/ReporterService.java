@@ -3,19 +3,16 @@ package com.joel.newsapp.services;
 import com.joel.newsapp.dtos.reporter.EditReporterDTO;
 import com.joel.newsapp.dtos.reporter.RegisterReporterDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
-import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Reporter;
-import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IReporterRepository;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
-import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -112,6 +109,6 @@ public class ReporterService implements IReporterService {
     }
 
 
-    public void adminRegister(AdminRegisterReporterDTO reporter) {
+    public void adminRegister(AdminRegisterEmployeeDTO reporter) {
     }
 }

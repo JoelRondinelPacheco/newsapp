@@ -46,10 +46,6 @@ public class User extends Base implements UserDetails {
         this.image = image;
     }
 
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

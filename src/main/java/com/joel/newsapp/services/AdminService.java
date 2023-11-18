@@ -5,6 +5,7 @@ import com.joel.newsapp.dtos.admin.EditAdminDTO;
 import com.joel.newsapp.dtos.admin.RegisterAdminDTO;
 import com.joel.newsapp.dtos.reporter.RegisterReporterDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Reporter;
@@ -40,40 +41,7 @@ public class AdminService implements IAdminService {
     public String deleteById(String s) throws NotFoundException {
         return null;
     }
-    @Override
-    public String changeReporterRole(String userId, String newRole) throws NotFoundException {
-        Reporter reporter = this.reporterService.findById(userId);
-        /*
-        TODO IMPLEMENT PATRON STRATEGY
-        Check newRole:
-            if User -> Change Role in User, disable entity Reporter
 
-            if admin -> Change role in User, disable entity Reporter, new Admin
-
-            if
-
-         */
-        return null;
-    }
-
-    @Override
-    public String changeUserRole(String userId, String newRole) {
-        return null;
-
-    }
-
-    @Override
-    public String changeAdminRole(String userId, String newRole) {
-        return null;
-
-    }
-
-    @Override
-    public UserInfoDTO createUser(RegisterUserDTO userDTO) {
-        return null;
-    }
-
-    @Override
     public ReporterInfoDTO createReporter(RegisterReporterDTO reporterDTO) {
         return null;
     }

@@ -1,6 +1,8 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.exceptions.NotFoundException;
+import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import com.joel.newsapp.services.interfaces.IAdminService;
 import com.joel.newsapp.services.interfaces.IModeratorService;
 import com.joel.newsapp.services.interfaces.IUserService;
@@ -8,19 +10,33 @@ import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/role")
-public class ChangeRoleController {
+public class ManageUsersController {
     @Autowired
-    private IAdminService adminService;
+    private IAdminManageUsers adminService;
     @Autowired
     private IUserService userService;
     @Autowired
     private IModeratorService moderatorService;
+
+    @PostMapping("/register")
+    public String adminPostUser(@RequestParam String name,
+                                @RequestParam String lastname,
+                                @RequestParam String email,
+                                @RequestParam Role rol,
+                                @RequestParam(required = false) Double monthlySalary,
+                                ModelMap model) {
+
+        AdminRegisterEmployeeDTO employee = new AdminRegisterEmployeeDTO(name, lastname, email, rol);
+        if (rol != null) {
+            employee.setRole(rol);
+        }
+        this.adminService.createEmployee(employee);
+
+    }
 
     @GetMapping("/{userId}/{oldRole}/{newRole}")
     public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable String newRole, ModelMap model) {

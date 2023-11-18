@@ -17,9 +17,4 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class Admin extends Base {
     private Boolean enabled;
-
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
 }

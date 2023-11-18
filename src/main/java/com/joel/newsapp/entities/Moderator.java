@@ -16,8 +16,5 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class Moderator extends Base {
     private Boolean enabled;
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
+
 }
