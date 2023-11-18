@@ -13,8 +13,8 @@ import lombok.Setter;
 public class AdminRegisterReporterDTO extends AdminRegisterUserDTO {
     private Double monthlySalary;
 
-    public AdminRegisterReporterDTO(String name, String lastname, String email, String password, Role role, Double monthlySalary) {
-        super(name, lastname, email, password, role);
+    public AdminRegisterReporterDTO(String name, String lastname, String email, Role role, Double monthlySalary) {
+        super(name, lastname, email, role);
         this.monthlySalary = monthlySalary;
     }
 }

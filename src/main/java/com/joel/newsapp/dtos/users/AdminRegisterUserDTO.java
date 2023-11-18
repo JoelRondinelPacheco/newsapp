@@ -5,15 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-public class AdminRegisterUserDTO extends RegisterBaseDTO {
+public class AdminRegisterUserDTO  {
+    private String name;
+    private String lastname;
+    private String email;
     private Role role;
-
-    public AdminRegisterUserDTO(String name, String lastname, String email, String password, Role role) {
-        super(name, lastname, email, password);
-        this.role = role;
-    }
 }

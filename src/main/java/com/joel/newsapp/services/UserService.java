@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,40 +36,27 @@ public class UserService implements IUserService {
     @Override
     public UserInfoDTO save(RegisterUserDTO userDTO){
         User userSaved = this.saveAndReturn(userDTO);
-       // return this.userRepository.getUserInfoDTO(userSaved.getId()).get();
-        return null;
+        return this.createUserInfoDTO(userSaved);
     }
 
 
     @Override
     public UserInfoDTO getById(String id) throws NotFoundException {
-       /* Optional<UserInfoDTO> userO = this.userRepository.getUserInfoDTO(id);
-        if (userO.isPresent()) {
-            return userO.get();
-        }*/
-        throw new NotFoundException("User not found");
+       User user = this.findById(id);
+       return this.createUserInfoDTO(user);
     }
 
     @Override
     public UserInfoDTO edit(EditUserDTO userDTO) throws NotFoundException {
-        Optional<User> userO = this.userRepository.findById(userDTO.getId());
-        if (userO.isPresent()) {
-            User user = userO.get();
-            user.setName(userDTO.getName());
-            user.setLastname(userDTO.getLastname());
-            if (!userDTO.getProfilePicture().isEmpty()) {
-                if (user.getImage() != null) {
-                    Image img = user.getImage();
-                    this.imageService.update(userDTO.getProfilePicture(), user.getId());
-                } else {
-                    Image img = this.imageService.save(userDTO.getProfilePicture());
-                    user.setImage(img);
-                }
-            }
-            this.userRepository.save(user);
-            //return this.userRepository.getUserInfoDTO(user.getId()).get();
+        User user = this.findById(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setLastname(userDTO.getLastname());
+        user.setDisplayName(userDTO.getDisplayName());
+        if (!userDTO.getProfilePicture().isEmpty()) {
+            this.imageService.update(userDTO.getProfilePicture(), user.getImage().getId());
         }
-        throw new NotFoundException("User not found");
+        User userUpdated = this.userRepository.save(user);
+        return this.createUserInfoDTO(userUpdated);
     }
 
     @Override
@@ -76,7 +64,7 @@ public class UserService implements IUserService {
         boolean exists = this.userRepository.existsById(id);
         if (exists) {
             User user = this.userRepository.findById(id).get();
-            user.setEnabled(true);
+            user.setEnabled(false);
             this.userRepository.save(user);
             return "User deleted";
         } else {
@@ -87,8 +75,8 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserInfoDTO> getAllUsers() {
-        //return this.userRepository.getAllUsers();
-        return null;
+        List<User> users = this.userRepository.findAll();
+        return this.listUserInfoDTO(users);
     }
 
     @Override
@@ -98,20 +86,20 @@ public class UserService implements IUserService {
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
-       /* Optional<User> userOptional = this.userRepository.findUser(username);
+        Optional<User> userOptional = this.userRepository.findByEmail(username);
         if(userOptional.isPresent()) {
             return this.createUserInfoDTO(userOptional.get());
-        }*/
+        }
         throw new NotFoundException("User not found");
 
     }
 
     @Override
     public User findUserByEmail(String email) throws UsernameNotFoundException  {
-       /* Optional<User> userOptional = this.userRepository.findUser(email);
+        Optional<User> userOptional = this.userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             return userOptional.get();
-        }*/
+        }
         throw new UsernameNotFoundException ("User not found");
     }
 
@@ -154,10 +142,6 @@ public class UserService implements IUserService {
         User user = new User();
         String pass = this.utils.encryptPassword(userDTO.getPassword());
         user.setPassword(pass);
-        if (!userDTO.getProfilePicture().isEmpty()) {
-            Image image = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(image);
-        }
         user.setName(userDTO.getName());
         user.setLastname(userDTO.getLastname());
 
@@ -190,19 +174,26 @@ public class UserService implements IUserService {
 
     }
 
+    private User findById(String id) throws NotFoundException {
+        Optional<User> userO = this.userRepository.findById(id);
+        if(userO.isPresent()) {
+            return userO.get();
+        }
+        throw new NotFoundException("User not found");
+    }
 
     private UserInfoDTO createUserInfoDTO(User user) {
-
-            return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
+        return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
+    }
+    private List<UserInfoDTO> listUserInfoDTO(List<User> users) {
+        List<UserInfoDTO> usersDTO = new ArrayList<>();
+        for(User u : users) {
+            usersDTO.add(this.createUserInfoDTO(u));
+        }
+        return usersDTO;
     }
 
     private UserProfileInfoDTO createUserProfileInfo(User user) {
-        UserProfileInfoDTO info = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName() == null ? "" : user.getDisplayName(), user.getEmail(), user.getImage().getId());
-       /* if (user.getImage() != null) {
-            info.setProfilePictureId(user.getImage().getId());
-        } else {
-            info.setProfilePictureId("publicimg");
-        }*/
-        return info;
+        return new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId());
     }
 }

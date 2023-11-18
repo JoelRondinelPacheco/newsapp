@@ -73,29 +73,26 @@ public class AdminController {
     public String adminPostUser(@RequestParam String name,
                                 @RequestParam String lastname,
                                 @RequestParam String email,
-                                @RequestParam String password,
-                                @RequestParam String confirmpassword,
                                 @RequestParam Role rol,
                                 @RequestParam(required = false) Double monthlySalary,
                                 ModelMap model) {
 
-        if (!password.equals(confirmpassword)) {
-            System.out.println("Error password");
-        }
+        
+        /*
         if(rol.equals(Role.REPORTER)) {
-            AdminRegisterReporterDTO reporter = new AdminRegisterReporterDTO(name, lastname, email, password, rol, monthlySalary);
+            AdminRegisterReporterDTO reporter = new AdminRegisterReporterDTO(name, lastname, email, rol, monthlySalary);
             this.reporterService.adminRegister(reporter);
             model.put("success", "Reporter created successfully");
             return "redirect:/";
         } else if (rol.equals(Role.USER) || rol.equals(Role.MODERATOR) || rol.equals(Role.ADMIN)) {
-            AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, password, rol);
+            AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, rol);
             this.userService.adminRegister(user);
             model.put("success", "User created successfully");
             return "redirect:/";
         } else {
             System.out.println("Rol not valid");
             return "redirect:/";
-        }
+        }*/
     }
 
     @GetMapping("/active/{userId}")

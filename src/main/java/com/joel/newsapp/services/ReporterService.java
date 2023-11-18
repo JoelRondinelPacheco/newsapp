@@ -4,6 +4,7 @@ import com.joel.newsapp.dtos.reporter.EditReporterDTO;
 import com.joel.newsapp.dtos.reporter.RegisterReporterDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
+import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Reporter;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.User;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +48,11 @@ public class ReporterService implements IReporterService {
 
     @Override
     public ReporterInfoDTO getById(String id) throws NotFoundException {
-     /*  Optional<ReporterInfoDTO> repO = this.reporterRepository.getReporterInfoDTO(id);
+       Optional<Reporter> repO = this.reporterRepository.findById(id);
         if (repO.isPresent()) {
-            return repO.get();
-        }*/
+            Reporter reporter = repO.get();
+            return this.createReporterInfoDTO(reporter);
+        }
         throw new NotFoundException("Reporter not found");
     }
 
@@ -65,18 +68,22 @@ public class ReporterService implements IReporterService {
 
     @Override
     public List<ReporterInfoDTO> getAllReporters() {
-       // return this.reporterRepository.getAllReporterInfo();
-        return null;
+        List<Reporter> reporters = this.reporterRepository.findAll();
+        List<ReporterInfoDTO> reportersDTO = new ArrayList<>();
+        for (Reporter r : reporters) {
+            reportersDTO.add(this.createReporterInfoDTO(r));
+        }
+        return reportersDTO;
     }
 
 
     @Override
     public Reporter findByEmail(String email) throws NotFoundException {
-      /*  Optional<Reporter> reporterOptional = this.reporterRepository.findByEmail(email);
+        Optional<Reporter> reporterOptional = this.reporterRepository.findByUser_Email(email);
         if (reporterOptional.isPresent()) {
             return reporterOptional.get();
-        }*/
-        throw new NotFoundException("Reporter not found");
+        }
+       throw new NotFoundException("Reporter not found");
     }
 
     @Override
@@ -100,7 +107,8 @@ public class ReporterService implements IReporterService {
 
     private ReporterInfoDTO createReporterInfoDTO(Reporter reporter) {
         User user = reporter.getUser();
-        return new ReporterInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), reporter.getMonthlySalary(), reporter.getId());
+        UserInfoDTO reporterInfo = new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
+        return new ReporterInfoDTO(reporter.getMonthlySalary(), reporter.getEnabled(), reporter.getId(), reporterInfo);
     }
 
 

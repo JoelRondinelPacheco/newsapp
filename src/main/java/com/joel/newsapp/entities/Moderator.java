@@ -1,6 +1,7 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 public class Moderator extends Base {
-    private String test;
+    private Boolean enabled;
+    @PrePersist
+    private void prePersist() {
+        this.enabled = true;
+    }
 }

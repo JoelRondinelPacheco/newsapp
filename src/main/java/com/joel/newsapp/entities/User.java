@@ -13,17 +13,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+
 @Entity(name = "users")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class User extends Base implements UserDetails {
     private String name;
     private String lastname;
     @Column(unique = true)
     private String email;
     private String password;
+    private String passwordToken;
     private String displayName;
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -55,7 +55,7 @@ public class AdminDashboardController {
             case "reporters":
                 List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
                 for (ReporterInfoDTO u : reporters) {
-                    System.out.println(u.getName() + " " + u.getLastname() + " " + u.getRole() + " " + u.getEmail());
+                    System.out.println(u.getReporterInfo().getName() + " " + u.getReporterInfo().getLastname() + " " + u.getReporterInfo().getRole() + " " + u.getReporterInfo().getEmail());
                 }
                 model.addAttribute("reporters", reporters);
                 model.addAttribute("active", active);
