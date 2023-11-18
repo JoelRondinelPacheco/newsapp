@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         /*User user = this.userRepository.findByEmail(email).get();
         return user;*/
-        User user = this.userService.findByEmail(email);
+        User user = this.userService.findUserByEmail(email);
 
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
                 .password(user.getPassword())

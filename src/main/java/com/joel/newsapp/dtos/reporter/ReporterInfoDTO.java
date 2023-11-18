@@ -9,12 +9,13 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-public class ReporterInfoDTO extends UserInfoDTO {
+public class ReporterInfoDTO {
     private Double monthlySalary;
-    public ReporterInfoDTO(String name, String lastname, String email, Role role, Boolean enabled, String profilePicture, Double monthlySalary) {
-        super(name, lastname, email, role, enabled, profilePicture);
-        this.monthlySalary = monthlySalary;
-    }
+    private Boolean reporterEnabled;
+    private String reporterId;
+    private UserInfoDTO reporterInfo;
+
 }

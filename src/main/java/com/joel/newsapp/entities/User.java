@@ -9,22 +9,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@Entity
+
+@Entity(name = "users")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Getter
+@Setter
 public class User extends Base implements UserDetails {
     private String name;
     private String lastname;
     @Column(unique = true)
     private String email;
     private String password;
+    private String passwordToken;
+    private String displayName;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled;
@@ -43,10 +46,6 @@ public class User extends Base implements UserDetails {
         this.image = image;
     }
 
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

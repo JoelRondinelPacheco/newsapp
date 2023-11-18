@@ -50,6 +50,7 @@ public class NewsCategoryService implements INewsCategoryService {
         return null;
     }
 
+    @Override
     public List<NewsCategory> findAll() {
         return this.newsCategoryRepository.findAll();
     }

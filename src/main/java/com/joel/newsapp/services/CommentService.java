@@ -31,7 +31,7 @@ public class CommentService implements ICommentService {
 
         try {
             News noticia = this.newsService.getById(comment.getNews_id());
-            User autor = this.userService.findByEmail(comment.getUser_email());
+            User autor = this.userService.findUserByEmail(comment.getUser_email());
             Comment newComment = new Comment(comment.getComment(), noticia, autor);
             return this.commentRepository.save(newComment);
         } catch (NotFoundException e) {

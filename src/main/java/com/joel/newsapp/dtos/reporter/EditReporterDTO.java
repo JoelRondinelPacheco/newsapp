@@ -11,8 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Getter
 public class EditReporterDTO extends EditUserDTO {
-    public EditReporterDTO(String id, String name, String lastname, MultipartFile profilePicture) {
-        super(id, name, lastname ,profilePicture);
+    public EditReporterDTO(String id, String name, String lastname, String displayName, MultipartFile profilePicture) {
+        super(id, name, lastname, displayName,profilePicture);
     }
 
 }

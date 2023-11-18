@@ -1,5 +1,7 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -51,16 +53,14 @@ public class UserController {
     public String panel(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Optional<User> userOptional = this.userRepository.findUser(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        try {
+            UserProfileInfoDTO user = this.userService.userProfileInfo(username);
             model.addAttribute("user", user);
-                    return "user_panel.html";
+            return "user_panel.html";
+        } catch (NotFoundException e) {
+            model.put("error", e.getMessage());
+            return "user_panel.html";
         }
-
-        model.put("error", "User not found");
-
-        return "user_panel.html";
     }
     /*
       @Query("SELECT u FROM User u WHERE u.country = :userCountry")

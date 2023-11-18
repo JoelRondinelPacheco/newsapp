@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Noticias')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+<div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
+    <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
+<main class="container">
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th colspan="4">Princial</th>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${mainFeatured == null}" colspan="3" class="text-center">
+                <th th:text="${mainFeaturedError}"></th>
+            </tr>
+            <tr th:if="${mainFeatured != null}">
+                <th th:text="${mainFeatured.title}"></th>
+                <th th:text="${mainFeatured.createdAt}"></th>
+                <th th:text="${mainFeatured.author.email}"></th>
+                <th th:text="${mainFeatured.mainCategory.name}"></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr class="text-center">
+            <th colspan="5">Princial por categoria</th>
+        </tr>
+        <tr>
+            <th>Categoria</th>
+            <th>Titulo</th>
+            <th>Fecha</th>
+            <th>Autor</th>
+            <th>Cambiar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${featuredByCategory == null}" colspan="4" class="text-center">
+            <th th:text="${featuredError}"></th>
+        </tr>
+        <tr th:if="${featuredByCategory != null}" th:each="featured : ${featuredByCategory}">
+            <th th:text="${featured.mainCategory.name}"></th>
+            <th th:text="${featured.title}"></th>
+            <th th:text="${featured.author}"></th>
+            <th th:text="${featured.createdAt}"></th>
+            <th>modal cambiar</th>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+</body>
+</html>

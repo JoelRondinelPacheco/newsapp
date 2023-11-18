@@ -33,12 +33,12 @@ public class NewsController {
     @Autowired
     private INewsCategoryService categoryService;
 
-    @PostMapping("/create")
-    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categoryId, MultipartFile image, ModelMap model) {
+    @PostMapping("/save")
+    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model) {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
-            NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categoryId, username, image);
+            NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, username, image);
             News news = this.newsService.save(newsDTO);
             model.put("title", news.getTitle());
             model.put("body", news.getBody());
@@ -65,12 +65,12 @@ public class NewsController {
     }
 
     @PostMapping("/edit/{id}")
-    public String postEditNews(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, MultipartFile image, ModelMap model){
+    public String postEditNews(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model){
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
             Boolean isAdmin = auth.getAuthorities().contains("ROLE_"+Role.ADMIN);
-            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, author, image, id, isAdmin);
+            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, author, image, id, isAdmin);
 
             this.newsService.edit(newsDTO);
 

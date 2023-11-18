@@ -1,13 +1,14 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
-import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
+import com.joel.newsapp.services.interfaces.IAdminManageUsers;
+import com.joel.newsapp.services.interfaces.IAdminService;
+import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,40 +32,23 @@ public class AdminController {
     private ReporterService reporterService;
     @Autowired
     private NewsCategoryService categoryService;
+    @Autowired
+    private AdminDashboardController dashboardControllor;
+    @Autowired
+    private IAdminManageUsers adminService;
 
     @GetMapping("/news")
     public String newsPanel(ModelMap model) throws NotFoundException {
         List<News> news = this.newsService.getAll();
         model.addAttribute("noticias", news);
-        return "newspanel.html";
-    }
-
-    @GetMapping("/dashboard")
-    public String usersPanel(ModelMap model) {
-        List<UserInfoDTO> users = this.userService.getAllUsers();;
-        model.addAttribute("users", users);
-        return "/admin_dashboard/admin_dashboard";
-    }
-
-    @GetMapping("/dashboard/reporters")
-    public String getAllReporters(ModelMap model) {
-        List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
-        model.addAttribute("reporters", reporters);
-        return "/admin_dashboard/admin_reporters";
-    }
-
-    @GetMapping("/dashboard/categories")
-    public String getAllCategories(ModelMap model) {
-        List<NewsCategory> categories = this.categoryService.findAll();
-        model.addAttribute("categories", categories);
-        return "/admin_dashboard/admin_categories";
+        return "admin_news.html";
     }
 
     @PostMapping("/category/save")
     public String createCategory(@RequestParam String category, ModelMap model) {
         NewsCategory cat = this.categoryService.save(category);
         model.put("success", "Category saved");
-        return this.getAllCategories(model);
+        return this.dashboardControllor.getAllCategories(model);
     }
 
     @GetMapping("/image")
@@ -86,4 +70,19 @@ public class AdminController {
         model.put("response", response);
         return "index.html";
     }
+
+
+
+
+    @GetMapping("/active/{userId}")
+    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
+        try {
+            this.userService.adminActiveState(userId, active);
+            return "redirect:/";
+        } catch (NotFoundException e) {
+            return "redirect:/";
+
+        }
+    }
+
 }

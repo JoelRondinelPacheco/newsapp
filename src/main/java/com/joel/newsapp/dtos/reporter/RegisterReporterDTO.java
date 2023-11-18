@@ -10,13 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Setter
 @Getter
-public class RegisterReporterDTO extends RegisterUserDTO {
+public class RegisterReporterDTO{
     private Double monthlySalary;
-    private String lastname;
-    public RegisterReporterDTO(String name, String email, String password, MultipartFile profilePicture, Double monthlySalary, String lastname) {
-        super(name, email, password, profilePicture);
+    private RegisterUserDTO userDTO;
+    public RegisterReporterDTO(RegisterUserDTO userDTO, Double monthlySalary) {
+        this.userDTO = userDTO;
         this.monthlySalary = monthlySalary;
-        this.lastname = lastname;
     }
 
 }

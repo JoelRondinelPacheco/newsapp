@@ -22,6 +22,10 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
 */
     @Query("SELECT n FROM News n ORDER BY n.createdAt DESC")
     List<News> findLatest(Pageable pageable);
+
+    List<News> findByFeaturedCategory(Boolean b);
+
+    News findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
 /*
     COMO BUSCAR CUANDO CATEGORIES ES UNA LISTA
     List<News> findByFeaturedAndCategory_Name(boolean featured, String category);

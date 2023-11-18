@@ -11,10 +11,10 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
     List<News> getAll();
     List<News> getNewsByUser(String userId);
     News mainFeatured() throws NotFoundException;
-    List<News> featuredByCategory(String category) throws NotFoundException;
+    News featuredByCategory(String category) throws NotFoundException;
+    List<News> allFeaturedByCategory();
     List<News> findByCategory(String category, int quantity);
     List<News> latest(int quantity);
     List<News> latestByCategory(String category, int quantity) throws NotFoundException;
 
-    News categoryFeatured(String category) throws NotFoundException;
 }
