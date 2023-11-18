@@ -6,9 +6,11 @@ import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
 import com.joel.newsapp.entities.Reporter;
 import com.joel.newsapp.entities.Image;
+import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IReporterRepository;
 import com.joel.newsapp.services.interfaces.IReporterService;
+import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +27,18 @@ public class ReporterService implements IReporterService {
     @Autowired
     private ImageService imageService;
     @Autowired
+    private IUserService userService;
+    @Autowired
     private Utils utils;
 
     @Override
     public ReporterInfoDTO save(RegisterReporterDTO reporterDTO) throws Exception {
-
-        String pass = this.utils.encryptPassword(reporterDTO.getPassword());
+        User user = this.userService.saveAndReturn(reporterDTO.getUserDTO());
 
         Reporter rep = Reporter.builder()
-                .name(reporterDTO.getName())
-                .lastname(reporterDTO.getLastname())
-                .displayName("")
-                .email(reporterDTO.getEmail())
+                .user(user)
                 .monthlySalary(reporterDTO.getMonthlySalary())
-                .role(Role.REPORTER)
-                .password(pass)
                 .build();
-
-        if (!reporterDTO.getProfilePicture().isEmpty()) {
-            Image image = this.imageService.save(reporterDTO.getProfilePicture());
-            rep.setImage(image);
-        } else {
-            Image img = this.imageService.defaultImage();
-            rep.setImage(img);
-        }
         Reporter r = this.reporterRepository.save(rep);
         return this.createReporterInfoDTO(r);
 
@@ -56,10 +46,10 @@ public class ReporterService implements IReporterService {
 
     @Override
     public ReporterInfoDTO getById(String id) throws NotFoundException {
-        Optional<ReporterInfoDTO> repO = this.reporterRepository.getReporterInfoDTO(id);
+     /*  Optional<ReporterInfoDTO> repO = this.reporterRepository.getReporterInfoDTO(id);
         if (repO.isPresent()) {
             return repO.get();
-        }
+        }*/
         throw new NotFoundException("Reporter not found");
     }
 
@@ -75,49 +65,45 @@ public class ReporterService implements IReporterService {
 
     @Override
     public List<ReporterInfoDTO> getAllReporters() {
-        return this.reporterRepository.getAllReporterInfo();
+       // return this.reporterRepository.getAllReporterInfo();
+        return null;
+    }
+
+
+    @Override
+    public Reporter findByEmail(String email) throws NotFoundException {
+      /*  Optional<Reporter> reporterOptional = this.reporterRepository.findByEmail(email);
+        if (reporterOptional.isPresent()) {
+            return reporterOptional.get();
+        }*/
+        throw new NotFoundException("Reporter not found");
     }
 
     @Override
-    public ReporterInfoDTO adminRegister(AdminRegisterReporterDTO reporterDTO) {
-        String password = this.utils.encryptPassword(reporterDTO.getPassword());
-        Reporter reporter = Reporter.builder()
-                .name(reporterDTO.getName())
-                .lastname(reporterDTO.getLastname())
-                .displayName(reporterDTO.getName() + "." + reporterDTO.getLastname())
-                .email(reporterDTO.getEmail())
-                .password(password)
-                .monthlySalary(reporterDTO.getMonthlySalary())
-                .role(Role.REPORTER)
-                .build();
-        Image img = this.imageService.defaultImage();
-        reporter.setImage(img);
-        Reporter reporterSaved = this.reporterRepository.save(reporter);
-        return this.reporterRepository.getReporterInfoDTO(reporterSaved.getId()).get();
-    }
-
-
-    public Reporter findByEmail(String email) throws NotFoundException {
-        Optional<Reporter> reporterOptional = this.reporterRepository.findByEmail(email);
+    public Reporter findById(String id) throws NotFoundException {
+        Optional<Reporter> reporterOptional = this.reporterRepository.findById(id);
         if (reporterOptional.isPresent()) {
-            return reporterOptional.get();
+            return  reporterOptional.get();
         }
         throw new NotFoundException("Reporter not found");
     }
 
     public String updateSalaryAndEnabled(Integer salary, boolean active, String id){
-        int filas =this.reporterRepository.updateSalaryAndEnabled(salary, active, id);
+       /* int filas =this.reporterRepository.updateSalaryAndEnabled(salary, active, id);
         if (filas != 0) {
             System.out.println("encontro");
             return "Updated";
-        }
+        }*/
         System.out.println("no encontro");
         return "Updated failed";
     }
 
     private ReporterInfoDTO createReporterInfoDTO(Reporter reporter) {
-            return new ReporterInfoDTO(reporter.getName(), reporter.getLastname(), reporter.getDisplayName(), reporter.getEmail(), reporter.getImage().getId(), reporter.getRole(), reporter.getEnabled(), reporter.getMonthlySalary(), reporter.getId());
+        User user = reporter.getUser();
+        return new ReporterInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), reporter.getMonthlySalary(), reporter.getId());
     }
 
 
+    public void adminRegister(AdminRegisterReporterDTO reporter) {
+    }
 }

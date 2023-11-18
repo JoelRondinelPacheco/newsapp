@@ -34,59 +34,18 @@ public class UserService implements IUserService {
 
     @Override
     public UserInfoDTO save(RegisterUserDTO userDTO){
-        User user = new User();
-        String pass = this.utils.encryptPassword(userDTO.getPassword());
-        user.setPassword(pass);
-        if (!userDTO.getProfilePicture().isEmpty()) {
-            Image image = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(image);
-        }
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
-
-        if (userDTO.getName().isEmpty()) {
-            user.setDisplayName(userDTO.getLastname());
-        } else if(userDTO.getLastname().isEmpty()) {
-            user.setDisplayName(userDTO.getName());
-        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
-            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
-        } else {
-            user.setDisplayName("");
-        }
-
-        if(userDTO.getProfilePicture().isEmpty()) {
-            Image img = this.imageService.defaultImage();
-            user.setImage(img);
-
-            /*Image img = new Image();
-            ClassPathResource imagePath = new ClassPathResource(IMAGE_DIRECTORY);
-            img.setName("default");
-            try {
-                img.setContent(Files.readAllBytes(Path.of(imagePath.getURI())));
-            } catch (IOException e) {
-                System.out.println("ERROR: " +e.getMessage());
-            }
-            img.setMime("image/jpeg");
-            Image imgSaved = this.imageService.saveDb(img);
-            user.setImage(imgSaved);*/
-        } else {
-            Image img = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(img);
-        }
-
-        user.setEmail(userDTO.getEmail());
-        user.setRole(Role.USER);
-        User userSaved = this.userRepository.save(user);
-        return this.userRepository.getUserInfoDTO(userSaved.getId()).get();
+        User userSaved = this.saveAndReturn(userDTO);
+       // return this.userRepository.getUserInfoDTO(userSaved.getId()).get();
+        return null;
     }
 
 
     @Override
     public UserInfoDTO getById(String id) throws NotFoundException {
-        Optional<UserInfoDTO> userO = this.userRepository.getUserInfoDTO(id);
+       /* Optional<UserInfoDTO> userO = this.userRepository.getUserInfoDTO(id);
         if (userO.isPresent()) {
             return userO.get();
-        }
+        }*/
         throw new NotFoundException("User not found");
     }
 
@@ -107,7 +66,7 @@ public class UserService implements IUserService {
                 }
             }
             this.userRepository.save(user);
-            return this.userRepository.getUserInfoDTO(user.getId()).get();
+            //return this.userRepository.getUserInfoDTO(user.getId()).get();
         }
         throw new NotFoundException("User not found");
     }
@@ -128,29 +87,31 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserInfoDTO> getAllUsers() {
-        return this.userRepository.getAllUsers();
+        //return this.userRepository.getAllUsers();
+        return null;
     }
 
     @Override
     public List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role) {
-        return this.userRepository.getAllUsersByEnabledAndRole(role, enabled);
+     //   return this.userRepository.getAllUsersByEnabledAndRole(role.name(), enabled);
+        return null;
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
-        Optional<User> userOptional = this.userRepository.findUser(username);
+       /* Optional<User> userOptional = this.userRepository.findUser(username);
         if(userOptional.isPresent()) {
             return this.createUserInfoDTO(userOptional.get());
-        }
+        }*/
         throw new NotFoundException("User not found");
 
     }
 
     @Override
     public User findUserByEmail(String email) throws UsernameNotFoundException  {
-        Optional<User> userOptional = this.userRepository.findUser(email);
+       /* Optional<User> userOptional = this.userRepository.findUser(email);
         if (userOptional.isPresent()) {
             return userOptional.get();
-        }
+        }*/
         throw new UsernameNotFoundException ("User not found");
     }
 
@@ -188,6 +149,47 @@ public class UserService implements IUserService {
         throw new NotFoundException("User not found");
     }
 
+    @Override
+    public User saveAndReturn(RegisterUserDTO userDTO) {
+        User user = new User();
+        String pass = this.utils.encryptPassword(userDTO.getPassword());
+        user.setPassword(pass);
+        if (!userDTO.getProfilePicture().isEmpty()) {
+            Image image = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(image);
+        }
+        user.setName(userDTO.getName());
+        user.setLastname(userDTO.getLastname());
+
+        if (userDTO.getName().isEmpty()) {
+            user.setDisplayName(userDTO.getLastname());
+        } else if(userDTO.getLastname().isEmpty()) {
+            user.setDisplayName(userDTO.getName());
+        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
+            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
+        } else {
+            user.setDisplayName("");
+        }
+
+        if(userDTO.getProfilePicture().isEmpty()) {
+            Image img = this.imageService.defaultImage();
+            user.setImage(img);
+        } else {
+            Image img = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(img);
+        }
+
+        user.setEmail(userDTO.getEmail());
+        user.setRole(userDTO.getRole());
+        User userSaved = this.userRepository.save(user);
+        return userSaved;
+    }
+
+    @Override
+    public void changeUserRole(String userId, String newRole) {
+
+    }
+
 
     private UserInfoDTO createUserInfoDTO(User user) {
 
@@ -195,12 +197,12 @@ public class UserService implements IUserService {
     }
 
     private UserProfileInfoDTO createUserProfileInfo(User user) {
-        UserProfileInfoDTO info = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName() == null ? "" : user.getDisplayName(), user.getEmail());
-        if (user.getImage() != null) {
+        UserProfileInfoDTO info = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName() == null ? "" : user.getDisplayName(), user.getEmail(), user.getImage().getId());
+       /* if (user.getImage() != null) {
             info.setProfilePictureId(user.getImage().getId());
         } else {
             info.setProfilePictureId("publicimg");
-        }
+        }*/
         return info;
     }
 }

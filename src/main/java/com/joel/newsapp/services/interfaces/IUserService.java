@@ -17,4 +17,7 @@ public interface IUserService extends ICrudService<UserInfoDTO, RegisterUserDTO,
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;
     UserInfoDTO adminRegister(AdminRegisterUserDTO userDTO);
     String adminActiveState(String id, Boolean state) throws NotFoundException;
+    User saveAndReturn(RegisterUserDTO userDTO);
+
+    void changeUserRole(String userId, String newRole);
 }

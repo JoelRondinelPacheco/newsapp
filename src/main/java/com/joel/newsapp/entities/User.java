@@ -14,12 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@Entity
+@Entity(name = "users")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User extends Base implements UserDetails {
     private String name;
     private String lastname;

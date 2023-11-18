@@ -14,15 +14,4 @@ import java.util.Optional;
 
 @Repository
 public interface IReporterRepository extends JpaRepository<Reporter, String> {
-    //Reporter info dto
-    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.displayName, r.email, r.image.id AS profilePictureId, r.role, r.enabled, r.monthlySalary, r.id) FROM Reporter r WHERE r.id = :reporterId")
-    Optional<ReporterInfoDTO> getReporterInfoDTO(@Param("reporterId") String reporterId);
-    //All reporter info dto
-    @Query("SELECT new com.joel.newsapp.dtos.reporter.ReporterInfoDTO(r.name, r.lastname, r.displayName, r.email, r.image.id AS profilePictureId, r.role, r.enabled, r.monthlySalary, r.id) FROM Reporter r")
-    List<ReporterInfoDTO> getAllReporterInfo();
-    Optional<Reporter> findByEmail(String email);
-    @Modifying
-    @Transactional
-    @Query("UPDATE Reporter r SET r.monthlySalary = :salary, r.enabled = :enabled WHERE r.id = :idU")
-    int updateSalaryAndEnabled(@Param("salary") Integer salary, @Param("enabled") Boolean enabled, @Param("idU") String id);
 }

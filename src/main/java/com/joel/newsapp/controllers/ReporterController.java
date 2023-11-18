@@ -34,7 +34,7 @@ public class ReporterController {
         //TODO Refactorizar que busque las noticias solo por email, porque si entro a este controller
         // el usuario ya existe (esta logeado)
         // TODO hacer que el correo de logeo sea unico
-        Optional<User> userOptional = this.userRepository.findUser(username);
+      //  Optional<User> userOptional = this.userRepository.findUser(username);
 /*
         if (userOptional.isPresent()) {
             User user = userOptional.get();

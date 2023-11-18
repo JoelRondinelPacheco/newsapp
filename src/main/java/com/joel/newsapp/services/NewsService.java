@@ -50,7 +50,7 @@ public class NewsService implements INewsService {
     public News edit(NewsEditReqDTO body) throws Exception {
         try {
             News news = this.getById(body.getId());
-            if (news.getAuthor().getEmail().equals(body.getReporterUsername()) || body.getIsAdmin()) {
+            if (news.getAuthor().getUser().getEmail().equals(body.getReporterUsername()) || body.getIsAdmin()) {
                 news.setTitle(body.getTitle());
                 news.setSubtitle(body.getSubtitle());
                 news.setImageCaption(body.getImageCaption());

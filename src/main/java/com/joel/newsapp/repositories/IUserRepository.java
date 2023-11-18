@@ -19,31 +19,5 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
-    //User info DTO
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.id = :userId")
-    Optional<UserInfoDTO> getUserInfoDTO(@Param("userId") String userId);
-    //get all users info
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.role = 'USER'")
-    List<UserInfoDTO> getAllUsers();
-    //Get all users by enabled
-    @Query("SELECT new com.joel.newsapp.dtos.users.UserInfoDTO(u.name, u.lastname, u.displayName, u.email, u.image.id AS profilePictureId, u.role, u.enabled, u.id) FROM User u WHERE u.role = :role AND u.enabled = :enabled")
-    List<UserInfoDTO> getAllUsersByEnabledAndRole(@Param("role") Role role, @Param("enabled") Boolean enabled);
-
-    @Query("SELECT user FROM User user WHERE user.email = :username")
-    Optional<User> findUser(@Param("username") String email);
-    /*
-    @Query("SELECT NEW com.joel.eggnews.dtos.users.UserLoginDTO(u.email, u.password, u.role) FROM User u WHERE u.email = :username")
-    Optional<UserLoginDTO> findByUsername(@Param("username") String username);
-    @Query("SELECT NEW com.joel.eggnews.dtos.users.UserLoginDTO(u.email, u.password, u.role) FROM User u WHERE u.id = :userId")
-    Optional<UserLoginDTO> infoDTOById(@Param("userId") String id);*/
-    @Query("SELECT Image i from User u WHERE u.id = :userId")
-    Image getImageById(@Param("userId") Long userId) throws NotFoundException;
-    @Query("SELECT reporter FROM User reporter WHERE reporter.role = REPORTER")
-    List<User> finAllReporters();
-    @Query("SELECT reporter FROM User reporter WHERE reporter.role = ADMIN")
-    List<User> finAllAdmins();
-    @Query("SELECT reporter FROM User reporter WHERE reporter.role = USER")
-    List<User> finAllUsers();
-
     Optional<User> findByEmail(String email);
 }

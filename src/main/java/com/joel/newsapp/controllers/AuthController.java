@@ -33,7 +33,7 @@ public class AuthController {
             model.put("passworderror", "Las contraseñas no coinciden");
             return "register.html";
         }
-        RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive);
+        RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive, Role.USER);
         this.userService.save(userDTO);
         model.put("creado", "Usuario creado correctamente");
         System.out.println("enotr register");
