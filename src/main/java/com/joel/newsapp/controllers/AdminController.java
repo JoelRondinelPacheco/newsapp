@@ -1,13 +1,11 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.users.AdminRegisterReporterDTO;
-import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
-import com.joel.newsapp.utils.Role;
+import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,6 +31,8 @@ public class AdminController {
     private NewsCategoryService categoryService;
     @Autowired
     private AdminDashboardController dashboardControllor;
+    @Autowired
+    private IAdminManageUsers adminService;
 
     @GetMapping("/news")
     public String newsPanel(ModelMap model) throws NotFoundException {
@@ -69,39 +69,12 @@ public class AdminController {
     }
 
 
-    @PostMapping("/register")
-    public String adminPostUser(@RequestParam String name,
-                                @RequestParam String lastname,
-                                @RequestParam String email,
-                                @RequestParam String password,
-                                @RequestParam String confirmpassword,
-                                @RequestParam Role rol,
-                                @RequestParam(required = false) Double monthlySalary,
-                                ModelMap model) {
 
-        if (!password.equals(confirmpassword)) {
-            System.out.println("Error password");
-        }
-        if(rol.equals(Role.REPORTER)) {
-            AdminRegisterReporterDTO reporter = new AdminRegisterReporterDTO(name, lastname, email, password, rol, monthlySalary);
-            this.reporterService.adminRegister(reporter);
-            model.put("success", "Reporter created successfully");
-            return "redirect:/";
-        } else if (rol.equals(Role.USER) || rol.equals(Role.MODERATOR) || rol.equals(Role.ADMIN)) {
-            AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, password, rol);
-            this.userService.adminRegister(user);
-            model.put("success", "User created successfully");
-            return "redirect:/";
-        } else {
-            System.out.println("Rol not valid");
-            return "redirect:/";
-        }
-    }
 
     @GetMapping("/active/{userId}")
     public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
         try {
-            this.userService.adminActiveState(userId, active);
+            this.adminService.adminEnabledState(userId, active);
             return "redirect:/";
         } catch (NotFoundException e) {
             return "redirect:/";

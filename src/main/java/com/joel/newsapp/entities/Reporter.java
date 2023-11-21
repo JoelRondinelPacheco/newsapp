@@ -23,8 +23,4 @@ public class Reporter extends Base {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<News> myNews;
 
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
 }

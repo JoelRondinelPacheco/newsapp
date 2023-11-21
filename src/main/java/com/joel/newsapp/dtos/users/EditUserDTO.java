@@ -12,6 +12,7 @@ public class EditUserDTO {
     private String id;
     private String name;
     private String lastname;
+    private String displayName;
     private MultipartFile profilePicture;
 
 }

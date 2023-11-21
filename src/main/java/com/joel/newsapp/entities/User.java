@@ -13,11 +13,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+
 @Entity(name = "users")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class User extends Base implements UserDetails {
     private String name;
     private String lastname;
@@ -28,6 +30,7 @@ public class User extends Base implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled;
+    private Boolean active;
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
@@ -43,10 +46,6 @@ public class User extends Base implements UserDetails {
         this.image = image;
     }
 
-    @PrePersist
-    private void prePersist() {
-        this.enabled = true;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
