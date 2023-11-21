@@ -1,6 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
+import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import com.joel.newsapp.services.interfaces.IAdminService;
@@ -26,15 +27,17 @@ public class ManageUsersController {
     public String adminPostUser(@RequestParam String name,
                                 @RequestParam String lastname,
                                 @RequestParam String email,
-                                @RequestParam Role rol,
+                                @RequestParam Role role,
                                 @RequestParam(required = false) Double monthlySalary,
                                 ModelMap model) {
 
-        AdminRegisterEmployeeDTO employee = new AdminRegisterEmployeeDTO(name, lastname, email, rol);
-        if (rol != null) {
-            employee.setRole(rol);
+        AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, role);
+        if ( role == Role.USER) {
+            this.adminService.createUser(user);
+        } else {
+            AdminRegisterEmployeeDTO employee = new AdminRegisterEmployeeDTO(monthlySalary, user);
+            this.adminService.createEmployee(employee);
         }
-        this.adminService.createEmployee(employee);
         return "index";
 
     }
@@ -62,7 +65,7 @@ public class ManageUsersController {
             this.adminService.changeAdminRole(userId, newRole);
             return "index";
         } else if (oldRole.equalsIgnoreCase("user")) {
-            this.userService.changeUserRole(userId, newRole);
+           /* this.userService.changeUserRole(userId, newRole);*/
             return "index";
         } else {
             model.addAttribute("roleError", "No se proporciono un rol valido");

@@ -1,7 +1,9 @@
 package com.joel.newsapp.services;
 
+import com.joel.newsapp.dtos.mail.SendMailDTO;
 import com.joel.newsapp.dtos.users.*;
 import com.joel.newsapp.entities.Image;
+import com.joel.newsapp.entities.PasswordToken;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
@@ -9,18 +11,13 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
@@ -31,12 +28,59 @@ public class UserService implements IUserService {
     private ImageService imageService;
     @Autowired
     private Utils utils;
+    @Autowired
+    private JwtTokenService jwtService;
+    @Autowired
+    private PasswordTokenService tokenService;
+    @Autowired
+    private MailService mailService;
 
 
     @Override
-    public UserInfoDTO save(RegisterUserDTO userDTO){
-        User userSaved = this.saveAndReturn(userDTO);
+    public UserInfoDTO registerDTO(RegisterUserDTO userDTO){
+        User userSaved = this.register(userDTO);
         return this.createUserInfoDTO(userSaved);
+    }
+    @Override
+    public User register(RegisterUserDTO userDTO) {
+        User user = new User();
+        String pass = this.utils.encryptPassword(userDTO.getPassword());
+        user.setPassword(pass);
+        user.setName(userDTO.getName());
+        user.setLastname(userDTO.getLastname());
+
+        if (userDTO.getName().isEmpty()) {
+            user.setDisplayName(userDTO.getLastname());
+        } else if(userDTO.getLastname().isEmpty()) {
+            user.setDisplayName(userDTO.getName());
+        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
+            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
+        } else {
+            user.setDisplayName("");
+        }
+
+        if(userDTO.getProfilePicture().isEmpty()) {
+            Image img = this.imageService.defaultImage();
+            user.setImage(img);
+        } else {
+            Image img = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(img);
+        }
+
+        user.setEmail(userDTO.getEmail());
+        user.setRole(userDTO.getRole());
+        user.setEnabled(true);
+        user.setActive(false);
+        User userSaved = this.userRepository.save(user);
+        PasswordToken token = this.tokenService.saveToken(userSaved);
+
+        SendMailDTO mail = new SendMailDTO();
+        mail.setTo(userSaved.getEmail());
+        mail.setSubject("Cuenta creada");
+        mail.setMessage(token.getToken());
+        this.mailService.sendMail(mail);
+
+        return userSaved;
     }
 
 
@@ -109,70 +153,6 @@ public class UserService implements IUserService {
         return this.createUserProfileInfo(user);
     }
 
-    @Override
-    public UserInfoDTO adminRegister(AdminRegisterUserDTO userDTO) {
-        String password = this.utils.encryptPassword(userDTO.getPassword());
-        User user = User.builder()
-                .name(userDTO.getName())
-                .lastname(userDTO.getLastname())
-                .displayName(userDTO.getName() + "." + userDTO.getLastname())
-                .email(userDTO.getEmail())
-                .password(password)
-                .role(userDTO.getRole())
-                .build();
-        user.setImage(this.imageService.defaultImage());
-        User userSaved = this.userRepository.save(user);
-        return this.createUserInfoDTO(userSaved);
-    }
-
-    @Override
-    public String adminActiveState(String id, Boolean state) throws NotFoundException {
-        boolean exists = this.userRepository.existsById(id);
-        if (exists) {
-            User user = this.userRepository.findById(id).get();
-            user.setEnabled(state);
-            this.userRepository.save(user);
-            return "User deleted";
-        }
-        throw new NotFoundException("User not found");
-    }
-
-    @Override
-    public User saveAndReturn(RegisterUserDTO userDTO) {
-        User user = new User();
-        String pass = this.utils.encryptPassword(userDTO.getPassword());
-        user.setPassword(pass);
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
-
-        if (userDTO.getName().isEmpty()) {
-            user.setDisplayName(userDTO.getLastname());
-        } else if(userDTO.getLastname().isEmpty()) {
-            user.setDisplayName(userDTO.getName());
-        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
-            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
-        } else {
-            user.setDisplayName("");
-        }
-
-        if(userDTO.getProfilePicture().isEmpty()) {
-            Image img = this.imageService.defaultImage();
-            user.setImage(img);
-        } else {
-            Image img = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(img);
-        }
-
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        User userSaved = this.userRepository.save(user);
-        return userSaved;
-    }
-
-    @Override
-    public void changeUserRole(String userId, String newRole) {
-
-    }
 
     private User findById(String id) throws NotFoundException {
         Optional<User> userO = this.userRepository.findById(id);

@@ -11,10 +11,10 @@ public class JwtTokenService {
     private SecretKey key = Jwts.SIG.HS256.key().build();
     private static final long DURACION_TOKEN_MILISEGUNDOS = 3 * 24 * 60 * 60 * 1000; // 3 días en milisegundos
 
-    public String passwordTokenGenerator(String userId, boolean valid) {
+    public String passwordTokenGenerator(String email, boolean valid) {
         Date expirationDate = new Date(System.currentTimeMillis() + DURACION_TOKEN_MILISEGUNDOS);
         return Jwts.builder()
-                .subject(userId)
+                .subject(email)
                 .issuedAt(new Date())
                 .expiration(expirationDate)
                 .claim("valid", valid)
@@ -25,12 +25,10 @@ public class JwtTokenService {
     public boolean passwordTokenValid(String token) {
         try {
             this.verifyToken(token);
-            Jwt<?,?> jwt;
-            jwt = Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims("valid");
-            return true;
+            Claims claims = this.getAllClaims(token);
+            boolean active = claims.get("valid", Boolean.class);
+            if (active) return true;
+            return false;
         } catch (JwtException e) {
             return false;
         } catch (Exception e) {
@@ -46,5 +44,12 @@ public class JwtTokenService {
         } catch (JwtException e) {
             throw e;
         }
+    }
+    private Claims getAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

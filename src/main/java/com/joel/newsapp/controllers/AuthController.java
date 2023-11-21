@@ -1,9 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.utils.Role;
-import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +32,7 @@ public class AuthController {
             return "register.html";
         }
         RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive, Role.USER);
-        this.userService.save(userDTO);
+        this.userService.register(userDTO);
         model.put("creado", "Usuario creado correctamente");
         System.out.println("enotr register");
         //Todo post register page

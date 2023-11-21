@@ -1,14 +1,11 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
-import com.joel.newsapp.services.interfaces.IAdminService;
-import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -77,7 +74,7 @@ public class AdminController {
     @GetMapping("/active/{userId}")
     public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
         try {
-            this.userService.adminActiveState(userId, active);
+            this.adminService.adminEnabledState(userId, active);
             return "redirect:/";
         } catch (NotFoundException e) {
             return "redirect:/";
