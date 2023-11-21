@@ -2,7 +2,6 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Image;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.ImageService;
 import com.joel.newsapp.services.UserService;

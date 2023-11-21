@@ -1,6 +1,5 @@
 package com.joel.newsapp.services;
 
-import com.joel.newsapp.dtos.users.UserLoginDTO;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

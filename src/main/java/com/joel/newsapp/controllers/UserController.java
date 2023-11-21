@@ -1,9 +1,6 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
-import com.joel.newsapp.entities.News;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.services.ImageService;
@@ -20,9 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")

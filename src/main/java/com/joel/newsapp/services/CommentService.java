@@ -8,7 +8,6 @@ import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.ICommentRepository;
 import com.joel.newsapp.services.interfaces.ICommentService;
-import com.joel.newsapp.services.interfaces.ICrudService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

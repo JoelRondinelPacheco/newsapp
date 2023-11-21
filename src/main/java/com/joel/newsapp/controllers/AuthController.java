@@ -1,9 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
-import com.joel.newsapp.entities.User;
 import com.joel.newsapp.utils.Role;
-import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

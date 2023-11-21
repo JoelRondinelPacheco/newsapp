@@ -9,15 +9,9 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,12 +25,47 @@ public class UserService implements IUserService {
     private ImageService imageService;
     @Autowired
     private Utils utils;
+    @Autowired JwtTokenService jwtService;
 
 
     @Override
     public UserInfoDTO save(RegisterUserDTO userDTO){
         User userSaved = this.saveAndReturn(userDTO);
         return this.createUserInfoDTO(userSaved);
+    }
+    @Override
+    public User saveAndReturn(RegisterUserDTO userDTO) {
+        User user = new User();
+        String pass = this.utils.encryptPassword(userDTO.getPassword());
+        user.setPassword(pass);
+        user.setName(userDTO.getName());
+        user.setLastname(userDTO.getLastname());
+
+        if (userDTO.getName().isEmpty()) {
+            user.setDisplayName(userDTO.getLastname());
+        } else if(userDTO.getLastname().isEmpty()) {
+            user.setDisplayName(userDTO.getName());
+        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
+            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
+        } else {
+            user.setDisplayName("");
+        }
+
+        if(userDTO.getProfilePicture().isEmpty()) {
+            Image img = this.imageService.defaultImage();
+            user.setImage(img);
+        } else {
+            Image img = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(img);
+        }
+
+        user.setEmail(userDTO.getEmail());
+        user.setRole(userDTO.getRole());
+        user.setEnabled(false);
+        String token = this.jwtService.passwordTokenGenerator(user.getEmail(), user.getEnabled());
+        user.setPasswordToken(token);
+        User userSaved = this.userRepository.save(user);
+        return userSaved;
     }
 
 
@@ -110,22 +139,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserInfoDTO adminRegister(AdminRegisterUserDTO userDTO) {
-        String password = this.utils.encryptPassword(userDTO.getPassword());
-        User user = User.builder()
-                .name(userDTO.getName())
-                .lastname(userDTO.getLastname())
-                .displayName(userDTO.getName() + "." + userDTO.getLastname())
-                .email(userDTO.getEmail())
-                .password(password)
-                .role(userDTO.getRole())
-                .build();
-        user.setImage(this.imageService.defaultImage());
-        User userSaved = this.userRepository.save(user);
-        return this.createUserInfoDTO(userSaved);
-    }
-
-    @Override
     public String adminActiveState(String id, Boolean state) throws NotFoundException {
         boolean exists = this.userRepository.existsById(id);
         if (exists) {
@@ -137,42 +150,7 @@ public class UserService implements IUserService {
         throw new NotFoundException("User not found");
     }
 
-    @Override
-    public User saveAndReturn(RegisterUserDTO userDTO) {
-        User user = new User();
-        String pass = this.utils.encryptPassword(userDTO.getPassword());
-        user.setPassword(pass);
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
 
-        if (userDTO.getName().isEmpty()) {
-            user.setDisplayName(userDTO.getLastname());
-        } else if(userDTO.getLastname().isEmpty()) {
-            user.setDisplayName(userDTO.getName());
-        } else if (!userDTO.getLastname().isEmpty() && !userDTO.getName().isEmpty()){
-            user.setDisplayName(userDTO.getName() + "." + userDTO.getLastname());
-        } else {
-            user.setDisplayName("");
-        }
-
-        if(userDTO.getProfilePicture().isEmpty()) {
-            Image img = this.imageService.defaultImage();
-            user.setImage(img);
-        } else {
-            Image img = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(img);
-        }
-
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        User userSaved = this.userRepository.save(user);
-        return userSaved;
-    }
-
-    @Override
-    public void changeUserRole(String userId, String newRole) {
-
-    }
 
     private User findById(String id) throws NotFoundException {
         Optional<User> userO = this.userRepository.findById(id);
