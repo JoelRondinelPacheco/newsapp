@@ -1,7 +1,9 @@
 package com.joel.newsapp.services;
 
+import com.joel.newsapp.dtos.mail.SendMailDTO;
 import com.joel.newsapp.dtos.users.*;
 import com.joel.newsapp.entities.Image;
+import com.joel.newsapp.entities.PasswordToken;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
@@ -25,16 +28,21 @@ public class UserService implements IUserService {
     private ImageService imageService;
     @Autowired
     private Utils utils;
-    @Autowired JwtTokenService jwtService;
+    @Autowired
+    private JwtTokenService jwtService;
+    @Autowired
+    private PasswordTokenService tokenService;
+    @Autowired
+    private MailService mailService;
 
 
     @Override
-    public UserInfoDTO save(RegisterUserDTO userDTO){
-        User userSaved = this.saveAndReturn(userDTO);
+    public UserInfoDTO registerDTO(RegisterUserDTO userDTO){
+        User userSaved = this.register(userDTO);
         return this.createUserInfoDTO(userSaved);
     }
     @Override
-    public User saveAndReturn(RegisterUserDTO userDTO) {
+    public User register(RegisterUserDTO userDTO) {
         User user = new User();
         String pass = this.utils.encryptPassword(userDTO.getPassword());
         user.setPassword(pass);
@@ -61,10 +69,17 @@ public class UserService implements IUserService {
 
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
-        user.setEnabled(false);
-        String token = this.jwtService.passwordTokenGenerator(user.getEmail(), user.getEnabled());
-        user.setPasswordToken(token);
+        user.setEnabled(true);
+        user.setActive(false);
         User userSaved = this.userRepository.save(user);
+        PasswordToken token = this.tokenService.saveToken(userSaved);
+
+        SendMailDTO mail = new SendMailDTO();
+        mail.setTo(userSaved.getEmail());
+        mail.setSubject("Cuenta creada");
+        mail.setMessage(token.getToken());
+        String res = this.mailService.sendMail(mail);
+
         return userSaved;
     }
 
@@ -137,19 +152,6 @@ public class UserService implements IUserService {
         User user = this.findUserByEmail(email);
         return this.createUserProfileInfo(user);
     }
-
-    @Override
-    public String adminActiveState(String id, Boolean state) throws NotFoundException {
-        boolean exists = this.userRepository.existsById(id);
-        if (exists) {
-            User user = this.userRepository.findById(id).get();
-            user.setEnabled(state);
-            this.userRepository.save(user);
-            return "User deleted";
-        }
-        throw new NotFoundException("User not found");
-    }
-
 
 
     private User findById(String id) throws NotFoundException {

@@ -32,7 +32,7 @@ public class ReporterService implements IReporterService {
 
     @Override
     public ReporterInfoDTO save(RegisterReporterDTO reporterDTO) throws Exception {
-        User user = this.userService.saveAndReturn(reporterDTO.getUserDTO());
+        User user = this.userService.save(reporterDTO.getUserDTO());
 
         Reporter rep = Reporter.builder()
                 .user(user)

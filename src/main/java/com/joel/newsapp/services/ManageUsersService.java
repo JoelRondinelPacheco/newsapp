@@ -37,13 +37,13 @@ public class ManageUsersService implements IAdminManageUsers {
     private IAdminRepository adminRepository;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private PasswordTokenService tokenService;
 
     @Autowired
     private IUserService userService;
     @Override
     public String createEmployee(AdminRegisterEmployeeDTO employee) {
-        //TODO SEND EMAIL
-        // TODO CHECK ROLES
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(employee.getUser().getEmail());
         mail.setSubject("Se registro tu cuenta");
@@ -74,7 +74,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 this.adminRepository.save(admin);
                 break;
         }
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: " + user.getPasswordToken());
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "));
         String res = this.mailService.sendMail(mail);
         return res;
 
@@ -107,21 +107,32 @@ public class ManageUsersService implements IAdminManageUsers {
 
     @Override
     public User adminRegisterUser(AdminRegisterUserDTO userDTO) {
-        String token = this.jwtService.passwordTokenGenerator(userDTO.getEmail(), false);
         User user = User.builder()
                 .name(userDTO.getName())
                 .lastname(userDTO.getLastname())
                 .displayName(userDTO.getName() + "." + userDTO.getLastname())
                 .email(userDTO.getEmail())
                 .role(userDTO.getRole())
-                .enabled(false)
-                .passwordToken(token)
+                .enabled(true)
+                .active(false)
                 .build();
         user.setImage(this.imageService.defaultImage());
-        return this.userRepository.save(user);
+        User userSaved =  this.userRepository.save(user);
+        this.tokenService.saveToken(userSaved);
+        this.
     }
 
-
+    @Override
+    public String adminEnabledState(String id, Boolean state) throws NotFoundException {
+        boolean exists = this.userRepository.existsById(id);
+        if (exists) {
+            User user = this.userRepository.findById(id).get();
+            user.setEnabled(state);
+            this.userRepository.save(user);
+            return "User deleted";
+        }
+        throw new NotFoundException("User not found");
+    }
 
 
 }

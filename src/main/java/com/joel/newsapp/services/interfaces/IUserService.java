@@ -8,14 +8,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
-public interface IUserService extends ICrudService<UserInfoDTO, RegisterUserDTO, EditUserDTO, String> {
-    User saveAndReturn(RegisterUserDTO userDTO);
+public interface IUserService {
+    UserInfoDTO registerDTO(RegisterUserDTO userDTO);
+    User register(RegisterUserDTO userDTO);
+    UserInfoDTO getById(String id) throws NotFoundException;
+    UserInfoDTO edit(EditUserDTO userDTO) throws NotFoundException;
+    String deleteById(String id) throws NotFoundException;
     List<UserInfoDTO> getAllUsers();
     List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role);
     UserInfoDTO findByEmail(String username) throws NotFoundException;
     User findUserByEmail(String email) throws UsernameNotFoundException;
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;
 
-    String adminActiveState(String id, Boolean state) throws NotFoundException;
 
 }

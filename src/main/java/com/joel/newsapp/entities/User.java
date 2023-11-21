@@ -26,11 +26,11 @@ public class User extends Base implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-    private String passwordToken;
     private String displayName;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled;
+    private Boolean active;
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     private List<Comment> comments;
 

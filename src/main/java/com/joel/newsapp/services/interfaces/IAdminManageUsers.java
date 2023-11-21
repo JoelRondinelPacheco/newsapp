@@ -14,5 +14,6 @@ public interface IAdminManageUsers {
     String changeAdminRole(String userId, String newRole);
     String createUser(AdminRegisterUserDTO userDTO);
     User adminRegisterUser(AdminRegisterUserDTO userDTO);
+    String adminEnabledState(String id, Boolean state) throws NotFoundException;
 
 }
