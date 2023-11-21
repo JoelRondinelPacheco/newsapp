@@ -78,7 +78,7 @@ public class UserService implements IUserService {
         mail.setTo(userSaved.getEmail());
         mail.setSubject("Cuenta creada");
         mail.setMessage(token.getToken());
-        String res = this.mailService.sendMail(mail);
+        this.mailService.sendMail(mail);
 
         return userSaved;
     }

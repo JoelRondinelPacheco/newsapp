@@ -10,10 +10,9 @@ import com.joel.newsapp.exceptions.NotFoundException;
 public interface IAdminManageUsers {
     String createEmployee(AdminRegisterEmployeeDTO employee);
     String changeReporterRole(String userId, String newRole) throws NotFoundException;
+    User adminRegisterUser(AdminRegisterUserDTO userDTO);
+    String adminEnabledState(String id, Boolean state) throws NotFoundException;
     String changeUserRole(String userId, String newRole);
     String changeAdminRole(String userId, String newRole);
     String createUser(AdminRegisterUserDTO userDTO);
-    User adminRegisterUser(AdminRegisterUserDTO userDTO);
-    String adminEnabledState(String id, Boolean state) throws NotFoundException;
-
 }

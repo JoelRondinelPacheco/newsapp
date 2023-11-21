@@ -32,7 +32,7 @@ public class AuthController {
             return "register.html";
         }
         RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive, Role.USER);
-        this.userService.save(userDTO);
+        this.userService.register(userDTO);
         model.put("creado", "Usuario creado correctamente");
         System.out.println("enotr register");
         //Todo post register page

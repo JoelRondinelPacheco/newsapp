@@ -74,7 +74,7 @@ public class AdminController {
     @GetMapping("/active/{userId}")
     public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
         try {
-            this.userService.adminActiveState(userId, active);
+            this.adminService.adminEnabledState(userId, active);
             return "redirect:/";
         } catch (NotFoundException e) {
             return "redirect:/";

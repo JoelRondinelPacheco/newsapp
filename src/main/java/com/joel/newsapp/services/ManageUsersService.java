@@ -74,34 +74,21 @@ public class ManageUsersService implements IAdminManageUsers {
                 this.adminRepository.save(admin);
                 break;
         }
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "));
+        this.tokenService.saveToken(user);
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: ");
         String res = this.mailService.sendMail(mail);
         return res;
 
     }
 
     @Override
-    public String changeReporterRole(String userId, String newRole) throws NotFoundException {
-        return null;
-    }
-
-    @Override
-    public String changeUserRole(String userId, String newRole) {
-        return null;
-    }
-
-    @Override
-    public String changeAdminRole(String userId, String newRole) {
-        return null;
-    }
-
-    @Override
     public String createUser(AdminRegisterUserDTO userDTO) {
         User user = this.adminRegisterUser(userDTO);
+        this.tokenService.saveToken(user);
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(user.getEmail());
         mail.setSubject("Se registro tu cuenta");
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: " + user.getPasswordToken());
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: ");
         return this.mailService.sendMail(mail);
     }
 
@@ -117,9 +104,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 .active(false)
                 .build();
         user.setImage(this.imageService.defaultImage());
-        User userSaved =  this.userRepository.save(user);
-        this.tokenService.saveToken(userSaved);
-        this.
+        return this.userRepository.save(user);
     }
 
     @Override
@@ -132,6 +117,20 @@ public class ManageUsersService implements IAdminManageUsers {
             return "User deleted";
         }
         throw new NotFoundException("User not found");
+    }
+    @Override
+    public String changeReporterRole(String userId, String newRole) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public String changeUserRole(String userId, String newRole) {
+        return null;
+    }
+
+    @Override
+    public String changeAdminRole(String userId, String newRole) {
+        return null;
     }
 
 
