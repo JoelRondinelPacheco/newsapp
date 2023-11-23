@@ -1,17 +1,20 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Entity
-@Table(name="news")
+@Entity(name = "news_table")
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class News extends Base{
     @ManyToOne
     @JoinColumn(name = "author_id")

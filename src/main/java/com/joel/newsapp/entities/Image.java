@@ -1,19 +1,17 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 
-@Data
+@Entity(name = "images")
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="images")
-@ToString
+@Getter
+@Setter
 public class Image extends Base {
     private String mime;
     private String name;

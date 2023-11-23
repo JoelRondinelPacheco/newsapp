@@ -1,13 +1,16 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Data
+@Entity(name = "comments")
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Comment extends Base {
     private String comment;
     private int complaints;

@@ -2,16 +2,19 @@ package com.joel.newsapp.entities;
 
 import com.joel.newsapp.utils.PasswordTokenType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
-@Entity
-@Table(name="password_token")
+@Entity(name = "password_token")
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class PasswordToken extends Base {
     private String token;
 

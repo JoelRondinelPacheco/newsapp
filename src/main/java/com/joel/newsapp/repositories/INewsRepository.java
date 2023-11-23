@@ -20,9 +20,10 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     @Query("SELECT n FROM News n JOIN n.categories c WHERE c.category =:category LIMIT :limit")
     List<News> findByCategory(@Param("category") String category, @Param("limit") int limit);
 */
+    /*
     @Query("SELECT n FROM News n ORDER BY n.createdAt DESC")
     List<News> findLatest(Pageable pageable);
-
+*/
     List<News> findByFeaturedCategory(Boolean b);
 
     News findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);

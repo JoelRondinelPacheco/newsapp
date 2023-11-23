@@ -9,13 +9,12 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Entity
+@Entity(name = "categories")
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 @Getter
 @Setter
-@DiscriminatorValue("category")
 public class NewsCategory extends Base {
     private String name;
 
