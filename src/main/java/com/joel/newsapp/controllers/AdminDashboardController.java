@@ -40,8 +40,6 @@ public class AdminDashboardController {
 
     @GetMapping("/{role}")
     public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
-        System.out.println("Role: " + role);
-        System.out.println("State: " + state);
         List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
         model.addAttribute("users", users);
         model.addAttribute("role", role);
