@@ -6,6 +6,7 @@ import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.PasswordToken;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.utils.PasswordTokenType;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
@@ -72,7 +73,7 @@ public class UserService implements IUserService {
         user.setEnabled(true);
         user.setActive(false);
         User userSaved = this.userRepository.save(user);
-        PasswordToken token = this.tokenService.saveToken(userSaved);
+        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.CONFIRM, true);
 
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(userSaved.getEmail());
