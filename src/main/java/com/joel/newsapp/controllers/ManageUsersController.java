@@ -3,10 +3,7 @@ package com.joel.newsapp.controllers;
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.exceptions.NotFoundException;
-import com.joel.newsapp.services.interfaces.IAdminManageUsers;
-import com.joel.newsapp.services.interfaces.IAdminService;
-import com.joel.newsapp.services.interfaces.IModeratorService;
-import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +19,8 @@ public class ManageUsersController {
     private IUserService userService;
     @Autowired
     private IModeratorService moderatorService;
+    @Autowired
+    private IUserRolesService userRolesService;
 
     @PostMapping("/register")
     public String adminPostUser(@RequestParam String name,
@@ -50,28 +49,28 @@ public class ManageUsersController {
             // TODO HANDLE ERROR
             return "index";
         }
-
+    try {
         if (oldRole.equalsIgnoreCase("reporter")) {
-            try {
-                this.adminService.changeReporterRole(userId, newRole);
-                return "index";
-            } catch (NotFoundException e) {
-                return "index";
-            }
+            this.userRolesService.changeReporterRole(userId, newRole);
+            return "index";
         } else if (oldRole.equalsIgnoreCase("moderator")) {
-            this.moderatorService.changeModeratorRole(userId, newRole);
+            this.userRolesService.changeModeratorRole(userId, newRole);
             return "index";
         } else if (oldRole.equalsIgnoreCase("admin")) {
-            this.adminService.changeAdminRole(userId, newRole);
+            this.userRolesService.changeAdminRole(userId, newRole);
             return "index";
         } else if (oldRole.equalsIgnoreCase("user")) {
-           /* this.userService.changeUserRole(userId, newRole);*/
+            /* this.userService.changeUserRole(userId, newRole);*/
             return "index";
         } else {
             model.addAttribute("roleError", "No se proporciono un rol valido");
             // TODO HANDLE ERROR
             return "index";
         }
+    } catch (NotFoundException e) {
+        System.out.println(e.getMessage());
+        return "index";
+    }
     }
 
 }

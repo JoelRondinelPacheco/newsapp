@@ -93,40 +93,7 @@ public class ManageUsersService implements IAdminManageUsers {
         mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "+ token.getToken());
         return this.mailService.sendMail(mail);
     }
-    @Override
-    public String setPassword(PasswordDTO password) throws NotFoundException {
-        //TODO CHECK TWO PASSWORDS
-        PasswordToken token = this.tokenService.getByToken(password.getToken());
-        User user = token.getUser();
-        if (!user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.SET.name())) {
-            String pass = this.utils.encryptPassword(password.getPassword());
-            user.setPassword(pass);
-            user.setActive(true);
-            token.setValid(false);
-            this.tokenRepository.save(token);
-            this.userRepository.save(user);
-            return "Password setted";
-        }
-        //TODO CHANGE EXCEPTION
-        throw new NotFoundException("user not found");
 
-    }
-
-    @Override
-    public String resetPassword(PasswordDTO password) throws NotFoundException {
-        PasswordToken token = this.tokenService.getByToken(password.getToken());
-        User user = token.getUser();
-        if (user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.RESET.name())) {
-            String pass = this.utils.encryptPassword(password.getPassword());
-            user.setPassword(pass);
-            token.setValid(false);
-            this.tokenRepository.save(token);
-            this.userRepository.save(user);
-            return "Password re-setted";
-        }
-        //TODO CHANGE EXCEPTION
-        throw new NotFoundException("user not found");
-    }
 
     @Override
     public User adminRegisterUser(AdminRegisterUserDTO userDTO) {
@@ -153,20 +120,6 @@ public class ManageUsersService implements IAdminManageUsers {
             return "User deleted";
         }
         throw new NotFoundException("User not found");
-    }
-    @Override
-    public String changeReporterRole(String userId, String newRole) throws NotFoundException {
-        return null;
-    }
-
-    @Override
-    public String changeUserRole(String userId, String newRole) {
-        return null;
-    }
-
-    @Override
-    public String changeAdminRole(String userId, String newRole) {
-        return null;
     }
 
 
