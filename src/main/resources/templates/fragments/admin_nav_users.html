@@ -1,10 +1,10 @@
 <section th:fragment="admin_nav_users" xmlns:th="http://www.thymeleaf.org">
     <div>
-        <button><a th:href="@{/dashboard/clients?active=true}">Users</a></button>
-        <button><a th:href="@{/dashboard/reporters?active=true}">Reporters</a></button>
-        <button><a th:href="@{/dashboard/moderators?active=true}">Moderators</a></button>
+        <button><a th:href="@{/dashboard/user?state=active}">Users</a></button>
+        <button><a th:href="@{/dashboard/reporter?state=active}">Reporters</a></button>
+        <button><a th:href="@{/dashboard/moderator?state=active}">Moderators</a></button>
         <button>Destacadas</button>
-        <button><a th:href="@{/dashboard/admins?active=true}">Admins(Solo superadmin)</a></button>
+        <button><a th:href="@{/dashboard/admin?state=active}">Admins(Solo superadmin)</a></button>
         <button>Comments</button>
         <a class="btn btn-primary" th:href="@{/dashboard/register}">Nuevo usuario</a>
     </div>
