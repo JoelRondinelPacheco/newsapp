@@ -126,8 +126,8 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role) {
-     //   return this.userRepository.getAllUsersByEnabledAndRole(role.name(), enabled);
-        return null;
+       List<User> users = this.userRepository.findByRoleAndEnabled(role, enabled);
+        return this.listUserInfoDTO(users);
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
