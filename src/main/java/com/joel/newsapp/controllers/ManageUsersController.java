@@ -41,7 +41,7 @@ public class ManageUsersController {
         return "index";
 
     }
-
+    //CAMBIAR ROLE
     @GetMapping("/{userId}/{oldRole}/{newRole}")
     public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable String newRole, ModelMap model) {
 

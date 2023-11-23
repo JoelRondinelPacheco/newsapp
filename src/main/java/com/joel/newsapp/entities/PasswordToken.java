@@ -1,5 +1,6 @@
 package com.joel.newsapp.entities;
 
+import com.joel.newsapp.utils.PasswordTokenType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,9 @@ public class PasswordToken extends Base {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    private Date expiryDate;
+    @Enumerated(EnumType.STRING)
+    private PasswordTokenType type;
+    private boolean valid;
+
+    private Date expireDate;
 }

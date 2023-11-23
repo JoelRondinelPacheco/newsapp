@@ -1,21 +1,19 @@
 package com.joel.newsapp.services;
 
 import com.joel.newsapp.dtos.mail.SendMailDTO;
+import com.joel.newsapp.dtos.password.PasswordDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
-import com.joel.newsapp.entities.Admin;
-import com.joel.newsapp.entities.Moderator;
-import com.joel.newsapp.entities.Reporter;
-import com.joel.newsapp.entities.User;
+import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
-import com.joel.newsapp.repositories.IAdminRepository;
-import com.joel.newsapp.repositories.IModeratorRepository;
-import com.joel.newsapp.repositories.IReporterRepository;
-import com.joel.newsapp.repositories.IUserRepository;
+import com.joel.newsapp.repositories.*;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
+import com.joel.newsapp.services.interfaces.IPasswordTokenService;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.utils.PasswordTokenType;
+import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +37,13 @@ public class ManageUsersService implements IAdminManageUsers {
     private MailService mailService;
     @Autowired
     private PasswordTokenService tokenService;
-
     @Autowired
     private IUserService userService;
+    @Autowired
+    private Utils utils;
+    @Autowired
+    private IPasswordTokenRepository tokenRepository;
+
     @Override
     public String createEmployee(AdminRegisterEmployeeDTO employee) {
         SendMailDTO mail = new SendMailDTO();
@@ -53,7 +55,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 Reporter reporter = Reporter.builder()
                         .monthlySalary(employee.getMonthlySalary())
                         .user(user)
-                        .enabled(false)
+                        .enabled(true)
                         .build();
                 this.reporterRepository.save(reporter);
                 break;
@@ -61,7 +63,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 Moderator moderator = Moderator.builder()
                         .monthlySalary(employee.getMonthlySalary())
                         .user(user)
-                        .enabled(false)
+                        .enabled(true)
                         .build();
                 this.moderatorRepository.save(moderator);
                 break;
@@ -69,13 +71,13 @@ public class ManageUsersService implements IAdminManageUsers {
                 Admin admin = Admin.builder()
                         .monthlySalary(employee.getMonthlySalary())
                         .user(user)
-                        .enabled(false)
+                        .enabled(true)
                         .build();
                 this.adminRepository.save(admin);
                 break;
         }
-        this.tokenService.saveToken(user);
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: ");
+        PasswordToken token = this.tokenService.saveToken(user, PasswordTokenType.SET, true);
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "+ token.getToken());
         String res = this.mailService.sendMail(mail);
         return res;
 
@@ -84,12 +86,46 @@ public class ManageUsersService implements IAdminManageUsers {
     @Override
     public String createUser(AdminRegisterUserDTO userDTO) {
         User user = this.adminRegisterUser(userDTO);
-        this.tokenService.saveToken(user);
+        PasswordToken token = this.tokenService.saveToken(user, PasswordTokenType.SET, true);
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(user.getEmail());
         mail.setSubject("Se registro tu cuenta");
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: ");
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "+ token.getToken());
         return this.mailService.sendMail(mail);
+    }
+    @Override
+    public String setPassword(PasswordDTO password) throws NotFoundException {
+        //TODO CHECK TWO PASSWORDS
+        PasswordToken token = this.tokenService.getByToken(password.getToken());
+        User user = token.getUser();
+        if (!user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.SET.name())) {
+            String pass = this.utils.encryptPassword(password.getPassword());
+            user.setPassword(pass);
+            user.setActive(true);
+            token.setValid(false);
+            this.tokenRepository.save(token);
+            this.userRepository.save(user);
+            return "Password setted";
+        }
+        //TODO CHANGE EXCEPTION
+        throw new NotFoundException("user not found");
+
+    }
+
+    @Override
+    public String resetPassword(PasswordDTO password) throws NotFoundException {
+        PasswordToken token = this.tokenService.getByToken(password.getToken());
+        User user = token.getUser();
+        if (user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.RESET.name())) {
+            String pass = this.utils.encryptPassword(password.getPassword());
+            user.setPassword(pass);
+            token.setValid(false);
+            this.tokenRepository.save(token);
+            this.userRepository.save(user);
+            return "Password re-setted";
+        }
+        //TODO CHANGE EXCEPTION
+        throw new NotFoundException("user not found");
     }
 
     @Override
