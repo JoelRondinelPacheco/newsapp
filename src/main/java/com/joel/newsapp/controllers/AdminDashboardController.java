@@ -42,21 +42,11 @@ public class AdminDashboardController {
         switch (role) {
             case "clients":
                 List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(active, Role.USER);
-                for (UserInfoDTO u : users) {
-                    System.out.println(u.getName() + " " + u.getLastname() + " " + u.getRole() + " " + u.getEmail());
-                }
-                System.out.println("Clients");
-                System.out.println(active);
-                System.out.println(role);
-                System.out.println(users.size());
                 model.addAttribute("users", users);
                 model.addAttribute("active", active);
                 return "admin_dashboard/admin_users";
             case "reporters":
                 List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
-                for (ReporterInfoDTO u : reporters) {
-                    System.out.println(u.getReporterInfo().getName() + " " + u.getReporterInfo().getLastname() + " " + u.getReporterInfo().getRole() + " " + u.getReporterInfo().getEmail());
-                }
                 model.addAttribute("reporters", reporters);
                 model.addAttribute("active", active);
                 return "admin_dashboard/admin_reporters";
