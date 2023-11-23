@@ -116,7 +116,8 @@ public class NewsService implements INewsService {
     @Override
     public List<News> latest(int quantity) {
         Pageable pageable = PageRequest.of(0, quantity);
-        return this.newsRepository.findLatest(pageable);
+       // return this.newsRepository.findLatest(pageable);
+        return null;
     }
 
     @Override

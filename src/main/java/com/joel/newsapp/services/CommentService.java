@@ -55,8 +55,9 @@ public class CommentService implements ICommentService {
     @Override
     public List<Comment> getAllNewsComments(String newsId) throws NotFoundException {
         News news = this.newsService.getById(newsId);
-        List<Comment> comments = this.commentRepository.getNewsComments(news);
+      /*  List<Comment> comments = this.commentRepository.getNewsComments(news);
 
-        return comments;
+        return comments;*/
+        return null;
     }
 }

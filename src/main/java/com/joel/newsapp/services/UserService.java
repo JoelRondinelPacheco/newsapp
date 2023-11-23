@@ -6,9 +6,11 @@ import com.joel.newsapp.entities.Image;
 import com.joel.newsapp.entities.PasswordToken;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.utils.PasswordTokenType;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
+import com.joel.newsapp.utils.UserState;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -72,7 +74,7 @@ public class UserService implements IUserService {
         user.setEnabled(true);
         user.setActive(false);
         User userSaved = this.userRepository.save(user);
-        PasswordToken token = this.tokenService.saveToken(userSaved);
+        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.CONFIRM, true);
 
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(userSaved.getEmail());
@@ -124,9 +126,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role) {
-     //   return this.userRepository.getAllUsersByEnabledAndRole(role.name(), enabled);
-        return null;
+    public List<UserInfoDTO> getUsersByEnabledAndRole(UserState state, Role role) {
+        List<User> users = new ArrayList<>();
+        switch (state) {
+            case ACTIVE:
+                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, true);
+                break;
+            case INACTIVE:
+                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, false);
+                break;
+            case BANNED:
+                users = this.userRepository.findByRoleAndEnabled(role, false);
+                break;
+        }
+        return this.listUserInfoDTO(users);
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
