@@ -51,7 +51,7 @@ public class AuthController {
     @PostMapping("/register/set/{token}")
     public String postSetPassword(@RequestParam String password, @RequestParam String confirmPassword, ModelMap model) {
 
-
+return "index";
     }
 
 }
