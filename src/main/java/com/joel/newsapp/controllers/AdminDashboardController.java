@@ -10,6 +10,7 @@ import com.joel.newsapp.services.interfaces.INewsService;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
+import com.joel.newsapp.utils.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,37 +35,23 @@ public class AdminDashboardController {
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
-        return this.users("clients", true, model);
+        return this.users(Role.USER, UserState.ACTIVE, model);
     }
 
     @GetMapping("/{role}")
-    public String users(@PathVariable String role, @RequestParam Boolean active, ModelMap model) {
+    public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
+        List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
+        model.addAttribute("users", users);
+        model.addAttribute("role", role);
+        model.addAttribute("state", state);
         switch (role) {
-            case "clients":
-                List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(active, Role.USER);
-                model.addAttribute("users", users);
-                model.addAttribute("active", active);
+            case USER:
                 return "admin_dashboard/admin_users";
-            case "reporters":
-                List<ReporterInfoDTO> reporters = this.reporterService.getAllReporters();
-                model.addAttribute("reporters", reporters);
-                model.addAttribute("active", active);
+            case REPORTER:
                 return "admin_dashboard/admin_reporters";
-            case "moderators":
-                List<UserInfoDTO> moderators = this.userService.getUsersByEnabledAndRole(active, Role.MODERATOR);
-                model.addAttribute("moderators", moderators);
-                model.addAttribute("active", active);
+            case MODERATOR:
                 return "admin_dashboard/admin_moderators";
-            case "admins":
-                List<UserInfoDTO> admins = this.userService.getUsersByEnabledAndRole(active, Role.ADMIN);
-                for (UserInfoDTO u : admins) {
-                    System.out.println(u.getName() + " " + u.getLastname() + " " + u.getRole() + " " + u.getEmail());
-                }
-                model.addAttribute("admins", admins);
-                model.addAttribute("active", active);
-                System.out.println("admins");
-                System.out.println(active);
-                System.out.println(role);
+            case ADMIN:
                 return "admin_dashboard/admin_dashboard";
             default:
                 return "admin_dashboard/admin_users";

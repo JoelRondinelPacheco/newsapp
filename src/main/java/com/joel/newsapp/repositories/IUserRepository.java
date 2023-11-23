@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
-    List<User> findByRoleAndEnabled(Role role, Boolean enabled);
+    List<User> findByRoleAndEnabledAndActive(Role role, Boolean enabled, Boolean active);
+    List<User> findByRoleAndEnabled(Role role, Boolean active);
     Optional<User> findByEmail(String email);
 }
