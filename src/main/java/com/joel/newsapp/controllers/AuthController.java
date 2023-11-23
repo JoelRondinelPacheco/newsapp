@@ -1,6 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
+import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private HomeController homeController;
+    @Autowired
+    private IAdminManageUsers manageUsers;
 
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) String error, ModelMap model) {
@@ -39,5 +42,16 @@ public class AuthController {
         return "redirect:/";
     }
 
+    //SETER PASSWORD
+    @GetMapping("/register/set/{token}")
+    public String setPassword(@PathVariable String token) {
+        return "set_password";
+    }
+
+    @PostMapping("/register/set/{token}")
+    public String postSetPassword(@RequestParam String password, @RequestParam String confirmPassword, ModelMap model) {
+
+
+    }
 
 }
