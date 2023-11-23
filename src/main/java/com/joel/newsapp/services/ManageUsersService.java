@@ -1,15 +1,12 @@
 package com.joel.newsapp.services;
 
 import com.joel.newsapp.dtos.mail.SendMailDTO;
-import com.joel.newsapp.dtos.password.PasswordDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
-import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.*;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
-import com.joel.newsapp.services.interfaces.IPasswordTokenService;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.PasswordTokenType;

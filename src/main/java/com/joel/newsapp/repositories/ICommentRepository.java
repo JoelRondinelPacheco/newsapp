@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ICommentRepository extends JpaRepository<Comment, String> {
+    /*
     @Query("SELECT comment FROM Comment comment WHERE comment.news = :newsId")
-    List<Comment> getNewsComments(@Param("newsId") News newsId);
+    List<Comment> getNewsComments(@Param("newsId") News newsId);*/
 }

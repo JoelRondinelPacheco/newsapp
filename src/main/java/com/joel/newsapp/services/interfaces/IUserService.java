@@ -4,6 +4,7 @@ import com.joel.newsapp.dtos.users.*;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.utils.Role;
+import com.joel.newsapp.utils.UserState;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface IUserService {
     UserInfoDTO edit(EditUserDTO userDTO) throws NotFoundException;
     String deleteById(String id) throws NotFoundException;
     List<UserInfoDTO> getAllUsers();
-    List<UserInfoDTO> getUsersByEnabledAndRole(Boolean enabled, Role role);
+    List<UserInfoDTO> getUsersByEnabledAndRole(UserState state, Role role);
     UserInfoDTO findByEmail(String username) throws NotFoundException;
     User findUserByEmail(String email) throws UsernameNotFoundException;
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;
