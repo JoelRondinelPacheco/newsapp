@@ -70,4 +70,9 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/account/password/{token}")
+    public String setPassword(@PathVariable String token) {
+
+    }
+
 }
