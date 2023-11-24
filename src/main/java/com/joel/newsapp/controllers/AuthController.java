@@ -1,7 +1,9 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
+import com.joel.newsapp.exceptions.ValidateAccountException;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
+import com.joel.newsapp.services.interfaces.IPasswordTokenService;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class AuthController {
     private HomeController homeController;
     @Autowired
     private IAdminManageUsers manageUsers;
+    @Autowired
+    private IPasswordTokenService passwordTokenService;
 
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) String error, ModelMap model) {
@@ -51,7 +55,19 @@ public class AuthController {
     @PostMapping("/register/set/{token}")
     public String postSetPassword(@RequestParam String password, @RequestParam String confirmPassword, ModelMap model) {
 
-return "index";
+    return "index";
+    }
+
+    @GetMapping("/account/{token}")
+    public String verifiedAccount(@PathVariable String token, ModelMap model) {
+        try {
+            String res = this.passwordTokenService.validateAccount(token);
+            model.addAttribute("verify_success", res);
+            return "login";
+        } catch (ValidateAccountException e) {
+            model.addAttribute("verify_error", e.getMessage());
+            return "login";
+        }
     }
 
 }

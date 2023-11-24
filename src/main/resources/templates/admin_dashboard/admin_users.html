@@ -6,17 +6,7 @@
 <main class="container">
     <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
     <div th:replace="~{fragments/admin_nav_users :: admin_nav_users}"></div>
-    <div class="row">
-        <button class="col-3">
-            <a th:ref="@{'/dashboard/clients?active=true'}">Activos</a>
-        </button>
-        <button class="col-3">
-            <a th:ref="@{'/dashboard/clients?active=false'}">Inactivos</a>
-        </button>
-        <button class="col-3">
-            <a th:ref="@{'/dashboard/clients?active=false'}">Baneados</a>
-        </button>
-    </div>
+    <div th:replace="~{fragments/admin_nav_users_state :: admin_nav_users_state}"></div>
     <section>
         <table class="table">
             <thead>

@@ -6,6 +6,8 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
 <h1>Please Log In</h1>
+    <div th:if="${verify_success}">La verificacion de tu cuenta se realizo en forma exitosa, puedes acceder con tus credenciales</div>
+    <div th:if="${verify_error}" th:text="${verify_error}"></div>
 <div th:if="${param.error}">Usuario o contraseña incorrectos</div>
 <div th:if="${param.logout}">
     You have been logged out.</div>

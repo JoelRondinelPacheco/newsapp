@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
@@ -35,7 +34,7 @@ public class UserService implements IUserService {
     @Autowired
     private PasswordTokenService tokenService;
     @Autowired
-    private MailService mailService;
+    private EmailService mailService;
 
 
     @Override
@@ -72,14 +71,16 @@ public class UserService implements IUserService {
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
         user.setEnabled(true);
-        user.setActive(false);
+        user.setVerified(false);
         User userSaved = this.userRepository.save(user);
-        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.CONFIRM, true);
+        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.VALIDATE, true);
 
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(userSaved.getEmail());
         mail.setSubject("Cuenta creada");
         mail.setMessage(token.getToken());
+        System.out.println("USER CREADO");
+        System.out.println("token: " + token.getToken());
         this.mailService.sendMail(mail);
 
         return userSaved;
@@ -130,10 +131,10 @@ public class UserService implements IUserService {
         List<User> users = new ArrayList<>();
         switch (state) {
             case ACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, true);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, true);
                 break;
             case INACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, false);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, false);
                 break;
             case BANNED:
                 users = this.userRepository.findByRoleAndEnabled(role, false);

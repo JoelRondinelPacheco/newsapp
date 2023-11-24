@@ -31,7 +31,7 @@ public class ManageUsersService implements IAdminManageUsers {
     @Autowired
     private IAdminRepository adminRepository;
     @Autowired
-    private MailService mailService;
+    private EmailService mailService;
     @Autowired
     private PasswordTokenService tokenService;
     @Autowired
@@ -101,7 +101,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 .email(userDTO.getEmail())
                 .role(userDTO.getRole())
                 .enabled(true)
-                .active(false)
+                .verified(false)
                 .build();
         user.setImage(this.imageService.defaultImage());
         return this.userRepository.save(user);
