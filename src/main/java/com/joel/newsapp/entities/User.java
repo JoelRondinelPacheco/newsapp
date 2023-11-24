@@ -30,7 +30,7 @@ public class User extends Base implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled;
-    private Boolean active;
+    private Boolean verified;
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     private List<Comment> comments;
 

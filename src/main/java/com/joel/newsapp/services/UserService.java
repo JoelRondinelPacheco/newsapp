@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
@@ -35,7 +34,7 @@ public class UserService implements IUserService {
     @Autowired
     private PasswordTokenService tokenService;
     @Autowired
-    private MailService mailService;
+    private EmailService mailService;
 
 
     @Override
@@ -72,7 +71,7 @@ public class UserService implements IUserService {
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
         user.setEnabled(true);
-        user.setActive(false);
+        user.setVerified(false);
         User userSaved = this.userRepository.save(user);
         PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.CONFIRM, true);
 
