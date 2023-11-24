@@ -73,12 +73,14 @@ public class UserService implements IUserService {
         user.setEnabled(true);
         user.setVerified(false);
         User userSaved = this.userRepository.save(user);
-        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.CONFIRM, true);
+        PasswordToken token = this.tokenService.saveToken(userSaved, PasswordTokenType.VALIDATE, true);
 
         SendMailDTO mail = new SendMailDTO();
         mail.setTo(userSaved.getEmail());
         mail.setSubject("Cuenta creada");
         mail.setMessage(token.getToken());
+        System.out.println("USER CREADO");
+        System.out.println("token: " + token.getToken());
         this.mailService.sendMail(mail);
 
         return userSaved;
@@ -129,10 +131,10 @@ public class UserService implements IUserService {
         List<User> users = new ArrayList<>();
         switch (state) {
             case ACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, true);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, true);
                 break;
             case INACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndActive(role, true, false);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, false);
                 break;
             case BANNED:
                 users = this.userRepository.findByRoleAndEnabled(role, false);
