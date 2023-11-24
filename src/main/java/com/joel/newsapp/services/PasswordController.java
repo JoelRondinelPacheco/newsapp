@@ -27,10 +27,10 @@ public class PasswordController implements IPasswordController {
         //TODO CHECK TWO PASSWORDS
         PasswordToken token = this.tokenService.getByToken(password.getToken());
         User user = token.getUser();
-        if (!user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.SET.name())) {
+        if (!user.getVerified() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.SET.name())) {
             String pass = this.utils.encryptPassword(password.getPassword());
             user.setPassword(pass);
-            user.setActive(true);
+            user.setVerified(true);
             token.setValid(false);
             this.tokenRepository.save(token);
             this.userRepository.save(user);
@@ -44,7 +44,7 @@ public class PasswordController implements IPasswordController {
     public String resetPassword(PasswordDTO password) throws NotFoundException {
         PasswordToken token = this.tokenService.getByToken(password.getToken());
         User user = token.getUser();
-        if (user.getActive() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.RESET.name())) {
+        if (user.getVerified() && user.getEnabled() && token.isValid() && token.getType().name().equals(PasswordTokenType.RESET.name())) {
             String pass = this.utils.encryptPassword(password.getPassword());
             user.setPassword(pass);
             token.setValid(false);

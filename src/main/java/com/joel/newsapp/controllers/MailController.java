@@ -1,9 +1,8 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.mail.SendMailDTO;
-import com.joel.newsapp.services.interfaces.IMailService;
+import com.joel.newsapp.services.interfaces.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/mail")
 public class MailController {
     @Autowired
-    private IMailService mailService;
+    private IEmailService mailService;
 
     @PostMapping("/send/{to}")
     public String sendMail(@PathVariable String to, @RequestParam String subject, @RequestParam String message, ModelMap model) {
