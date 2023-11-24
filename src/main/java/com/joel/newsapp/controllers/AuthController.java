@@ -71,8 +71,24 @@ public class AuthController {
     }
 
     @GetMapping("/account/password/{token}")
-    public String setPassword(@PathVariable String token) {
-
+    public String setPassword(@PathVariable String token, ModelMap model) {
+        model.addAttribute("token", token);
+        return "set_password";
+    }
+    @PostMapping("/account/password/{token}")
+    public String postSetPassword(@PathVariable String token, @RequestParam String password, @RequestParam String confirmPassword, ModelMap model) {
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Password dosnt match");
+            return "set_password";
+        }
+        try {
+            String res = this.passwordTokenService.setPassword(token, password);
+            model.addAttribute("set_success", res);
+            return "login";
+        } catch (ValidateAccountException e) {
+            model.addAttribute("set_error", e.getMessage());
+            return "login";
+        }
     }
 
 }
