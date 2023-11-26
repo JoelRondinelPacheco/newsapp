@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Mis Noticias')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <section>
+        <table class="table">
+            <thead>
+            <tr class="text-center">
+                <th colspan="4">Princial</th>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Categoria</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="newsU : ${userNews}">
+                <th th:text="${newsU.title}"></th>
+                <th th:text="${newsU.createdAt}"></th>
+                <th th:text="${newsU.mainCategory.name}"></th>
+                <th><a class="btn btn-primary" th:href="@{/}">Ver</a></th>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+</body>
+</html>

@@ -82,8 +82,8 @@ public class NewsService implements INewsService {
         return news;
     }
     @Override
-    public List<News> getNewsByUser(String userId){
-        List<News> news = this.newsRepository.getNewsByAuthorId(userId);
+    public List<News> getNewsByUser(String email){
+        List<News> news = this.newsRepository.findByAuthor_User_email(email);
         return news;
 
     }
