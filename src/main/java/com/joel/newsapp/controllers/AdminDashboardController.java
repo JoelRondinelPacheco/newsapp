@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.News;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 
 @Controller
@@ -80,13 +82,19 @@ public class AdminDashboardController {
         } catch (NotFoundException e) {
             model.put("mainFeaturedError", e.getMessage());
         }
-        List<News> featuredByCategory = this.newsService.allFeaturedByCategory();
-        System.out.println(featuredByCategory.size());
-        if (featuredByCategory.size() > 0) {
+        List<NewsCategory> categories = this.categoryService.findAll();
+        List<FeaturedByCategoryDTO> featuredByCategory = this.newsService.allFeaturedByCategory();
+        for (FeaturedByCategoryDTO f : featuredByCategory) {
+            System.out.println(f.getCategoryName());
+        }
+
+        if (!featuredByCategory.isEmpty()) {
             model.addAttribute("featuredByCategory", featuredByCategory);
         } else {
-            model.addAttribute("featuredError", "No hay noticias destacadas de las categorias");
+            model.addAttribute("featuredError", "No hay categorias cargadas");
         }
+        //TODO MANJEAR CATEGORIAS VACIAS
+        model.addAttribute("categories", categories);
         model.addAttribute("news", "featured");
         return "admin_dashboard/admin_news";
     }

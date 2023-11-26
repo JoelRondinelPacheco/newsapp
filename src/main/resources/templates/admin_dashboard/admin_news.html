@@ -24,12 +24,15 @@
         <tbody>
             <tr th:if="${mainFeatured == null}" colspan="3" class="text-center">
                 <th th:text="${mainFeaturedError}"></th>
+                <th><button class="btn btn-primary">Seleccionar</button></th>
             </tr>
             <tr th:if="${mainFeatured != null}">
                 <th th:text="${mainFeatured.title}"></th>
                 <th th:text="${mainFeatured.createdAt}"></th>
                 <th th:text="${mainFeatured.author.user.email}"></th>
                 <th th:text="${mainFeatured.mainCategory.name}"></th>
+                <th><button class="btn btn-primary">Cambiar</button></th>
+
             </tr>
         </tbody>
     </table>
@@ -48,14 +51,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${featuredByCategory == null}" colspan="4" class="text-center">
-            <th th:text="${featuredError}"></th>
-        </tr>
-        <tr th:if="${featuredByCategory != null}" th:each="featured : ${featuredByCategory}">
-            <th th:text="${featured.mainCategory.name}"></th>
-            <th th:text="${featured.title}"></th>
-            <th th:text="${featured.author}"></th>
-            <th th:text="${featured.createdAt}"></th>
+        <tr th:each="featured : ${featuredByCategory}">
+            <th th:text="${featured.categoryName}"></th>
+            <th th:unless="${hasFeatured == false}"><button class ="btn btn-primary">Agregar</button></th>
+            <div th:if="${hasFeatured}">
+            <th th:text="${featured.newsTitle}"></th>
+            <th th:text="${featured.newsAuthor}"></th>
+
+            </div>
             <th>modal cambiar</th>
         </tr>
         </tbody>
