@@ -64,14 +64,14 @@ public class HomeController {
             // Main featured
             NewsCategory categoryEntiy = this.categoryService.findByName(category);
             // Main featured by category
-            News mainFeatured = this.newsService.featuredByCategory(category);
+            //News mainFeatured = this.newsService.featuredByCategory(category);
             // Featured by category
-            News featuredNews = this.newsService.featuredByCategory(category);
+           // News featuredNews = this.newsService.featuredByCategory(category);
             // Latest by category
             List<News> latest = this.newsService.latestByCategory(category, 5);
             model.addAttribute("category", categoryEntiy);
-            model.addAttribute("main", mainFeatured);
-            model.addAttribute("featured", featuredNews);
+           // model.addAttribute("main", mainFeatured);
+           // model.addAttribute("featured", featuredNews);
             model.addAttribute("latest", latest);
             return "news_category";
 

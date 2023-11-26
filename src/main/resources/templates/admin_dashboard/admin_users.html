@@ -12,29 +12,20 @@
             <thead>
             <tr class="table-primary">
                 <th scope="col">Nombre</th>
-                <th scope="col">Nickname</th>
                 <th scope="col">Email</th>
-                <th scope="col">Rol</th>
-                <th scope="col">Estado</th>
                 <th scope="col">Cambiar estado</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
                 <th th:text="${user.name}+' '+${user.lastname}"></th>
-                <th th:text="${user.displayName}"></th>
                 <th th:text="${user.email}"></th>
-                <th th:text="${user.enabled}"></th>
                 <th>
-                    <select name="role" id="role">
-                        <option value="User" th:selected="${user.role.name == 'USER'}">Client</option>
-                        <option value="Reporter" th:selected="${user.role.name == 'REPORTER'}">Reporter</option>
-                        <option value="Moderator" th:selected="${user.role.name == 'MODERATOR'}">Moderator</option>
-                        <option value="Administrator" th:selected="${user.role.name == 'ADMIN'}">Administrator</option>
-                    </select>
+                    <button class="btn btn-primary"></button>
                 </th>
                 <th>
-
                     <a class="btn"
                        th:classappend="${user.enabled ? 'btn-danger' : 'btn-success'}"
                        th:href="@{'/admin/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'}}"

@@ -87,7 +87,7 @@ public class AuthController {
             return "login";
         } catch (ValidateAccountException e) {
             model.addAttribute("set_error", e.getMessage());
-            return "login";
+            return "set_password";
         }
     }
 

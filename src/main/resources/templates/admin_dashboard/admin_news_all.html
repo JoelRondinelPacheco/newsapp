@@ -4,10 +4,12 @@
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
-<div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
-  <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
 <main class="container">
+  <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+  <div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
+    <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
+
+  <section>
   <table class="table">
     <thead>
     <tr class="text-center">
@@ -24,15 +26,15 @@
     <tr th:if="${allNewsError}" colspan="3" class="text-center">
       <th th:text="${allNewsError}"></th>
     </tr>
-    <tr th:if="${allNewsError != null}" th:each="newsL : ${news}">
+    <tr th:each="newsL : ${news}">
       <th th:text="${newsL.title}"></th>
       <th th:text="${newsL.createdAt}"></th>
-      <th th:text="${newsL.author.email}"></th>
+      <th th:text="${newsL.author.user.email}"></th>
       <th th:text="${newsL.mainCategory.name}"></th>
     </tr>
     </tbody>
   </table>
-
+  </section>
 
 </main>
 </body>

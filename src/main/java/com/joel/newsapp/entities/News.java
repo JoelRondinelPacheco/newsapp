@@ -53,4 +53,11 @@ public class News extends Base{
         this.author = author;
         this.image = image;
     }
+
+    @PrePersist
+    private void prePersist(){
+        this.featured = false;
+        this.featuredCategory = false;
+        this.mainFeatured = false;
+    }
 }
