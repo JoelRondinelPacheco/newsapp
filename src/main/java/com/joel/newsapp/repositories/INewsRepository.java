@@ -26,7 +26,7 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
 */
     List<News> findByFeaturedCategory(Boolean b);
 
-    News findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
+    List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
 /*
     COMO BUSCAR CUANDO CATEGORIES ES UNA LISTA
     List<News> findByFeaturedAndCategory_Name(boolean featured, String category);

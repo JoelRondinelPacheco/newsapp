@@ -1,5 +1,6 @@
 package com.joel.newsapp.services;
 
+import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.news.NewsEditReqDTO;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
 import com.joel.newsapp.entities.*;
@@ -97,15 +98,38 @@ public class NewsService implements INewsService {
 
 
     @Override
-    public News featuredByCategory(String category) throws NotFoundException {
+    public List<News> featuredByCategory(String category) throws NotFoundException {
         // TODO CKECK CATEGORY EXISTS
-        News news = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, category);
+        List<News> news = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, category);
         return news;
     }
 
     @Override
-    public List<News> allFeaturedByCategory() {
-        return this.newsRepository.findByFeaturedCategory(true);
+    public List<FeaturedByCategoryDTO> allFeaturedByCategory() {
+        List<NewsCategory> categories = this.newsCategoryService.findAll();
+        List<FeaturedByCategoryDTO> featured = new ArrayList<>();
+        for (NewsCategory c : categories) {
+            FeaturedByCategoryDTO featuredC = FeaturedByCategoryDTO.builder()
+                    .categoryId(c.getId())
+                    .categoryName(c.getName())
+                    .build();
+            List<News> allNews = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, c.getName());
+            if (!allNews.isEmpty()) {
+                News featuredNew = allNews.get(0);
+                featuredC.setHasFeatured(true);
+                featuredC.setNewsId(featuredNew.getId());
+                featuredC.setNewsTitle(featuredNew.getTitle());
+                featuredC.setAuthor(featuredNew.getAuthor().getUser().getDisplayName());
+                featured.add(featuredC);
+            }
+            featuredC.setHasFeatured(false);
+            featuredC.setNewsId("");
+            featuredC.setNewsTitle("");
+            featuredC.setAuthor("");
+            featured.add(featuredC);
+        }
+       return featured;
+
     }
 
     @Override
