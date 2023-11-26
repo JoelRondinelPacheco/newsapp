@@ -87,6 +87,7 @@ public class AdminDashboardController {
         } else {
             model.addAttribute("featuredError", "No hay noticias destacadas de las categorias");
         }
+        model.addAttribute("news", "featured");
         return "admin_dashboard/admin_news";
     }
 
@@ -98,6 +99,12 @@ public class AdminDashboardController {
         } else {
             model.addAttribute("allNewsError", "No hay noticias cargadas");
         }
+        System.out.println("noticias");
+        System.out.println(news.size());
+        for (News n : news) {
+            System.out.println(n.getTitle());
+        };
+        model.addAttribute("newsPage", "all");
         return "admin_dashboard/admin_news_all";
     }
 

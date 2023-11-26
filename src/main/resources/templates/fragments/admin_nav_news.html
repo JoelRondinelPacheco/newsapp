@@ -1,0 +1,6 @@
+<section th:fragment="admin_nav_news" xmlns:th="http://www.thymeleaf.org">
+    <div>
+        <a class="btn" th:classappend="${news == 'featured' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/news}">Destacadas</a>
+        <a class="btn" th:classappend="${news == 'all' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/news/all}">Todas</a>
+    </div>
+</section>
