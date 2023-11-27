@@ -44,11 +44,6 @@ public class NewsCategoryService implements INewsCategoryService {
     public String deleteById(String s) {
         return null;
     }
-    @Override
-    public List<String> getAllCategories() {
-        //return this.newsCategoryRepository.findAllCategories();
-        return null;
-    }
 
     @Override
     public List<NewsCategory> findAll() {

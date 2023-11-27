@@ -15,15 +15,15 @@ import java.util.Optional;
 public interface INewsRepository extends JpaRepository<News, String> {
     List<News> findByAuthor_User_email(String authorId);
     Optional<News> findByMainFeatured(boolean featured);
+    List<News> findByMainCategory_Id(String id, Pageable page);
 /*
 NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     @Query("SELECT n FROM News n JOIN n.categories c WHERE c.category =:category LIMIT :limit")
     List<News> findByCategory(@Param("category") String category, @Param("limit") int limit);
 */
-    /*
-    @Query("SELECT n FROM News n ORDER BY n.createdAt DESC")
-    List<News> findLatest(Pageable pageable);
-*/
+
+    List<News> findAllByOrderByCreatedAtAsc();
+
     List<News> findByFeaturedCategory(Boolean b);
 
     List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);

@@ -106,7 +106,7 @@ public class ManageUsersService implements IAdminManageUsers {
         /* Default image
         user.setImage(this.imageService.defaultImage());
         */
-         
+
         return this.userRepository.save(user);
     }
 
