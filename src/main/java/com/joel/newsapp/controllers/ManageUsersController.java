@@ -30,6 +30,9 @@ public class ManageUsersController {
                                 @RequestParam(required = false) Double monthlySalary,
                                 ModelMap model) {
 
+        if (this.userService.checkUserEmail(email)) {
+            model.addAttribute("emailError", "Email already registered");
+        }
         AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, role);
         if ( role == Role.USER) {
             this.adminService.createUser(user);

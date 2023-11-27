@@ -43,23 +43,24 @@
             <th colspan="5">Princial por categoria</th>
         </tr>
         <tr>
-            <th>Categoria</th>
-            <th>Titulo</th>
-            <th>Fecha</th>
-            <th>Autor</th>
-            <th>Cambiar</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Titulo</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Autor</th>
+            <th scope="col">Cambiar</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="featured : ${featuredByCategory}">
-            <th th:text="${featured.categoryName}"></th>
-            <th th:unless="${hasFeatured == false}"><button class ="btn btn-primary">Agregar</button></th>
+            <th scope="row" th:text="${featured.categoryName}"></th>
+            <td th:unless="${hasFeatured}" colspan="4" class="row w-100">
+                <p class="color-danger col-6">No hay ninguna noticia destacada para esta categoria</p>
+                <button class ="btn btn-primary col-6">Agregar</button></td>
             <div th:if="${hasFeatured}">
-            <th th:text="${featured.newsTitle}"></th>
-            <th th:text="${featured.newsAuthor}"></th>
+            <td th:text="${featured.newsTitle}"></td>
+            <td th:text="${featured.newsAuthor}"></td>
 
             </div>
-            <th>modal cambiar</th>
         </tr>
         </tbody>
     </table>

@@ -174,6 +174,16 @@ public class UserService implements IUserService {
         return this.createUserProfileInfo(user);
     }
 
+    @Override
+    public Boolean checkUserEmail(String email) {
+        Optional<User> userOptional = this.userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     private User findById(String id) throws NotFoundException {
         Optional<User> userO = this.userRepository.findById(id);
