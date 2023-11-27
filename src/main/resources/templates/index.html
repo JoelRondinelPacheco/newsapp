@@ -4,9 +4,14 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-<div th:if="${creado != null}">
-    <h1 th:text="${creado}"></h1th:text>
-</div>
+    <div th:if="${mainFeaturedError}"><h1 th:text="${mainFeaturedError}"></h1></div>
+    <div th:unless="${mainFeaturedError}"><h1>Noticia</h1></div>
+    <div  th:each="newsC : ${news}">
+        <h2 th:text="${newsC.categoryName}"></h2>
+        <div th:each="newsCat : ${newsC.news}">
+            <h1 th:text="${newsCat.title}"></h1>
+        </div>
+    </div>
 </main>
 
 </body>

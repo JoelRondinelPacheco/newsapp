@@ -9,7 +9,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import java.util.List;
 
 public interface INewsCategoryService extends ICrudService<NewsCategory, String, NCategoryEditReqDTO, String> {
-    List<String> getAllCategories();
+
     NewsCategory findByName(String name) throws NotFoundException;
     List<NewsCategory> findAll();
 

@@ -10,8 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface INewsCategoryRepository extends JpaRepository<NewsCategory, String> {
-    /*@Query("SELECT c.name FROM NewsCategory c;")
-    List<String> findAllCategories();*/
-
     Optional<NewsCategory> findByName(String name);
 }

@@ -133,15 +133,16 @@ public class NewsService implements INewsService {
     }
 
     @Override
-    public List<News> findByCategory(String category, int quantity) {
-        //List<News> news = this.newsRepository.findByMainCategory
-        return null;
+    public List<News> findByCategory(String categoryId, int quantity) {
+        Pageable page = PageRequest.of(0, quantity);
+        List<News> news = this.newsRepository.findByMainCategory_Id(categoryId, page);
+        return news;
     }
     @Override
     public List<News> latest(int quantity) {
         Pageable pageable = PageRequest.of(0, quantity);
-       // return this.newsRepository.findLatest(pageable);
-        return null;
+        return this.newsRepository.findAllByOrderByCreatedAtAsc();
+
     }
 
     @Override
