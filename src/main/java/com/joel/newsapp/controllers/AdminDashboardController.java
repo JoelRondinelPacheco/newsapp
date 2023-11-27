@@ -46,18 +46,14 @@ public class AdminDashboardController {
         model.addAttribute("users", users);
         model.addAttribute("role", role);
         model.addAttribute("state", state);
-        switch (role) {
-            case USER:
-                return "admin_dashboard/admin_users";
-            case REPORTER:
-                return "admin_dashboard/admin_reporters";
-            case MODERATOR:
-                return "admin_dashboard/admin_moderators";
-            case ADMIN:
-                return "admin_dashboard/admin_dashboard";
-            default:
-                return "admin_dashboard/admin_users";
+        if (role == Role.USER || role == Role.MODERATOR) {
+            return "admin_dashboard/admin_users";
+        } else if (role == Role.REPORTER) {
+            return "admin_dashboard/admin_reporters";
+        } else {
+            return "admin_dashboard/admin_dashboard";
         }
+
     }
 
     @GetMapping("/categories")
