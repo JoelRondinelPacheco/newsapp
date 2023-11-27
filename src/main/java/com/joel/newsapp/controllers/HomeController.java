@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.news.NewsByCategoryDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -28,32 +29,30 @@ public class HomeController {
     @Autowired
     private ICommentService commentService;
     @GetMapping("/")
-    public String index() {
-/*
+    public String index(ModelMap model) {
+
         try {
             // DESTACADA crear categoria destacada
             News mainFeatured = this.newsService.mainFeatured();
+            model.addAttribute("mainFeatured", mainFeatured);
+        } catch (NotFoundException e) {
+            model.addAttribute("mainFeaturedError", "Main featured error");
+        }
             // LISTA DE CATEGORIAS
-            List<String> categories = this.categoryService.getAllCategories();
-            List<List<News>> news = new ArrayList<>();
+            List<NewsCategory> categories = this.categoryService.findAll();
+            List<NewsByCategoryDTO> news = new ArrayList<>();
             // 10? DE CADA CATEGORIA
-            for (String category : categories) {
-                //TODO POR FECHA?
-                news.add(this.newsService.findByCategory(category, 10));
+            for (NewsCategory category : categories) {
+                List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
+                news.add(new NewsByCategoryDTO(category.getId(), category.getName(), newsCat));
             }
             // 5 ULTIMAS NOTICIAS
             List<News> latest = this.newsService.latest(5);
-            model.addAttribute("featured", mainFeatured);
             model.addAttribute("categories", categories);
             model.addAttribute("news", news);
             model.addAttribute("latest", latest);
             return "index";
-        } catch (NotFoundException ex) {
-            model.put("error", ex.getMessage());
-            return "index.html";
-        }*/
-        System.out.println("entro");
-        return "index";
+
     }
 
     //TODO Main controller for repeated values in news
