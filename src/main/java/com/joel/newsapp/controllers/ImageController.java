@@ -40,13 +40,16 @@ public class ImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getNewsImage (@PathVariable String id) throws NotFoundException {
-        System.out.println(id);
-        byte[] image = this.imageService.getById(id).getContent();
-
+        byte[] image;
+        if (id.equals("user_image")) {
+            image = this.imageService.getUserPublicImage();
+        } else {
+            image = this.imageService.getById(id).getContent();
+        }
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(image,headers, HttpStatus.OK);
+        return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 }

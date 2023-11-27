@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface INewsRepository extends JpaRepository<News, String> {
-    List<News> getNewsByAuthorId(String authorId);
+    List<News> findByAuthor_User_email(String authorId);
     Optional<News> findByMainFeatured(boolean featured);
 /*
 NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE

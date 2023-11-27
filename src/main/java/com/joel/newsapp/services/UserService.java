@@ -59,11 +59,18 @@ public class UserService implements IUserService {
         } else {
             user.setDisplayName("");
         }
-
+        /*
+        Default image in db
         if(userDTO.getProfilePicture().isEmpty()) {
             Image img = this.imageService.defaultImage();
             user.setImage(img);
         } else {
+            Image img = this.imageService.save(userDTO.getProfilePicture());
+            user.setImage(img);
+        }
+        */
+
+        if(!userDTO.getProfilePicture().isEmpty()) {
             Image img = this.imageService.save(userDTO.getProfilePicture());
             user.setImage(img);
         }
@@ -188,6 +195,12 @@ public class UserService implements IUserService {
     }
 
     private UserProfileInfoDTO createUserProfileInfo(User user) {
-        return new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId());
+        UserProfileInfoDTO userDTO = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail());
+        if (user.getImage() == null) {
+            userDTO.setProfilePictureId("user_image");
+        } else {
+            userDTO.setProfilePictureId(user.getImage().getId());
+        }
+        return userDTO;
     }
 }
