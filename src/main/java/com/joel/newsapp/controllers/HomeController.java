@@ -32,21 +32,17 @@ public class HomeController {
     public String index(ModelMap model) {
 
         try {
-            // DESTACADA crear categoria destacada
             News mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
             model.addAttribute("mainFeaturedEmpty", true);
         }
-            // LISTA DE CATEGORIAS
             List<NewsCategory> categories = this.categoryService.findAll();
             List<NewsByCategoryDTO> news = new ArrayList<>();
-            // 10? DE CADA CATEGORIA
             for (NewsCategory category : categories) {
                 List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
                 news.add(new NewsByCategoryDTO(category.getId(), category.getName(), newsCat));
             }
-            // 5 ULTIMAS NOTICIAS
             List<News> latest = this.newsService.latest(5);
             model.addAttribute("categories", categories);
             model.addAttribute("news", news);
@@ -55,22 +51,12 @@ public class HomeController {
 
     }
 
-    //TODO Main controller for repeated values in news
-
     @GetMapping("/category/{category}")
     public String getByCategory(@PathVariable String category, ModelMap model) throws NotFoundException {
         try {
-            // Main featured
-            NewsCategory categoryEntiy = this.categoryService.findByName(category);
-            // Main featured by category
-            //News mainFeatured = this.newsService.featuredByCategory(category);
-            // Featured by category
-           // News featuredNews = this.newsService.featuredByCategory(category);
-            // Latest by category
+            NewsCategory categoryEntity = this.categoryService.findByName(category);
             List<News> latest = this.newsService.latestByCategory(category, 5);
-            model.addAttribute("category", categoryEntiy);
-           // model.addAttribute("main", mainFeatured);
-           // model.addAttribute("featured", featuredNews);
+            model.addAttribute("category", categoryEntity);
             model.addAttribute("latest", latest);
             return "news_category";
 
