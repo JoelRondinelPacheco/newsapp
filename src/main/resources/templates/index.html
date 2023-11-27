@@ -4,10 +4,34 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
+    <section class="row">
+        <div class="bg-success col-lg-9">
+                <div class="position-relative">
+                <img th:src="@{https://placehold.co/600x400?text=Hello+World}" class="img-fluid w-100 h-50 object-fit-fill" alt="">
+                    <p class="bg-danger position-absolute top-0 end-0 m-3 px-3 py-2">Categoria</p>
+                    <div class="bg-warning position-absolute bottom-0 start-0 m-3 px-3 py-2">Por: Fulano Mengano</div>
+                </div>
+                <h1 class="fs-1">Titulo de la noticia</h1>
+                <p class="fs-3">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+        <div class="bg-warning-subtle col-lg-3">
+            <h4>Ultimas noticias</h4>
+            <div>
+                <h4>16:30 </h4><h4> Primer titulo</h4>
+            </div>
+            <div>
+                <h4>16:00 </h4><h4> Segundo titulo</h4>
+            </div>
+            <div>
+                <h4>15:30 </h4><h4> Tercer titulo</h4>
+            </div>
+
+        </div>
+    </section>
     <div th:if="${mainFeaturedError}"><h1 th:text="${mainFeaturedError}"></h1></div>
     <div th:unless="${mainFeaturedError}"><h1>Noticia</h1></div>
     <div  th:each="newsC : ${news}">
-        <h2 th:text="${newsC.categoryName}"></h2>
+        <h2 class="bg-info-subtle" th:text="${newsC.categoryName}"></h2>
         <div th:each="newsCat : ${newsC.news}">
             <h1 th:text="${newsCat.title}"></h1>
         </div>
