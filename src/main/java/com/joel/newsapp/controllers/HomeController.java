@@ -36,7 +36,7 @@ public class HomeController {
             News mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
-            model.addAttribute("mainFeaturedError", "Main featured error");
+            model.addAttribute("mainFeaturedEmpty", true);
         }
             // LISTA DE CATEGORIAS
             List<NewsCategory> categories = this.categoryService.findAll();

@@ -4,12 +4,68 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-    <div th:if="${mainFeaturedError}"><h1 th:text="${mainFeaturedError}"></h1></div>
+    <section class="row">
+       <div th:if="${mainFeaturedEmpty}" th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}">
+       </div>
+        <div class="col-lg-4">
+            <h4 class="fs-3 fw-normal" >Últimas noticias</h4>
+            <div class="ms-3 mb-2">
+                <h4 class="fs-5 fw-light m-0">16:30</h4><h4 class="fs-4 fw-normal lh-1">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+            </div>
+            <div class="ms-3">
+                <h4 class="fs-5 fw-light m-0">16:00</h4><h4 class="fs-4 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+            </div>
+            <div class="ms-3">
+                <h4 class="fs-5 fw-light m-0">15:30</h4><h4 class="fs-4 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+            </div>
+            <div class="ms-3">
+                <h4 class="fs-5 fw-light m-0">15:00</h4><h4 class="fs-4 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+            </div>
+
+        </div>
+    </section>
+    <section class="row mt-3 mb-4">
+        <div class="col-3">
+            <img th:src="@{https://placehold.co/300x250?text=Hello+World}" class="img-fluid m-0 mb-2 p-0  border-top border-warning border-4" alt="">
+            <h4 class="fs-3">Noticias destacadas, de distintas categorías.</h4>
+        </div>
+        <div class="col-3">
+            <img th:src="@{https://placehold.co/300x250?text=Hello+World}" class="img-fluid m-0 mb-2 p-0  border-top border-warning border-4" alt="">
+            <h4 class="fs-3">Noticias destacadas, de distintas categorías.</h4>
+        </div>
+        <div class="col-3">
+            <img th:src="@{https://placehold.co/300x250?text=Hello+World}" class="img-fluid m-0 mb-2 p-0  border-top border-warning border-4" alt="">
+            <h4 class="fs-3">Noticias destacadas, de distintas categorías.</h4>
+        </div>
+        <div class="col-3">
+            <img th:src="@{https://placehold.co/300x250?text=Hello+World}" class="img-fluid m-0 mb-2 p-0  border-top border-warning border-4" alt="">
+            <h4 class="fs-3">Noticias destacadas, de distintas categorías.</h4>
+        </div>
+
+    </section>
     <div th:unless="${mainFeaturedError}"><h1>Noticia</h1></div>
-    <div  th:each="newsC : ${news}">
-        <h2 th:text="${newsC.categoryName}"></h2>
-        <div th:each="newsCat : ${newsC.news}">
-            <h1 th:text="${newsCat.title}"></h1>
+    <div  th:each="newsC : ${news}" class="mb-4">
+        <h2 class="bg-info-subtle fs-2 fw-normal ps-3 py-2 mb-3 border-top border-warning border-4" th:text="${newsC.categoryName}"></h2>
+        <div class="row">
+            <div class="col-3">
+                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
+                <h4 class="fs-3 fw-medium">Noticia de la categoria correspondiente</h4>
+            </div>
+
+            <div class="col-3">
+                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
+                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
+            </div>
+
+            <div class="col-3">
+                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
+                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
+            </div>
+
+            <div class="col-3">
+                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
+                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
+            </div>
         </div>
     </div>
 </main>

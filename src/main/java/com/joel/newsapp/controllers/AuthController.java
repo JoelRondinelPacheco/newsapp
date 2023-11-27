@@ -4,6 +4,7 @@ import com.joel.newsapp.dtos.users.RegisterUserDTO;
 import com.joel.newsapp.exceptions.ValidateAccountException;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import com.joel.newsapp.services.interfaces.IPasswordTokenService;
+import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/")
 public class AuthController {
     @Autowired
-    private UserService userService;
+    private IUserService userService;
     @Autowired
     private HomeController homeController;
     @Autowired
@@ -36,6 +37,10 @@ public class AuthController {
     public String registro(@RequestParam String name, @RequestParam  String lastname, @RequestParam String email, @RequestParam String password, @RequestParam String confirmpassword, ModelMap model, MultipartFile archive) {
         if (!password.equals(confirmpassword)) {
             model.put("passworderror", "Las contraseñas no coinciden");
+            return "register.html";
+        }
+        if (this.userService.checkUserEmail(email)) {
+            model.addAttribute("emailError", "Email already registered");
             return "register.html";
         }
         RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive, Role.USER);
