@@ -153,18 +153,28 @@ public class NewsService implements INewsService {
 
     @Override
     public List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body) {
-        if (!body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
-            // TODO search for name only
-        } else if (body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
-            // TODO search for news title only
-        } else if (body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
+        if (!body.getReporterName().isBlank()) {
+            if (!body.getNewsTitle().isBlank()) {
+                if (body.getNewsDate().isBlank()) {
+                    // TODO search for name and news title
+                } else {
+                    // TODO search for name, news title, and news date
+                }
+            } else if (!body.getNewsDate().isBlank()) {
+                // TODO search for name and news date
+            } else {
+                // TODO search for name only
+            }
+        } else if (!body.getNewsTitle().isBlank()) {
+            if (!body.getNewsDate().isBlank()) {
+                // TODO search for news title and news date
+            } else {
+                // TODO search for news title only
+            }
+        } else if (!body.getNewsDate().isBlank()) {
             // TODO search for news date only
-        } else if (!body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
-            // TODO search for name and news title
-        } else if (!body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
-            // TODO search for name and news date
-        } else if (body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
-            // TODO search for news title and news date
+        } else {
+            // No parameters provided, handle accordingly
         }
         return null;
 

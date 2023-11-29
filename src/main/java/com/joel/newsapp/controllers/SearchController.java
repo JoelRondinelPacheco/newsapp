@@ -17,6 +17,6 @@ public class SearchController {
 
     public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestBody NewsSearchReqDTO body) {
         List<NewsSearchResDTO> news = this.newsService.searchAllNews(body);
-
+    return null;
     }
 }
