@@ -156,20 +156,28 @@ public class NewsService implements INewsService {
         if (!body.getReporterName().isBlank()) {
             if (!body.getNewsTitle().isBlank()) {
                 if (body.getNewsDate().isBlank()) {
-                    // TODO search for name and news title
+                    System.out.println("reporter name y title");
+                    System.out.println(body.getReporterName() + " " + body.getNewsTitle());
                 } else {
-                    // TODO search for name, news title, and news date
+                    System.out.println("Lost res");
+                    System.out.println("reporter name y title");
+                    System.out.println(body.getReporterName() + " " + body.getNewsTitle() + " " + body.getNewsDate());
                 }
             } else if (!body.getNewsDate().isBlank()) {
-                // TODO search for name and news date
+
+                System.out.println("reporter name y fecha");
+                System.out.println(body.getReporterName() + " " + body.getNewsDate());
             } else {
-                // TODO search for name only
+                System.out.println("solo nombre");
+                System.out.println(body.getReporterName());
             }
         } else if (!body.getNewsTitle().isBlank()) {
             if (!body.getNewsDate().isBlank()) {
-                // TODO search for news title and news date
+                System.out.println("titulo y fecha");
+                System.out.println(body.getNewsTitle() + " " + body.getNewsTitle());
             } else {
-                // TODO search for news title only
+                System.out.println("solo titulo");
+                System.out.println(body.getNewsTitle());
             }
         } else if (!body.getNewsDate().isBlank()) {
             // TODO search for news date only

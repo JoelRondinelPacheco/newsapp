@@ -19,8 +19,17 @@ public class SearchController {
 
     @GetMapping("/main")
     public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String newsTitle, @RequestParam String newsDate) {
-        //List<NewsSearchResDTO> news = this.newsService.searchAllNews(body);
+        NewsSearchReqDTO body = NewsSearchReqDTO.builder()
+                .reporterName(reporterName)
+                .newsTitle(newsTitle)
+                .newsDate(newsDate)
+                .build();
+
+        List<NewsSearchResDTO> newsT = this.newsService.searchAllNews(body);
         System.out.println("search controller");
+        System.out.println("rname: " + reporterName);
+        System.out.println("news title: " + newsTitle);
+        System.out.println("news date: " + newsDate);
         List<NewsSearchResDTO> news = new ArrayList<>();
         news.add(new NewsSearchResDTO("id1", "Titulo noticia 1", "fecha1", "Categoria1", "idr1", "Reporter1"));
         news.add(new NewsSearchResDTO("id2", "Titulo noticia 2", "fecha2", "Categoria2", "idr2", "Reporter2"));
