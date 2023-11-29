@@ -1,0 +1,66 @@
+<section th:fragment="change_main_featured" xmlns:th="http://www.thymeleaf.org">
+    <!-- Modal -->
+    <div class="modal modal-xl fade" id="mainFeatured" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-6">
+                    <section>
+                        <form>
+                            <div class="row">
+                            <div class="col-4 mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Autor</label>
+                              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="col-4 mb-3">
+                              <label for="exampleInputPassword1" class="form-label">Nombre noticia</label>
+                              <input type="password" class="form-control" id="exampleInputPassword1">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Fecha</label>
+                                <input type="date" class="form-control">
+                              </div>
+                        </div>
+                            <button type="submit" class="col-3 btn btn-primary">Buscar</button>
+                          </form>
+                    </section>
+                    <section>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">Autor</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div th:if="${latestEmpty}">
+                                <tr>
+                                    <td colspan="5">No hay noticias cargadas</td>
+                                </tr>
+                            </div>
+                            <tr th:each="latestN : ${latest}">
+                                <th colspan="3" th:text="${latestN.categoryName}"></th>
+                                <td th:text="${featured.newsTitle}"></td>
+                                <td th:text="${featured.newsAuthor}"></td>
+                                <td>FECHA</td>
+                                <td><button class="btn btn-primary">Seleccionar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

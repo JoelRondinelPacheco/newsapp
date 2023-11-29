@@ -7,7 +7,7 @@
     <div th:if="${success != null}">
         <h3 th:text="${success}"></h3>
     </div>
-    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{admin_fragments/fragments/admin_nav :: admin_nav}"></div>
     <form th:action="@{/admin/category/save}" method="post">
         <label for="category">Categoria nueva</label>
         <input type="text" id="category" name="category">

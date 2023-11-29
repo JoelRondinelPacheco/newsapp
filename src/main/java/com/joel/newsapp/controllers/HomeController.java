@@ -37,17 +37,24 @@ public class HomeController {
         } catch (NotFoundException e) {
             model.addAttribute("mainFeaturedEmpty", true);
         }
-            List<NewsCategory> categories = this.categoryService.findAll();
-            List<NewsByCategoryDTO> news = new ArrayList<>();
-            for (NewsCategory category : categories) {
-                List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
-                news.add(new NewsByCategoryDTO(category.getId(), category.getName(), newsCat));
-            }
-            List<News> latest = this.newsService.latest(5);
-            model.addAttribute("categories", categories);
-            model.addAttribute("news", news);
-            model.addAttribute("latest", latest);
-            return "index";
+
+        List<NewsCategory> categories = this.categoryService.findAll();
+        if (categories.isEmpty()) {
+            model.addAttribute("categoriesEmpty", true);
+        }
+
+        List<NewsByCategoryDTO> news = new ArrayList<>();
+        for (NewsCategory category : categories) {
+            List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
+            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), newsCat));
+        }
+
+        List<News> latest = this.newsService.latest(5);
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("news", news);
+        model.addAttribute("latest", latest);
+        return "index";
 
     }
 
