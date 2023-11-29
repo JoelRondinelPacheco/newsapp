@@ -10,24 +10,22 @@
                 </div>
                 <div class="modal-body p-6">
                     <section>
-                        <form>
                             <div class="row">
                             <div class="col-4 mb-3">
                               <label for="exampleInputEmail1" class="form-label">Autor</label>
-                              <input type="text" class="form-control mainSearch" id="exampleInputEmail1" aria-describedby="emailHelp">
+                              <input type="text" class="form-control mainSearch" id="exampleInputEmail1" name="reporterName">
                             </div>
                             <div class="col-4 mb-3">
                               <label for="exampleInputPassword1" class="form-label">Nombre noticia</label>
-                              <input type="text" class="form-control mainSearch" id="exampleInputPassword1">
+                              <input type="text" class="form-control mainSearch" id="exampleInputPassword1"  name="newsTitle">
                             </div>
                             <div class="col-4 mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Fecha</label>
-                                <input type="date" class="form-control mainSearch">
+                                <input type="date" class="form-control mainSearch"  name="newsDate">
                               </div>
                         </div>
                             <button id="searchBtn" class="col-3 btn btn-primary">Buscar</button>
                             <button id="clearSearchBtn" class="col-3 btn btn-primary">Limpiar busqueda</button>
-                          </form>
                     </section>
                     <section>
                     <table class="table">
@@ -46,6 +44,7 @@
                                     <td colspan="5">No hay noticias cargadas</td>
                                 </tr>
                             </div>
+                            <tr id="mainSearchList"></tr>
                             <tr th:each="latestN : ${latest}">
                                 <th colspan="3" th:text="${latestN.categoryName}"></th>
                                 <td th:text="${featured.newsTitle}"></td>
