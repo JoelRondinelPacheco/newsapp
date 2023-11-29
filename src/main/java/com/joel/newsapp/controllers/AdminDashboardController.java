@@ -97,7 +97,7 @@ public class AdminDashboardController {
         if (latest.isEmpty()) {
             model.addAttribute("latestEmpty", true);
         }
-        
+
         //TODO MANJEAR CATEGORIAS VACIAS
         model.addAttribute("categories", categories);
         model.addAttribute("news", "featured");

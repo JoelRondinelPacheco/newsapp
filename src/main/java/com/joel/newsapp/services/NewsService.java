@@ -1,8 +1,6 @@
 package com.joel.newsapp.services;
 
-import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
-import com.joel.newsapp.dtos.news.NewsEditReqDTO;
-import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.news.*;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
@@ -153,6 +151,24 @@ public class NewsService implements INewsService {
         return null;
     }
 
+    @Override
+    public List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body) {
+        if (!body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
+            // TODO search for name only
+        } else if (body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
+            // TODO search for news title only
+        } else if (body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
+            // TODO search for news date only
+        } else if (!body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && body.getNewsDate().isBlank()) {
+            // TODO search for name and news title
+        } else if (!body.getReporterName().isBlank() && body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
+            // TODO search for name and news date
+        } else if (body.getReporterName().isBlank() && !body.getNewsTitle().isBlank() && !body.getNewsDate().isBlank()) {
+            // TODO search for news title and news date
+        }
+        return null;
+
+    }
 
 
     private List<NewsCategory> findCategories(List<String> categories) {

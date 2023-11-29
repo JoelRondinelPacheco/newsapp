@@ -1,8 +1,6 @@
 package com.joel.newsapp.services.interfaces;
 
-import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
-import com.joel.newsapp.dtos.news.NewsEditReqDTO;
-import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.news.*;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.exceptions.NotFoundException;
 
@@ -17,5 +15,5 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
     List<News> findByCategory(String category, int quantity);
     List<News> latest(int quantity);
     List<News> latestByCategory(String category, int quantity) throws NotFoundException;
-
+    List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body);
 }
