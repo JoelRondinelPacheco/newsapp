@@ -72,13 +72,16 @@ public class AdminDashboardController {
     public String adminNews(ModelMap model){
         // TODO Handle, all categories has one and only one featured news
         // TODO manage if returns more than one
+
         try {
             News mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
             model.put("mainFeaturedError", e.getMessage());
         }
+
         List<NewsCategory> categories = this.categoryService.findAll();
+
         List<FeaturedByCategoryDTO> featuredByCategory = this.newsService.allFeaturedByCategory();
         for (FeaturedByCategoryDTO f : featuredByCategory) {
             System.out.println(f.getCategoryName());
@@ -89,6 +92,12 @@ public class AdminDashboardController {
         } else {
             model.addAttribute("featuredError", "No hay categorias cargadas");
         }
+
+        List<News> latest = this.newsService.latest(5);
+        if (latest.isEmpty()) {
+            model.addAttribute("latestEmpty", true);
+        }
+        
         //TODO MANJEAR CATEGORIAS VACIAS
         model.addAttribute("categories", categories);
         model.addAttribute("news", "featured");

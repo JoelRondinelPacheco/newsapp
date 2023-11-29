@@ -6,8 +6,8 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
-    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
-    <div th:replace="~{fragments/admin_nav_news :: admin_nav_news}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_news :: admin_nav_news}"></div>
     <section>
     <table class="table">
         <thead>
@@ -22,16 +22,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:if="${mainFeatured == null}" colspan="3" class="text-center">
-                <th th:text="${mainFeaturedError}"></th>
-                <th><button class="btn btn-primary">Seleccionar</button></th>
+        <div th:if="${mainFeatured == null}">
+            <tr  class="text-center">
+                <td colspan="3" th:text="${mainFeaturedError}"></td>
+                <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
             </tr>
+        </div>
             <tr th:if="${mainFeatured != null}">
-                <th th:text="${mainFeatured.title}"></th>
-                <th th:text="${mainFeatured.createdAt}"></th>
-                <th th:text="${mainFeatured.author.user.email}"></th>
-                <th th:text="${mainFeatured.mainCategory.name}"></th>
-                <th><button class="btn btn-primary">Cambiar</button></th>
+                <td th:text="${mainFeatured.title}"></td>
+                <td th:text="${mainFeatured.createdAt}"></td>
+                <td th:text="${mainFeatured.author.user.email}"></td>
+                <td th:text="${mainFeatured.mainCategory.name}"></td>
+                <td><button class="btn btn-primary">Cambiar</button></td>
 
             </tr>
         </tbody>
@@ -52,10 +54,13 @@
         </thead>
         <tbody>
         <tr th:each="featured : ${featuredByCategory}">
-            <th scope="row" th:text="${featured.categoryName}"></th>
-            <td th:unless="${hasFeatured}" colspan="4" class="row w-100">
-                <p class="color-danger col-6">No hay ninguna noticia destacada para esta categoria</p>
-                <button class ="btn btn-primary col-6">Agregar</button></td>
+            <th colspan="3" th:text="${featured.categoryName}"></th>
+            <div th:unless="${hasFeatured}">
+                <td colspan="2" class="row">
+                    <p class="color-danger col-6">No hay ninguna noticia destacada para esta categoria</p>
+                    <button class ="btn btn-primary col-6">Agregar</button>
+                </td>
+            </div>
             <div th:if="${hasFeatured}">
             <td th:text="${featured.newsTitle}"></td>
             <td th:text="${featured.newsAuthor}"></td>
@@ -66,6 +71,9 @@
     </table>
     </section>
 
+    <section th:replace="~{admin_dashboard/fragments/change_main_featured :: change_main_featured}"></section>
+
 </main>
+<script type="module" th:src="@{/scripts/admin_dashboard/main_search.js}"></script>
 </body>
 </html>
