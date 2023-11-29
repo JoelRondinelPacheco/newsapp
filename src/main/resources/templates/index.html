@@ -43,8 +43,8 @@
         </div>
 
     </section>
-    <div th:unless="${mainFeaturedError}"><h1>Noticia</h1></div>
-    <div  th:each="newsC : ${news}" class="mb-4">
+    <h2 th:if="${categoriesEmpty}" class="bg-warning px-3 py-2">No se encontraron categorias</h2>
+    <div th:unless="${categoriesEmpty}"  th:each="newsC : ${news}" class="mb-4">
         <h2 class="bg-info-subtle fs-2 fw-normal ps-3 py-2 mb-3 border-top border-warning border-4" th:text="${newsC.categoryName}"></h2>
         <div class="row">
             <div class="col-3">
