@@ -74,7 +74,7 @@ public class ManageUsersService implements IAdminManageUsers {
                 break;
         }
         PasswordToken token = this.tokenService.saveToken(user, PasswordTokenType.SET, true);
-        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "+ token.getToken());
+        mail.setMessage("Cree su contraseña en el siguiente enlace, con token: "+ "http://localhost:8080/account/password/" +token.getToken());
         String res = this.mailService.sendMail(mail);
         return res;
 

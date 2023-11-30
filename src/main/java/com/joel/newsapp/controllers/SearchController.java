@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(maxAge = 3600)
@@ -19,12 +20,23 @@ public class SearchController {
 
     @GetMapping("/main")
     public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String reporterLastname, @RequestParam String newsTitle, @RequestParam String newsDate) {
+
         NewsSearchReqDTO body = NewsSearchReqDTO.builder()
                 .reporterName(reporterName)
                 .reporterLastname(reporterLastname)
                 .newsTitle(newsTitle)
-                .newsDate(newsDate)
                 .build();
+
+        if (!newsDate.isBlank()){
+            try {
+                System.out.println("Fecha string: " + newsDate);
+                LocalDate date = LocalDate.parse(newsDate);
+                body.setNewsDate(date);
+                System.out.println("formateo fech: " + date);
+            } catch (Exception e) {
+                body.setNewsDate(null);
+            }
+        }
 
         List<NewsSearchResDTO> newsT = this.newsService.searchAllNews(body);
         System.out.println("search controller");
