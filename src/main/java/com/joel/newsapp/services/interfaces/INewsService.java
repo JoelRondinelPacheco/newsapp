@@ -15,5 +15,7 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
     List<News> findByCategory(String category, int quantity);
     List<News> latest(int quantity);
     List<News> latestByCategory(String category, int quantity) throws NotFoundException;
-    List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body);
+    List<NewsSearchResDTO> searchNews(NewsSearchReqDTO body, String category);
+
+    List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException;
 }
