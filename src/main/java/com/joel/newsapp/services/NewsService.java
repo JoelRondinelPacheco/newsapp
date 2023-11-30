@@ -157,7 +157,9 @@ public class NewsService implements INewsService {
             if (!body.getNewsTitle().isBlank()) {
                 if (body.getNewsDate() == null) {
                     System.out.println("Nombre y titulo");
-                    List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(body.getReporterName(), body.getReporterLastname(), body.getNewsTitle());
+                    //List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(body.getReporterName(), body.getReporterLastname(), body.getNewsTitle());
+                    List<News> news = this.newsRepository.findByReporterNameAndNewsTitle((body.getReporterName() + " " + body.getReporterLastname()).toLowerCase(), body.getNewsTitle());
+                    System.out.println(news.get(0).getTitle());
                 } else {
                     System.out.println("Lost tres");
                     System.out.println(body.getReporterName() + " " + body.getNewsTitle() + " " + body.getNewsDate());
@@ -177,7 +179,7 @@ public class NewsService implements INewsService {
         } else if (!body.getNewsTitle().isBlank()) {
             if (body.getNewsDate() != null) {
                 System.out.println("titulo y fecha");
-                // TODO implement search by date
+
             } else {
                 // solo titulo
                 List<News> news = this.newsRepository.findByTitle(body.getNewsTitle());
