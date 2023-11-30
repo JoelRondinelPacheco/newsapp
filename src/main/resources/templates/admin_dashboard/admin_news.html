@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         <div th:if="${mainFeatured == null}">
-            <tr  class="text-center">
+            <tr>
                 <td colspan="3" th:text="${mainFeaturedError}"></td>
                 <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
             </tr>
@@ -55,12 +55,13 @@
         <tbody>
         <tr th:each="featured : ${featuredByCategory}">
             <th colspan="3" th:text="${featured.categoryName}"></th>
-            <div th:unless="${hasFeatured}">
-                <td colspan="2" class="row">
-                    <p class="color-danger col-6">No hay ninguna noticia destacada para esta categoria</p>
-                    <button class ="btn btn-primary col-6">Agregar</button>
+                <td th:unless="${hasFeatured}" colspan="2" class="row">
+                    <p class="color-danger col-9">No hay ninguna noticia destacada para esta categoria</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Launch static backdrop modal
+                      </button>
                 </td>
-            </div>
+        
             <div th:if="${hasFeatured}">
             <td th:text="${featured.newsTitle}"></td>
             <td th:text="${featured.newsAuthor}"></td>
@@ -72,6 +73,8 @@
     </section>
 
     <section th:replace="~{admin_dashboard/fragments/change_main_featured :: change_main_featured}"></section>
+    <section th:replace="~{admin_dashboard/fragments/change_main_category :: change_main_category}"></section>
+
 
 </main>
 <script type="module" th:src="@{/scripts/admin_dashboard/main_search.js}"></script>

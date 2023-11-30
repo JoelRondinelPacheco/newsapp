@@ -153,7 +153,7 @@ public class NewsService implements INewsService {
     }
 
     @Override
-    public List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body){
+    public List<NewsSearchResDTO> searchNews(NewsSearchReqDTO body, String category){
 
         List<News> news = new ArrayList<>();
         List<NewsSearchResDTO> res = new ArrayList<>();
@@ -162,25 +162,51 @@ public class NewsService implements INewsService {
         if (!body.getReporterName().isBlank()) {
             if (!body.getNewsTitle().isBlank()) {
                 if (body.getNewsDate() == null) {
-                    news = this.newsRepository.findByReporterNameAndNewsTitle(name, body.getNewsTitle());
+                    if (category.isBlank()) {
+                        news = this.newsRepository.findByReporterNameAndNewsTitle(name, body.getNewsTitle());
+                    } else {
+
+                    }
                 } else {
-                    news = this.newsRepository.findByReporterNameAndNewsTitleAndDate(name, body.getNewsTitle(), body.getNewsDate());
+                    if (category.isBlank()) {
+                        news = this.newsRepository.findByReporterNameAndNewsTitleAndDate(name, body.getNewsTitle(), body.getNewsDate());
+                    } else {
+
+                    }
                 }
             } else if (body.getNewsDate() != null) {
-                news = this.newsRepository.findByReporterNameAndDate(name, body.getNewsDate());
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByReporterNameAndDate(name, body.getNewsDate());
+                } else {
+
+                }
             } else {
-                news = this.newsRepository.findByReporterName(name);
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByReporterName(name);
+                } else {
+
+                }
             }
         } else if (!body.getNewsTitle().isBlank()) {
             if (body.getNewsDate() != null) {
-                System.out.println("titulo y fecha");
-                news = this.newsRepository.getNewsByTitleAndDate(body.getNewsTitle(), body.getNewsDate());
+                if (category.isBlank()) {
+                    news = this.newsRepository.getNewsByTitleAndDate(body.getNewsTitle(), body.getNewsDate());
+                } else {
+
+                }
             } else {
-                System.out.println("solo titulo");
-                news = this.newsRepository.findByTitle(body.getNewsTitle());
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByTitle(body.getNewsTitle());
+                } else {
+
+                }
             }
         } else if (body.getNewsDate() != null) {
-            news = this.newsRepository.findByDate(body.getNewsDate());
+            if (category.isBlank()) {
+                news = this.newsRepository.findByDate(body.getNewsDate());
+            } else {
+
+            }
         } else {
             return res;
         }
@@ -188,6 +214,11 @@ public class NewsService implements INewsService {
         System.out.println(res.get(0).getNewsDate());
         return res;
 
+    }
+
+    @Override
+    public List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException {
+        return null;
     }
 
 
