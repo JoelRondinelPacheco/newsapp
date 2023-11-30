@@ -1,7 +1,7 @@
-<section th:fragment="admin_nav_users_state" xmlns:th="http://www.thymeleaf.org">
-    <div>
-        <a class="btn" th:classappend="${state.name == 'ACTIVE' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/user?state=active}">Active</a>
-        <a class="btn" th:classappend="${state.name == 'INACTIVE' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/user?state=inactive}">Inactivo</a>
-       <a class="btn" th:classappend="${state.name == 'BANNED' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/user?state=banned}">Baneado</a>
+<section th:fragment="admin_nav_users_state (role)" xmlns:th="http://www.thymeleaf.org">
+    <div class="mb-3">
+        <a class="btn" th:classappend="${state.name == 'ACTIVE' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{'/dashboard/role/' + ${role} + '?state=active'}">Active</a>
+        <a class="btn" th:classappend="${state.name == 'INACTIVE' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{'/dashboard/role/' + ${role} + '?state=inactive'}">Inactivo</a>
+       <a class="btn" th:classappend="${state.name == 'BANNED' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{'/dashboard/role/' + ${role} + '?state=banned'}">Baneado</a>
     </div>
 </section>

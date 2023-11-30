@@ -6,14 +6,8 @@
 <main class="container">
     <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
     <div th:replace="~{admin_dashboard/fragments/admin_nav_users :: admin_nav_users}"></div>
-    <div><button><a th:href="@{/admin/dashboard}">Activos</a></button>
-        <button><a th:href="@{/admin/dashboard/reporters}">Inactivos</a></button>
-        <button><a>Todos</a></button></div>
-    <button><a th:href="@{/admin/register}">Agregar</a></button></div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_users_state :: admin_nav_users_state (${role})}"></div>
+
     <section>
         <table class="table">
             <thead>
