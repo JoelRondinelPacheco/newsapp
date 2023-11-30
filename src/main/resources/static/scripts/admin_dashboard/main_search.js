@@ -40,12 +40,21 @@ async function searchMainNews(url) {
             let $category = d.createElement("th")
             let $newsTitle = d.createElement("td")
             let $newsAuthor = d.createElement("td")
+            let $newsDate = d.createElement("td")
+            let $setBtn = d.createElement("td")
+
             $category.innerText = el.newsCategory
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
+            $newsDate.innerText = el.newsDate
+            $setBtn.innerHTML = `<a class="btn btn-primary setMainNewsBtn" id="${el.newsId}">Seleccionar</a>`
+
+
             $tr.appendChild($category)
             $tr.appendChild($newsTitle)
             $tr.appendChild($newsAuthor)
+            $tr.appendChild($newsDate)
+            $tr.appendChild($setBtn)
 
             $mainFragment.appendChild($tr)
             })

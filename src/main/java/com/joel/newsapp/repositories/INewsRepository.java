@@ -36,7 +36,7 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
 
     @Query(value = "SELECT * FROM news_table n WHERE DATE(n.created_at) = :date",
             nativeQuery = true)
-    List<News> findByDate(@Param("date") String dateF);
+    List<News> findByDate(@Param("date") LocalDate dateF);
 
     @Query(value = "SELECT n.* FROM news_table n " +
             "LEFT JOIN reporters r ON n.author_id = r.id " +
@@ -52,4 +52,18 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
         //"(SELECT u.id FROM users u WHERE CONCAT(u.name, ' ', u.lastname) = :reporterName)", nativeQuery = true)
     List<News> findByReporterNameAndNewsTitle(@Param("reporterName") String name, @Param("title") String title);
 
+    @Query(value = "SELECT n.* FROM news_table n " +
+            "LEFT JOIN reporters r ON n.author_id = r.id " +
+            "JOIN users u ON r.user_id = u.id " +
+            "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND n.title = :title AND DATE(n.created_at) = :newsDate" , nativeQuery = true)
+    List<News> findByReporterNameAndNewsTitleAndDate(@Param("reporterName") String name, @Param("title") String title, @Param("newsDate") LocalDate date);
+
+    @Query(value = "SELECT n.* FROM news_table n " +
+            "LEFT JOIN reporters r ON n.author_id = r.id " +
+            "JOIN users u ON r.user_id = u.id " +
+            "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND DATE(n.created_at) = :newsDate", nativeQuery = true)
+    List<News> findByReporterNameAndDate(@Param("reporterName") String name, @Param("newsDate") LocalDate date);
+
+    @Query(value = "SELECT n.* FROM news_table n WHERE n.title = :title AND DATE(n.date) = :newsDate", nativeQuery = true)
+    List<News> getNewsByTitleAndDate(@Param("title") String title, @Param("newsDate") LocalDate date);
 }
