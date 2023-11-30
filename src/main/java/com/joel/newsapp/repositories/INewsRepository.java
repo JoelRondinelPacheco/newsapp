@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +28,13 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> findByFeaturedCategory(Boolean b);
 
     List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
-/*
-    COMO BUSCAR CUANDO CATEGORIES ES UNA LISTA
-    List<News> findByFeaturedAndCategory_Name(boolean featured, String category);
 
-    List<News> findByCategory_NameOrderByCreatedAtDesc(String category, Pageable pageable);
+    List<News> findByAuthor_User_NameAndAuthor_User_Lastname(String name, String lastname);
+    List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(String name, String lastname, String title);
+    //TODO by date List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitleAndCreatedAt(String name, String lastname, String title, );
+    List<News> findByTitle(String title);
+    @Query(value = "SELECT * FROM news_table n WHERE DATE(n.created_at) = :date",
+    nativeQuery = true)
+    List<News> busqueda(@Param("date") String dateF);
 
-    List<News> findByFeaturedCategoryAndCategories_Name(boolean b, String category);*/
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(maxAge = 3600)
@@ -18,9 +19,30 @@ public class SearchController {
     private INewsService newsService;
 
     @GetMapping("/main")
-    public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String newsTitle, @RequestParam String newsDate) {
-        //List<NewsSearchResDTO> news = this.newsService.searchAllNews(body);
+    public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String reporterLastname, @RequestParam String newsTitle, @RequestParam String newsDate) {
+
+        NewsSearchReqDTO body = NewsSearchReqDTO.builder()
+                .reporterName(reporterName)
+                .reporterLastname(reporterLastname)
+                .newsTitle(newsTitle)
+                .build();
+
+        if (!newsDate.isBlank()){
+            try {
+                System.out.println("Fecha string: " + newsDate);
+                LocalDate date = LocalDate.parse(newsDate);
+                body.setNewsDate(date);
+                System.out.println("formateo fech: " + date);
+            } catch (Exception e) {
+                body.setNewsDate(null);
+            }
+        }
+
+        List<NewsSearchResDTO> newsT = this.newsService.searchAllNews(body);
         System.out.println("search controller");
+        System.out.println("rname: " + reporterName);
+        System.out.println("news title: " + newsTitle);
+        System.out.println("news date: " + newsDate);
         List<NewsSearchResDTO> news = new ArrayList<>();
         news.add(new NewsSearchResDTO("id1", "Titulo noticia 1", "fecha1", "Categoria1", "idr1", "Reporter1"));
         news.add(new NewsSearchResDTO("id2", "Titulo noticia 2", "fecha2", "Categoria2", "idr2", "Reporter2"));
