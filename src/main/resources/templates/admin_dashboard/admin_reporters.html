@@ -27,15 +27,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="reporter : ${reporters}">
-                <th th:text="${reporter.name}+' '+${reporter.lastname}" class="reporterName"></th>
-                <th th:text="${reporter.displayName}"></th>
-                <th th:text="${reporter.email}"></th>
+            <tr th:each="user : ${users}">
+                <th th:text="${user.name}+' '+${user.lastname}" class="reporterName"></th>
+                <th th:text="${user.displayName}"></th>
+                <th th:text="${user.email}"></th>
                 <th>
-                    <button class="btn btn-warning btn-modal" th:attr="data-id=${reporter.id}, data-role=Periodista, data-name=${reporter.name + ' ' + reporter.lastname}, data-email=${reporter.email}" data-bs-toggle="modal"  data-bs-target="#exampleModal">Cambiar</button>
+                    <button class="btn btn-warning btn-modal" th:attr="data-id=${user.id}, data-role=Periodista, data-name=${user.name + ' ' + user.lastname}, data-email=${user.email}" data-bs-toggle="modal"  data-bs-target="#exampleModal">Cambiar</button>
                 </th>
-                <th th:text="${reporter.enabled}"></th>
-                <th th:text="${reporter.monthlySalary}"></th>
+                <th th:text="${user.enabled}"></th>
+                <th>Agregar salario mensual en el dto</th>
             </tr>
             </tbody>
         </table>

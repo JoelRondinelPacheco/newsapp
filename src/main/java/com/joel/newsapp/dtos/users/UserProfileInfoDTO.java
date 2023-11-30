@@ -2,9 +2,11 @@ package com.joel.newsapp.dtos.users;
 
 import com.joel.newsapp.utils.Role;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Setter
 @Getter
 @ToString
