@@ -33,8 +33,16 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(String name, String lastname, String title);
     //TODO by date List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitleAndCreatedAt(String name, String lastname, String title, );
     List<News> findByTitle(String title);
+
     @Query(value = "SELECT * FROM news_table n WHERE DATE(n.created_at) = :date",
-    nativeQuery = true)
-    List<News> busqueda(@Param("date") String dateF);
+            nativeQuery = true)
+    List<News> findByDate(@Param("date") String dateF);
+
+    @Query(value = "SELECT n.* FROM news_table n " +
+            "LEFT JOIN reporters r ON n.author_id = r.id " +
+            "JOIN users u ON r.user_id = u.id " +
+            "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName", nativeQuery = true)
+            //"(SELECT u.id FROM users u WHERE CONCAT(u.name, ' ', u.lastname) = :reporterName)", nativeQuery = true)
+    List<News> findByReporterName(@Param("reporterName") String name);
 
 }
