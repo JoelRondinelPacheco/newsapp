@@ -13,6 +13,7 @@ public class NewsSearchResDTO {
     private String newsTitle;
     private String newsDate;
     private String newsCategory;
+    private String newsCategoryId;
     private String reporterId;
     private String reporterName;
 }

@@ -12,5 +12,5 @@ public interface INewsCategoryService extends ICrudService<NewsCategory, String,
 
     NewsCategory findByName(String name) throws NotFoundException;
     List<NewsCategory> findAll();
-
+    Boolean exists(String id);
 }
