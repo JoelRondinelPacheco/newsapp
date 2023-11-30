@@ -1,27 +1,46 @@
 const d = document
 const urlMain = "http://localhost:8080/search/main?";
+const urlCategory = "http://localhost:8080/search/category?";
+var searchUrl;
 
 const $searchBtn = d.getElementById("searchBtn")
 const $clearSearchBtn = d.getElementById("clearSearchBtn")
 const $mainSearchInput = d.querySelectorAll(".mainSearch")
 const $mainSearchList = d.getElementById("mainSearchList")
 const $mainFragment = d.createDocumentFragment();
+const $mainBtn = d.getElementById("mainBtn")
+const $categoryBtn = d.querySelectorAll(".categoryBtn");
+
+$categoryBtn.forEach(btn => {
+    btn.addEventListener("click", () => {
+       searchUrl = `${urlCategory}categoryId=${btn.id}&`
+
+    })
+})
+
+$mainBtn.addEventListener("click", () => {
+    searchUrl = urlMain
+})
 
 $searchBtn.addEventListener("click", async (e) => {
     e.preventDefault()
-    let urlParams = urlMain;
+    let urlParams = searchUrl;
     let maxIndex = $mainSearchInput.length;
-    console.log(maxIndex)
+
     $mainSearchInput.forEach((input, index) => {
         urlParams += `${input.name}=${input.value}`
+        console.log(urlParams)
         if (index < (maxIndex -1)) urlParams += '&'
     });
+console.log(urlParams)
     searchMainNews(urlParams)
 })
 
+
+
 async function searchMainNews(url) {
     try {
-        console.log("try")
+
         let res = await fetch(
             url,
             { method: 'GET', mode: 'cors', headers: {"Content-type":"application/json"}}

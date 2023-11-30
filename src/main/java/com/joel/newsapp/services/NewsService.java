@@ -184,6 +184,7 @@ public class NewsService implements INewsService {
                 if (category.isBlank()) {
                     news = this.newsRepository.findByReporterName(name);
                 } else {
+                    System.out.println("busco por nombre: " + name + ". Category id: " + category);
 
                 }
             }
@@ -241,6 +242,7 @@ public class NewsService implements INewsService {
                 .newsTitle(news.getTitle())
                 .newsDate(news.getCreatedAt().toLocalDate().toString())
                 .newsCategory(news.getMainCategory().getName())
+                .newsCategoryId(news.getMainCategory().getId())
                 .reporterId(news.getAuthor().getId())
                 .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
                 .build();

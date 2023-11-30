@@ -34,7 +34,7 @@ public class SearchController {
 
     @GetMapping("/category")
     public ResponseEntity<List<NewsSearchResDTO>> newsByCategory(@RequestParam String reporterName, @RequestParam String reporterLastname, @RequestParam String newsTitle, @RequestParam String newsDate, @RequestParam String categoryId) {
-        NewsSearchReqDTO body = this.createSearchDTO(reporterName, reporterLastname, newsTitle, newsDate);
+       /* NewsSearchReqDTO body = this.createSearchDTO(reporterName, reporterLastname, newsTitle, newsDate);
         List<NewsSearchResDTO> news = new ArrayList<>();
 
         if (!this.categoryService.exists(categoryId)) {
@@ -42,7 +42,9 @@ public class SearchController {
         }
 
         news = this.newsService.searchNews(body, categoryId);
-        return new ResponseEntity<>(news, HttpStatus.OK);
+        return new ResponseEntity<>(news, HttpStatus.OK);*/
+        System.out.println("busqueda categoria: " + categoryId);
+        return null;
     }
 
     private NewsSearchReqDTO createSearchDTO(String reporterName, String reporterLastname, String newsTitle, String newsDate) {
