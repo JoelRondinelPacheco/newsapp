@@ -168,7 +168,11 @@ public class NewsService implements INewsService {
                 // TODO implement search by date
             } else {
                 System.out.println("solo nombrew");
-                List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_Lastname(body.getReporterName(), body.getReporterLastname());
+               /* List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_Lastname(body.getReporterName(), body.getReporterLastname());
+                System.out.println(news.get(0).getTitle());*/
+                System.out.println(body.getReporterName());
+                List<News> news2 = this.newsRepository.findByReporterName((body.getReporterName() + " " + body.getReporterLastname()).toLowerCase());
+                System.out.println("Otro: " + news2.get(0).getTitle());
             }
         } else if (!body.getNewsTitle().isBlank()) {
             if (body.getNewsDate() != null) {
@@ -181,7 +185,7 @@ public class NewsService implements INewsService {
         } else if (body.getNewsDate() != null) {
             // TODO search for news date only
             System.out.println("solo por fecha");
-            List<News> news = this.newsRepository.busqueda(body.getNewsDate().toString());
+            List<News> news = this.newsRepository.findByDate(body.getNewsDate().toString());
             System.out.println(news.get(0).getTitle());
         } else {
             // No parameters provided, handle accordingly
