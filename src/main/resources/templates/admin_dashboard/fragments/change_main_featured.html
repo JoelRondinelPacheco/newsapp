@@ -32,30 +32,30 @@
                             <button id="clearSearchBtn" class="col-3 btn btn-primary">Limpiar busqueda</button>
                     </section>
                     <section>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Categoria</th>
-                                <th scope="col">Titulo</th>
-                                <th scope="col">Autor</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <div th:if="${latestEmpty}">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td colspan="5">No hay noticias cargadas</td>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col">Titulo</th>
+                                    <th scope="col">Autor</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col"></th>
                                 </tr>
-                            </div>
-                            <tr id="mainSearchList"></tr>
-                            <tr th:each="latestN : ${latest}">
-                                <th colspan="3" th:text="${latestN.categoryName}"></th>
-                                <td th:text="${featured.newsTitle}"></td>
-                                <td th:text="${featured.newsAuthor}"></td>
-                                <td>FECHA</td>
-                                <td><button class="btn btn-primary">Seleccionar</button></td>
-                            </tr>
+                            </thead>
+                            <tbody id="mainSearchList">
+                                <div th:if="${latestEmpty}">
+                                    <tr>
+                                        <td colspan="5">No hay noticias cargadas</td>
+                                    </tr>
+                                </div>
+                                <tr th:each="latestN : ${latest}">
+                                    <th colspan="3" th:text="${latestN.categoryName}"></th>
+                                    <td th:text="${featured.newsTitle}"></td>
+                                    <td th:text="${featured.newsAuthor}"></td>
+                                    <td>FECHA</td>
+                                    <td><button class="btn btn-primary">Seleccionar</button></td>
+                                </tr>
+
                         </tbody>
                     </table>
                 </section>
