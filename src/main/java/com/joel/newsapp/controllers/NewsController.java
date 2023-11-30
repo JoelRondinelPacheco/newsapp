@@ -82,4 +82,16 @@ public class NewsController {
         }
     }
 
+    @GetMapping("/set/main/{id}")
+    public String setMainFeatured(@PathVariable String id) {
+        System.out.println(id);
+        return null;
+    }
+
+    @GetMapping("/set/category/{id}")
+    public String setFeaturedByCategory(@PathVariable String id) {
+        System.out.println(id);
+        return null;
+    }
+
 }
