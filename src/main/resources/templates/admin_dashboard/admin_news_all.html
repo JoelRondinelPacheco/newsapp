@@ -6,8 +6,8 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
   <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
-  <div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
-    <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
+  <div th:replace="~{admin_dashboard/fragments/admin_nav_news :: admin_nav_news}"></div>
+
 
   <section>
   <table class="table">
@@ -26,7 +26,7 @@
     <tr th:if="${allNewsError}" colspan="3" class="text-center">
       <th th:text="${allNewsError}"></th>
     </tr>
-    <tr th:each="newsL : ${news}">
+    <tr th:each="newsL : ${listNews}">
       <th th:text="${newsL.title}"></th>
       <th th:text="${newsL.createdAt}"></th>
       <th th:text="${newsL.author.user.email}"></th>

@@ -104,7 +104,20 @@ public class ReporterService implements IReporterService {
 
     private ReporterInfoDTO createReporterInfoDTO(Reporter reporter) {
         User user = reporter.getUser();
-        UserInfoDTO reporterInfo = new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
+        UserInfoDTO reporterInfo = UserInfoDTO.builder()
+                .name(user.getName())
+                .lastname(user.getLastname())
+                .displayName(user.getDisplayName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .enabled(user.getEnabled())
+                .id(user.getId())
+                .build();
+        if (user.getImage() == null) {
+            reporterInfo.setProfilePictureId("user_img");
+        } else {
+            reporterInfo.setProfilePictureId(user.getImage().getId());
+        }
         return new ReporterInfoDTO(reporter.getMonthlySalary(), reporter.getEnabled(), reporter.getId(), reporterInfo);
     }
 
