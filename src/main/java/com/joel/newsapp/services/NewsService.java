@@ -185,6 +185,7 @@ public class NewsService implements INewsService {
             return res;
         }
         res = this.createListNewsSearchRes(news);
+        System.out.println(res.get(0).getNewsDate());
         return res;
 
     }
@@ -207,7 +208,7 @@ public class NewsService implements INewsService {
         return NewsSearchResDTO.builder()
                 .newsId(news.getId())
                 .newsTitle(news.getTitle())
-                .newsDate(news.getCreatedAt().toString())
+                .newsDate(news.getCreatedAt().toLocalDate().toString())
                 .newsCategory(news.getMainCategory().getName())
                 .reporterId(news.getAuthor().getId())
                 .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
