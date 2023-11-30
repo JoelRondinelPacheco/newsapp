@@ -147,6 +147,7 @@ public class UserService implements IUserService {
                 users = this.userRepository.findByRoleAndEnabled(role, false);
                 break;
         }
+        System.out.println(users.size());
         return this.listUserInfoDTO(users);
     }
 
@@ -194,7 +195,21 @@ public class UserService implements IUserService {
     }
 
     private UserInfoDTO createUserInfoDTO(User user) {
-        return new UserInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail(), user.getImage().getId(), user.getRole(), user.getEnabled(), user.getId());
+        UserInfoDTO userInfo = UserInfoDTO.builder()
+                .name(user.getName())
+                .lastname(user.getLastname())
+                .displayName(user.getDisplayName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .enabled(user.getEnabled())
+                .id(user.getId())
+                .build();
+        if (user.getImage() == null) {
+            userInfo.setProfilePictureId("user_img");
+        } else {
+            userInfo.setProfilePictureId(user.getImage().getId());
+        }
+        return userInfo;
     }
     private List<UserInfoDTO> listUserInfoDTO(List<User> users) {
         List<UserInfoDTO> usersDTO = new ArrayList<>();

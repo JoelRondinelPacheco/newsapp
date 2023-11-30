@@ -37,7 +37,7 @@ public class AdminDashboardController {
         return this.users(Role.USER, UserState.ACTIVE, model);
     }
 
-    @GetMapping("/{role}")
+    @GetMapping("/role/{role}")
     public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
         List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
         model.addAttribute("users", users);
@@ -105,7 +105,7 @@ public class AdminDashboardController {
     public String adminNewsAll(ModelMap model) {
         List<News> news = this.newsService.getAll();
         if(news.size() > 0) {
-            model.addAttribute("news", news);
+            model.addAttribute("listNews", news);
         } else {
             model.addAttribute("allNewsError", "No hay noticias cargadas");
         }
@@ -114,7 +114,7 @@ public class AdminDashboardController {
         for (News n : news) {
             System.out.println(n.getTitle());
         };
-        model.addAttribute("newsPage", "all");
+        model.addAttribute("news", "all");
         return "admin_dashboard/admin_news_all";
     }
 
