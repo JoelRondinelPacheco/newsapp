@@ -5,6 +5,7 @@ import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.INewsService;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -152,47 +153,40 @@ public class NewsService implements INewsService {
     }
 
     @Override
-    public List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body) {
+    public List<NewsSearchResDTO> searchAllNews(NewsSearchReqDTO body){
+
+        List<News> news = new ArrayList<>();
+        List<NewsSearchResDTO> res = new ArrayList<>();
+        String name = (body.getReporterName() + " " + body.getReporterLastname()).toLowerCase();
+
         if (!body.getReporterName().isBlank()) {
             if (!body.getNewsTitle().isBlank()) {
                 if (body.getNewsDate() == null) {
-                    System.out.println("Nombre y titulo");
-                    //List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(body.getReporterName(), body.getReporterLastname(), body.getNewsTitle());
-                    List<News> news = this.newsRepository.findByReporterNameAndNewsTitle((body.getReporterName() + " " + body.getReporterLastname()).toLowerCase(), body.getNewsTitle());
-                    System.out.println(news.get(0).getTitle());
+                    news = this.newsRepository.findByReporterNameAndNewsTitle(name, body.getNewsTitle());
                 } else {
-                    System.out.println("Lost tres");
-                    System.out.println(body.getReporterName() + " " + body.getNewsTitle() + " " + body.getNewsDate());
-                    // TODO implement search by date
+                    news = this.newsRepository.findByReporterNameAndNewsTitleAndDate(name, body.getNewsTitle(), body.getNewsDate());
                 }
             } else if (body.getNewsDate() != null) {
-                System.out.println("Nombre y fecha");
-                // TODO implement search by date
+                news = this.newsRepository.findByReporterNameAndDate(name, body.getNewsDate());
             } else {
-                System.out.println("solo nombrew");
-               /* List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_Lastname(body.getReporterName(), body.getReporterLastname());
-                System.out.println(news.get(0).getTitle());*/
-                System.out.println(body.getReporterName());
-                List<News> news2 = this.newsRepository.findByReporterName((body.getReporterName() + " " + body.getReporterLastname()).toLowerCase());
-                System.out.println("Otro: " + news2.get(0).getTitle());
+                news = this.newsRepository.findByReporterName(name);
             }
         } else if (!body.getNewsTitle().isBlank()) {
             if (body.getNewsDate() != null) {
                 System.out.println("titulo y fecha");
-
+                news = this.newsRepository.getNewsByTitleAndDate(body.getNewsTitle(), body.getNewsDate());
             } else {
-                // solo titulo
-                List<News> news = this.newsRepository.findByTitle(body.getNewsTitle());
+                System.out.println("solo titulo");
+                news = this.newsRepository.findByTitle(body.getNewsTitle());
             }
         } else if (body.getNewsDate() != null) {
-            // TODO search for news date only
-            System.out.println("solo por fecha");
-            List<News> news = this.newsRepository.findByDate(body.getNewsDate().toString());
-            System.out.println(news.get(0).getTitle());
+            news = this.newsRepository.findByDate(body.getNewsDate());
         } else {
-            // No parameters provided, handle accordingly
+            return res;
         }
-        return null;
+        res = this.createListNewsSearchRes(news);
+        System.out.println(res.get(0).getNewsDate());
+        return res;
 
     }
 
@@ -208,5 +202,24 @@ public class NewsService implements INewsService {
             }
         }
         return newsCategories;
+    }
+
+    private NewsSearchResDTO createNewsSearchRes(News news) {
+        return NewsSearchResDTO.builder()
+                .newsId(news.getId())
+                .newsTitle(news.getTitle())
+                .newsDate(news.getCreatedAt().toLocalDate().toString())
+                .newsCategory(news.getMainCategory().getName())
+                .reporterId(news.getAuthor().getId())
+                .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
+                .build();
+    }
+
+    private List<NewsSearchResDTO> createListNewsSearchRes(List<News> news) {
+        List<NewsSearchResDTO> newsDTO = new ArrayList<>();
+        for(News n : news) {
+            newsDTO.add(this.createNewsSearchRes(n));
+        }
+        return newsDTO;
     }
 }
