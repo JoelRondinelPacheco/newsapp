@@ -36,16 +36,19 @@ async function searchMainNews(url) {
         } 
 
         json.forEach(el => {
+            let $tr = d.createElement("tr")
             let $category = d.createElement("th")
             let $newsTitle = d.createElement("td")
             let $newsAuthor = d.createElement("td")
             $category.innerText = el.newsCategory
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
-            $mainFragment.appendChild($category)
-            $mainFragment.appendChild($newsTitle)
-            $mainFragment.appendChild($newsAuthor)
-        })
+            $tr.appendChild($category)
+            $tr.appendChild($newsTitle)
+            $tr.appendChild($newsAuthor)
+
+            $mainFragment.appendChild($tr)
+            })
         $mainSearchList.appendChild($mainFragment)
     } catch (error) {
         alert("error: " + error)

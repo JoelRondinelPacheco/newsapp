@@ -45,4 +45,11 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
             //"(SELECT u.id FROM users u WHERE CONCAT(u.name, ' ', u.lastname) = :reporterName)", nativeQuery = true)
     List<News> findByReporterName(@Param("reporterName") String name);
 
+    @Query(value = "SELECT n.* FROM news_table n " +
+            "LEFT JOIN reporters r ON n.author_id = r.id " +
+            "JOIN users u ON r.user_id = u.id " +
+            "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND n.title = :title", nativeQuery = true)
+        //"(SELECT u.id FROM users u WHERE CONCAT(u.name, ' ', u.lastname) = :reporterName)", nativeQuery = true)
+    List<News> findByReporterNameAndNewsTitle(@Param("reporterName") String name, @Param("title") String title);
+
 }
