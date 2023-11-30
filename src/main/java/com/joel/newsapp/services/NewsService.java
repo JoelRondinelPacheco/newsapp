@@ -156,28 +156,27 @@ public class NewsService implements INewsService {
         if (!body.getReporterName().isBlank()) {
             if (!body.getNewsTitle().isBlank()) {
                 if (body.getNewsDate().isBlank()) {
-                    System.out.println("reporter name y title");
-                    System.out.println(body.getReporterName() + " " + body.getNewsTitle());
+                    //Nombre y titulo
+                    List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(body.getReporterName(), body.getReporterLastname(), body.getNewsTitle());
                 } else {
-                    System.out.println("Lost res");
-                    System.out.println("reporter name y title");
+                    // Lost tres
                     System.out.println(body.getReporterName() + " " + body.getNewsTitle() + " " + body.getNewsDate());
+                    // TODO implement search by date
                 }
             } else if (!body.getNewsDate().isBlank()) {
-
-                System.out.println("reporter name y fecha");
-                System.out.println(body.getReporterName() + " " + body.getNewsDate());
+                // Nombre y fecha
+                // TODO implement search by date
             } else {
-                System.out.println("solo nombre");
-                System.out.println(body.getReporterName());
+                // solo por nombre
+                List<News> news = this.newsRepository.findByAuthor_User_NameAndAuthor_User_Lastname(body.getReporterName(), body.getReporterLastname());
             }
         } else if (!body.getNewsTitle().isBlank()) {
             if (!body.getNewsDate().isBlank()) {
-                System.out.println("titulo y fecha");
-                System.out.println(body.getNewsTitle() + " " + body.getNewsTitle());
+                // titulo y fecha
+                // TODO implement search by date
             } else {
-                System.out.println("solo titulo");
-                System.out.println(body.getNewsTitle());
+                // solo titulo
+                List<News> news = this.newsRepository.findByTitle(body.getNewsTitle());
             }
         } else if (!body.getNewsDate().isBlank()) {
             // TODO search for news date only

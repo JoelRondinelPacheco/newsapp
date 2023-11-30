@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 public class NewsSearchReqDTO {
     private String reporterName;
+    private String reporterLastname;
     private String newsTitle;
     private String newsDate;
 }

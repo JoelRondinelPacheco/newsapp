@@ -18,9 +18,10 @@ public class SearchController {
     private INewsService newsService;
 
     @GetMapping("/main")
-    public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String newsTitle, @RequestParam String newsDate) {
+    public ResponseEntity<List<NewsSearchResDTO>> newsAllCategories(@RequestParam String reporterName, @RequestParam String reporterLastname, @RequestParam String newsTitle, @RequestParam String newsDate) {
         NewsSearchReqDTO body = NewsSearchReqDTO.builder()
                 .reporterName(reporterName)
+                .reporterLastname(reporterLastname)
                 .newsTitle(newsTitle)
                 .newsDate(newsDate)
                 .build();

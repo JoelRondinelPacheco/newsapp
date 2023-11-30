@@ -27,11 +27,10 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> findByFeaturedCategory(Boolean b);
 
     List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
-/*
-    COMO BUSCAR CUANDO CATEGORIES ES UNA LISTA
-    List<News> findByFeaturedAndCategory_Name(boolean featured, String category);
 
-    List<News> findByCategory_NameOrderByCreatedAtDesc(String category, Pageable pageable);
+    List<News> findByAuthor_User_NameAndAuthor_User_Lastname(String name, String lastname);
+    List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(String name, String lastname, String title);
+    //TODO by date List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitleAndCreatedAt(String name, String lastname, String title, );
+    List<News> findByTitle(String title);
 
-    List<News> findByFeaturedCategoryAndCategories_Name(boolean b, String category);*/
 }
