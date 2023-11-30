@@ -4,6 +4,7 @@ const $categoryBtn = d.querySelectorAll(".selectByCategory")
 const $modalBody = d.querySelector(".modal-body") 
 const $cancelBtn = d.getElementById("cancelBtn")
 const $confirmBtn = d.getElementById("confirmBtn")
+const $closeBtn = d.getElementById("closeBtn")
 
 const mainUrl = "http://localhost:8080/news/set/main/"
 const categoryUrl = "http://localhost:8080/news/set/category/"
@@ -29,6 +30,11 @@ $categoryBtn.forEach($btn => {
 })
 
 $cancelBtn.addEventListener("click", () => {
+    $modalBody.innerHTML = ""
+    $confirmBtn.removeAttribute("href")
+})
+
+$closeBtn.addEventListener("click", () => {
     $modalBody.innerHTML = ""
     $confirmBtn.removeAttribute("href")
 })
