@@ -12,4 +12,5 @@ public interface IReporterService extends ICrudService<ReporterInfoDTO, Register
     List<ReporterInfoDTO> getAllReporters();
     Reporter findByEmail(String email) throws NotFoundException;
     Reporter findById(String id) throws NotFoundException;
+    Reporter findByUserId(String id) throws NotFoundException;
 }
