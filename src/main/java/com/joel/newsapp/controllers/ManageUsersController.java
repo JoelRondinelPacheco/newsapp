@@ -45,9 +45,9 @@ public class ManageUsersController {
     }
     //CAMBIAR ROLE
     @GetMapping("/{userId}/{oldRole}/{newRole}")
-    public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable String newRole, ModelMap model) {
+    public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable Role newRole, ModelMap model) {
 
-        if (!newRole.equalsIgnoreCase(Role.USER.name()) && !newRole.equalsIgnoreCase(Role.REPORTER.name()) && !newRole.equalsIgnoreCase(Role.MODERATOR.name()) && !newRole.equalsIgnoreCase(Role.ADMIN.name())) {
+        if (!newRole.name().equalsIgnoreCase(Role.USER.name()) && !newRole.name().equalsIgnoreCase(Role.REPORTER.name()) && !newRole.name().equalsIgnoreCase(Role.MODERATOR.name()) && !newRole.name().equalsIgnoreCase(Role.ADMIN.name())) {
             model.addAttribute("roleError", "No se proporciono un rol valido");
             // TODO HANDLE ERROR
             return "index";
