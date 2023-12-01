@@ -53,23 +53,9 @@ public class ManageUsersController {
             return "index";
         }
     try {
-        if (oldRole.equalsIgnoreCase("reporter")) {
-            this.userRolesService.changeReporterRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("moderator")) {
-            this.userRolesService.changeModeratorRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("admin")) {
-            this.userRolesService.changeAdminRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("user")) {
-            /* this.userService.changeUserRole(userId, newRole);*/
-            return "index";
-        } else {
-            model.addAttribute("roleError", "No se proporciono un rol valido");
-            // TODO HANDLE ERROR
-            return "index";
-        }
+        String res = this.userRolesService.changeRole(userId, newRole);
+        model.addAttribute("res", res);
+        return "index";
     } catch (NotFoundException e) {
         System.out.println(e.getMessage());
         return "index";

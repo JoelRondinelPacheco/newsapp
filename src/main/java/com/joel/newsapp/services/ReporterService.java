@@ -4,6 +4,7 @@ import com.joel.newsapp.dtos.reporter.EditReporterDTO;
 import com.joel.newsapp.dtos.reporter.RegisterReporterDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
+import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.Reporter;
 import com.joel.newsapp.entities.User;
@@ -11,6 +12,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IReporterRepository;
 import com.joel.newsapp.services.interfaces.IReporterService;
 import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.utils.BuildDTOs;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +23,11 @@ import java.util.Optional;
 
 @Service
 public class ReporterService implements IReporterService {
-    @Autowired
-    private IReporterRepository reporterRepository;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private Utils utils;
+    @Autowired private IReporterRepository reporterRepository;
+    @Autowired private ImageService imageService;
+    @Autowired private IUserService userService;
+    @Autowired private Utils utils;
+    @Autowired private BuildDTOs dtos;
 
     @Override
     public ReporterInfoDTO save(RegisterReporterDTO reporterDTO) throws Exception {
@@ -99,6 +98,23 @@ public class ReporterService implements IReporterService {
             return  reporterOptional.get();
         }
         throw new NotFoundException("Reporter not found");
+    }
+
+    @Override
+    public EmployeeDTO reporterInfo(String id) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public List<EmployeeDTO> allReporterInfo() {
+       List<Reporter> reporters = this.reporterRepository.findAll();
+       List<EmployeeDTO> employee = new ArrayList<>();
+
+       for (Reporter r : reporters) {
+           employee.add(this.dtos.createEmployeeInfo(r));
+       }
+
+       return employee;
     }
 
     public String updateSalaryAndEnabled(Integer salary, boolean active, String id){
