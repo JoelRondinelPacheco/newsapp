@@ -37,7 +37,7 @@ public class DashboardService implements IDashboardService {
     }
 
     @Override
-    public List<EmployeeDTO> getAllEmployees(Role role) throws NotFoundException {
+    public List<EmployeeDTO> getAllEmployees(Role role)  {
         List<EmployeeDTO> employees = new ArrayList<>();
         switch (role) {
             case REPORTER:

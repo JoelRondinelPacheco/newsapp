@@ -11,5 +11,5 @@ public class EmployeeDTO {
     private Double monthlySalary;
     private Boolean reporterEnabled;
     private String reporterId;
-    private UserInfoDTO reporterInfo;
+    private UserInfoDTO userInfo;
 }

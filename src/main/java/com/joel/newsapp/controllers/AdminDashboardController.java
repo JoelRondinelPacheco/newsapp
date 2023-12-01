@@ -43,7 +43,7 @@ public class AdminDashboardController {
         } else {
             List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role);
             model.addAttribute("employees", employees);
-            return "admin_dashboard/admin_reporters";
+            return "admin_dashboard/admin_employees";
         }
     }
 
