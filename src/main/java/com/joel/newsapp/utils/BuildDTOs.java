@@ -51,7 +51,7 @@ public class BuildDTOs {
 
     public EmployeeDTO createEmployeeInfo(Employee employee) {
         User user = employee.getUser();
-        UserInfoDTO reporterInfo = UserInfoDTO.builder()
+        UserInfoDTO userInfo = UserInfoDTO.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .displayName(user.getDisplayName())
@@ -61,10 +61,10 @@ public class BuildDTOs {
                 .id(user.getId())
                 .build();
         if (user.getImage() == null) {
-            reporterInfo.setProfilePictureId("user_img");
+            userInfo.setProfilePictureId("user_img");
         } else {
-            reporterInfo.setProfilePictureId(user.getImage().getId());
+            userInfo.setProfilePictureId(user.getImage().getId());
         }
-        return new EmployeeDTO(employee.getMonthlySalary(), employee.getEnabled(), employee.getId(), reporterInfo);
+        return new EmployeeDTO(employee.getMonthlySalary(), employee.getEnabled(), employee.getId(), userInfo);
     }
 }
