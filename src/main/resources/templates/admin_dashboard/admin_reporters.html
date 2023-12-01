@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{fragments/head :: head (title ='Egg News')}"></div>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="container">
+    <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_users :: admin_nav_users}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_users_state :: admin_nav_users_state (${role})}"></div>
+
+    <section>
+        <table class="table">
+            <thead>
+            <tr class="table-primary">
+                <th scope="col">Nombre</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Salario mensual</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <th th:text="${employee.userInfo.name}+' '+${employee.userInfo.lastname}" class="reporterName"></th>
+                <th th:text="${employee.userInfo.displayName}"></th>
+                <th th:text="${employee.userInfo.email}"></th>
+                <th>
+                    <button class="btn btn-warning btn-modal" th:attr="data-id=${employee.userInfo.id}, data-role=Periodista, data-name=${employee.userInfo.name + ' ' + employee.userInfo.lastname}, data-email=${employee.userInfo.email}" data-bs-toggle="modal"  data-bs-target="#exampleModal">Cambiar</button>
+                </th>
+                <th th:text="${employee.employeeEnabled}"></th>
+                <th>Agregar salario mensual en el dto</th>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <!-- Modal -->
+    <div class="modal modal-lg fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cambio de rol</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h1 id="modal-name-email"></h1>
+                    <div class="row">
+                        <div class="col">
+                            <h1 id="modal-role"></h1>
+                        </div>
+                        <div class="col" id="roles-list">
+                    <select name="roles">
+                        <option value="empty" id="role-default" selected>Nuevo Rol</option>
+                        <option class="modal-open" value="Usuario">Cliente</option>
+                        <option class="modal-open" value="Periodista">Periodista</option>
+                        <option class="modal-open" value="Moderador">Moderador</option>
+                        <option class="modal-open" value="Adminstrador">Adminstrador</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+    <script type="text/javascript" th:src="@{/scripts/changerole.js}"></script>
+
+</body>
+</html>

@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 @SpringBootApplication
 public class NewsApp {
 
@@ -21,8 +23,7 @@ public class NewsApp {
 	public CommandLineRunner createPasswordCommand(){
 		return args -> {
 			System.out.println(passwordEncoder.encode("pass123"));
-			System.out.println(passwordEncoder.encode("pass123"));
-			System.out.println(passwordEncoder.encode("pass123"));
+			System.out.println(UUID.randomUUID().toString());
 		};
 	}
 

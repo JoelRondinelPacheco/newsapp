@@ -26,9 +26,9 @@
                 <th th:text="${employee.userInfo.displayName}"></th>
                 <th th:text="${employee.userInfo.email}"></th>
                 <th>
-                    <button class="btn btn-warning btn-modal" th:attr="data-id=${user.id}, data-role=Periodista, data-name=${employee.userInfo.name + ' ' + employee.userInfo.lastname}, data-email=${employee.userInfo.email}" data-bs-toggle="modal"  data-bs-target="#exampleModal">Cambiar</button>
+                    <button class="btn btn-warning btn-modal" th:attr="data-id=${employee.userInfo.id}, data-role=Periodista, data-name=${employee.userInfo.name + ' ' + employee.userInfo.lastname}, data-email=${employee.userInfo.email}" data-bs-toggle="modal"  data-bs-target="#exampleModal">Cambiar</button>
                 </th>
-                <th th:text="${employee.enabled}"></th>
+                <th th:text="${employee.employeeEnabled}"></th>
                 <th>Agregar salario mensual en el dto</th>
             </tr>
             </tbody>

@@ -41,9 +41,15 @@ public class AdminDashboardController {
             model.addAttribute("users", users);
             return "admin_dashboard/admin_users";
         } else {
-            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role);
+            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role, state);
             model.addAttribute("employees", employees);
-            return "admin_dashboard/admin_employees";
+            if (role == Role.REPORTER) {
+                return "admin_dashboard/admin_reporters";
+            } else if (role == Role.ADMIN) {
+                return "admin_dashboard/admin_admins";
+            } else {
+                return "admin_dashboard/admin_moderators";
+            }
         }
     }
 
