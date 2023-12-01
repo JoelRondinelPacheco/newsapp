@@ -14,6 +14,7 @@ public class UserInfoDTO extends UserProfileInfoDTO {
     private Role role;
     private Boolean enabled;
     private String id;
+    private EmployeeInfoDTO employeeInfo;
 /*
     public UserInfoDTO(String name, String lastname, String displayName, String email, String profilePicture, Role role, Boolean enabled, String id) {
         super(name, lastname, displayName, email, profilePicture);

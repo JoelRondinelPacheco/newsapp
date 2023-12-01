@@ -92,6 +92,15 @@ public class ReporterService implements IReporterService {
         throw new NotFoundException("Reporter not found");
     }
 
+    @Override
+    public Reporter findByUserId(String id) throws NotFoundException {
+        Optional<Reporter> reporterOptional = this.reporterRepository.findByUser_Id(id);
+        if (reporterOptional.isPresent()) {
+            return  reporterOptional.get();
+        }
+        throw new NotFoundException("Reporter not found");
+    }
+
     public String updateSalaryAndEnabled(Integer salary, boolean active, String id){
        /* int filas =this.reporterRepository.updateSalaryAndEnabled(salary, active, id);
         if (filas != 0) {

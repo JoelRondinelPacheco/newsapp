@@ -1,5 +1,6 @@
 package com.joel.newsapp.dtos.reporter;
 
+import com.joel.newsapp.dtos.users.UserInfo;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.utils.Role;
 import lombok.AllArgsConstructor;
