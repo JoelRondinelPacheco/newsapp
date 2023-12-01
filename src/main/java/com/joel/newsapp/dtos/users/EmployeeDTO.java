@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 public class EmployeeDTO {
     private Double monthlySalary;
-    private Boolean reporterEnabled;
+    private Boolean employeeEnabled;
     private String reporterId;
-    private UserInfoDTO reporterInfo;
+    private UserInfoDTO userInfo;
 }
