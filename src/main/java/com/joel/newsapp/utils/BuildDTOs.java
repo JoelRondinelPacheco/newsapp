@@ -1,5 +1,8 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.users.Employee;
+import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
 import com.joel.newsapp.entities.User;
@@ -44,5 +47,24 @@ public class BuildDTOs {
             userDTO.setProfilePictureId(user.getImage().getId());
         }
         return userDTO;
+    }
+
+    public EmployeeDTO createEmployeeInfo(Employee employee) {
+        User user = employee.getUser();
+        UserInfoDTO reporterInfo = UserInfoDTO.builder()
+                .name(user.getName())
+                .lastname(user.getLastname())
+                .displayName(user.getDisplayName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .enabled(user.getEnabled())
+                .id(user.getId())
+                .build();
+        if (user.getImage() == null) {
+            reporterInfo.setProfilePictureId("user_img");
+        } else {
+            reporterInfo.setProfilePictureId(user.getImage().getId());
+        }
+        return new EmployeeDTO(employee.getMonthlySalary(), employee.getEnabled(), employee.getId(), reporterInfo);
     }
 }

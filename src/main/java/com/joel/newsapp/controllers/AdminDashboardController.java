@@ -2,14 +2,12 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
-import com.joel.newsapp.services.interfaces.INewsCategoryService;
-import com.joel.newsapp.services.interfaces.INewsService;
-import com.joel.newsapp.services.interfaces.IReporterService;
-import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +21,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/dashboard")
 public class AdminDashboardController {
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private IReporterService reporterService;
-    @Autowired
-    private INewsCategoryService categoryService;
-    @Autowired
-    private INewsService newsService;
+    @Autowired private IUserService userService;
+    @Autowired private IReporterService reporterService;
+    @Autowired private INewsCategoryService categoryService;
+    @Autowired private INewsService newsService;
+    @Autowired private IDashboardService dashboardService;
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
@@ -39,18 +34,17 @@ public class AdminDashboardController {
 
     @GetMapping("/role/{role}")
     public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
-        List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
-        model.addAttribute("users", users);
         model.addAttribute("role", role);
         model.addAttribute("state", state);
-        if (role == Role.USER || role == Role.MODERATOR) {
+        if (role == Role.USER) {
+            List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
+            model.addAttribute("users", users);
             return "admin_dashboard/admin_users";
-        } else if (role == Role.REPORTER) {
-            return "admin_dashboard/admin_reporters";
         } else {
-            return "admin_dashboard/admin_dashboard";
+            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role);
+            model.addAttribute("employees", employees);
+            return "admin_dashboard/admin_reporters";
         }
-
     }
 
     @GetMapping("/categories")

@@ -24,61 +24,43 @@ public class UserRolesService implements IUserRolesService {
     @Autowired private IReporterRepository reporterRepository;
     @Autowired private IAdminRepository adminRepository;
     @Autowired private IModeratorRepository moderatorRepository;
-    @Override
-    public String changeReporterRole(String userId, Role newRole) throws NotFoundException {
-        User user = this.userService.findById(userId);
 
-        if (user.getRole() == newRole) {
-            return "Same role";
+    @Override
+    public String changeRole(String userId, Role newRole) throws NotFoundException {
+        User user = this.userService.findById(userId);
+        if (user.getRole() == newRole) { return "Same role"; }
+
+        if (user.getRole() == Role.REPORTER) {
+            Reporter reporter = this.reporterService.findByUserId(userId);
+            reporter.setEnabled(false);
+            this.reporterRepository.save(reporter);
         }
 
-        Reporter reporter = this.reporterService.findByUserId(userId);
+        if (user.getRole() == Role.ADMIN) {
+            Admin admin = this.adminService.findByUserId(userId);
+            this.adminRepository.delete(admin);
+        }
+
+        if (user.getRole() == Role.MODERATOR) {
+            Moderator mod = this.moderatorService.findByUserId(userId);
+            this.moderatorRepository.delete(mod);
+        }
 
         switch (newRole) {
             case USER:
-                reporter.setEnabled(false);
                 user.setRole(Role.USER);
-                this.reporterRepository.save(reporter);
                 this.userRepository.save(user);
                 return "Role changed from Reporter to User";
-
-            case ADMIN:
-                reporter.setEnabled(false);
-                user.setRole(Role.ADMIN);
-                this.userRepository.save(user);
-                Admin admin = Admin.builder()
+            case REPORTER:
+                user.setRole(Role.REPORTER);
+                Reporter reporter = Reporter.builder()
                         .user(user)
-                        .monthlySalary(100D)
+                        .monthlySalary(1D)
                         .enabled(true)
                         .build();
-                this.adminRepository.save(admin);
-                this.reporterRepository.save(reporter);
-                return "Role changed from Reporter to Admin";
-            case MODERATOR:
-                reporter.setEnabled(false);
-                user.setRole(Role.MODERATOR);
                 this.userRepository.save(user);
-                Moderator mod = Moderator.builder()
-                        .user(user)
-                        .monthlySalary(100D)
-                        .enabled(true)
-                        .build();
-                this.moderatorRepository.save(mod);
                 this.reporterRepository.save(reporter);
-                return "Role changed from Reporter to Moderator";
-        }
-        return "Invalid Role";
-    }
-
-    @Override
-    public String changeUserRole(String userId, Role newRole) throws NotFoundException {
-        User user = this.userService.findById(userId);
-
-        if (user.getRole() == newRole) {
-            return "Same role";
-        }
-
-        switch (newRole) {
+                return "Role changed from User to Reporter";
             case ADMIN:
                 user.setRole(Role.ADMIN);
                 this.userRepository.save(user);
@@ -101,15 +83,7 @@ public class UserRolesService implements IUserRolesService {
                 return "Role changed from Reporter to Moderator";
         }
         return "Invalid Role";
+
     }
 
-    @Override
-    public String changeAdminRole(String userId, Role newRole) throws NotFoundException  {
-        return null;
-    }
-
-    @Override
-    public String changeModeratorRole(String userId, Role newRole) throws NotFoundException {
-        return null;
-    }
 }
