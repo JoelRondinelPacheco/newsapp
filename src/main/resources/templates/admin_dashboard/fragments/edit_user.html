@@ -1,0 +1,58 @@
+<section th:fragment="edit_user" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal modal-lg fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5">Edicion</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h3 id="modal-user-name"></h3>
+                    <h3 id="modal-user-email"></h3>
+                    <div>
+                        <div class="row">
+                            <div class="col"><button id="modal-current-rol" class="btn btn-outline-secondary"></button></div>
+                            <div class="col">
+                                <button class="btn btn-secondary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">                                  
+                                    <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Dropdown
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                        <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="col" id="roles-list">
+                            <select name="roles">
+                                <option value="empty" id="role-default" selected>Nuevo Rol</option>
+                                <option class="modal-open" value="Usuario">Cliente</option>
+                                <option class="modal-open" value="Periodista">Periodista</option>
+                                <option class="modal-open" value="Moderador">Moderador</option>
+                                <option class="modal-open" value="Adminstrador">Adminstrador</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
