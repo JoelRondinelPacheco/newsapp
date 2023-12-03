@@ -1,34 +1,73 @@
 const d = document
-const $modalBody = d.getElementById('modal-body')
-const $options = d.querySelectorAll('.btn-modal')
-const $name = d.getElementById('modal-name-email')
-const $role = d.getElementById('modal-role')
-const $closeBtn = d.getElementById('btn-modal-close')
+
+const $editBtn = d.querySelectorAll('.btn-modal')
+const $closeBtn = d.querySelectorAll('.modal-close')
+const $saveBtn = d.getElementById('modal-save')
+
+const $modalBody = d.querySelector('.modal-body')
+const $template = d.getElementById('modal-body-template')
+
 const $rolesList = d.getElementById('roles-list')
 const $roleDefault = d.getElementById('role-default')
 
+const rolesUrl = "http://localhost:8080/utils/roles"
+var roles;
 
-for (let i = 0; i < $options.length; i++) {
-    $options[i].addEventListener("click", function (e) {
-        $name.innerText = e.currentTarget.getAttribute('data-name')
-        $role.innerText = `${e.currentTarget.getAttribute('data-role')} ->`
-        $rolesList.innerHTML = `<select name="roles">
-        <option value="empty" id="role-default" selected>Nuevo Rol</option>
-        <option class="modal-open" value="Usuario">Cliente</option>
-        <option class="modal-open" value="Periodista">Periodista</option>
-        <option class="modal-open" value="Moderador">Moderador</option>
-        <option class="modal-open" value="Adminstrador">Adminstrador</option>
-    </select>`
+var $listRolesFragment = d.createDocumentFragment()
 
-    
-    })
+const toPascalCase = str =>
+    str
+        .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+        .map(x => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase())
+        .join('');
+
+
+async function roles(url) {
+    try {
+        const res = await fetch(url)
+        const json = await res.json();
+        console.log(json)
+        roles = json
+    } catch (err) {
+        console.log("Error: " + err);
+    }
 }
 
-$closeBtn.addEventListener("click", function() {
-    $name.innerText = ''
-    $role.innerText = ''
-    $rolesList.innerHTML = ''
+roles(rolesUrl)
 
+$editBtn.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        let role = toPascalCase(e.currentTarget.getAttribute('data-role'))
 
+        const clone = d.importNode($template.content, true)
+
+        const $name = clone.getElementById('modal-user-name')
+        const $email = clone.getElementById('modal-user-email')
+        const $role = clone.getElementById('modal-current-rol')
+        const $modalRolesMenu = clone.getElementById('modal-roles-menu')
+
+        $name.innerHTML = e.currentTarget.getAttribute('data-name')
+        $email.innerHTML = e.currentTarget.getAttribute('data-email')
+        $role.innerHTML = role
+
+        roles.forEach(r => {
+            if (r != role) {
+                let $option = d.createElement("option")
+                $option.value = r
+                $option.innerHTML = r
+                $modalRolesMenu.appendChild($option)
+            }
+        })
+
+        $modalBody.appendChild(clone)
+
+    })
+})
+
+console.log($closeBtn)
+$closeBtn.forEach(btn => {
+    btn.addEventListener("click", function () {
+       $modalBody.innerHTML = ''
+    })
 })
 
