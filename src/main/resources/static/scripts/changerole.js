@@ -62,7 +62,7 @@ $editBtn.forEach(btn => {
 
         if (role != "User") {
             $salaryContainer.innerHTML = `<label for="salary" class="form-label">Email address</label>
-            <input type="text" class="form-control" id="salary" value=${salary != (null || false) ? salary : 0}>`
+            <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
         }
 
         $modalBody.appendChild(clone)
@@ -70,9 +70,19 @@ $editBtn.forEach(btn => {
         $rolesList = d.getElementById('modal-roles-menu')
         $rolesList.addEventListener("change", (e) => {
             console.log($rolesList.value)
-            if ($rolesList.value != "User" && role) {
-                
-            }
+            if ($rolesList.value == "User") {
+                $salaryContainer.innerHTML = ''
+            } else {
+                $salaryContainer.innerHTML = `<label for="salary" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
+            } 
+            
+            /*else if (role == "User" && $rolesList.value != "User") {
+                $salaryContainer.innerHTML = `<label for="salary" class="form-label">Email address</label>
+            <input type="text" class="form-control" id="salary" value=${salary != (null || false) ? salary : 0}>`
+            } else {
+
+            }*/
         })
         
     })
