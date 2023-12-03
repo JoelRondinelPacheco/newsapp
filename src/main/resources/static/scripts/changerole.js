@@ -61,8 +61,7 @@ $editBtn.forEach(btn => {
         })
 
         if (role != "User") {
-            $salaryContainer.innerHTML = `<label for="salary" class="form-label">Email address</label>
-            <input type="text" class="form-control" id="salary" value=${salary != (null || false) ? salary : 0}>`
+            $salaryContainer.innerHTML = createSalary(salary)
         }
 
         $modalBody.appendChild(clone)
@@ -70,21 +69,21 @@ $editBtn.forEach(btn => {
         $rolesList = d.getElementById('modal-roles-menu')
         $rolesList.addEventListener("change", (e) => {
             console.log($rolesList.value)
-            if ($rolesList.value != "User" && role) {
-                
-            }
+            if ($rolesList.value == "User") {
+                $salaryContainer.innerHTML = ''
+            } else {
+                $salaryContainer.innerHTML = createSalary(salary)
+            } 
+            
+
         })
         
     })
 })
 
 function createSalary(salary) {
-    let $salary = d.createElement("div")
-    $salary.classList.add("col")
-    $salary.id = "salary-input"
-    $salary.innerHTML = `<label for="salary" class="form-label">Email address</label>
-    <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
-    return $salary
+    return `<span class="input-group-text">Salary</span>
+    <input type="text" class="form-control" placeholder="Salary" id="salary" value=${salary != null ? salary : 0}>`
 }
 
 console.log($closeBtn)
@@ -93,4 +92,5 @@ $closeBtn.forEach(btn => {
        $modalBody.innerHTML = ''
     })
 })
+
 

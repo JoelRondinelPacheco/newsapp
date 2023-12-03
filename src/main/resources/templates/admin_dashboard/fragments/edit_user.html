@@ -10,37 +10,42 @@
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary modal-close" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="modal-save">Save changes</button>
+                    <button type="button" class="btn btn-secondary modal-close" data-bs-dismiss="modal">Cerar</button>
+                    <button type="button" class="btn btn-primary" id="modal-save">Guardar cambios</button>
 
                 </div>
             </div>
         </div>
     </div>
-    <template id="modal-body-template"><section>
-        <h3 id="modal-user-name" class="fs-5"></h3>
-        <h3 id="modal-user-email" class="fs-6 fw-normal"></h3>
-        <div>
-            <div class="row">
-                <div class="col"><button id="modal-current-rol" class="btn btn-outline-secondary"></button>
+    <template id="modal-body-template">
+        <section>
+            <h3 id="modal-user-name" class="fs-5 mb-0"></h3>
+            <h3 id="modal-user-email" class="fs-6 fw-normal mb-3"></h3>
+            <div>
+                <div class="row">
+                    <div class="col-2"><button id="modal-current-rol" class="btn btn-outline-secondary w-100 pe-none"></button>
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-secondary pe-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="col-3">
+                        <select id="modal-roles-menu" class="form-select" aria-label="Default select example">
+                            <option selected>Nuevo Rol</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group" id="modal-salary"></div>
+                    </div>
                 </div>
-                <div class="col">
-                    <button class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-arrow-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="col">
-                    <select id="modal-roles-menu" class="form-select" aria-label="Default select example">
-                        <option selected>Nuevo Rol</option>
-                    </select>
 
-                </div>
+
             </div>
-        </div>
-    </section>
+        </section>
     </template>
 </section>
