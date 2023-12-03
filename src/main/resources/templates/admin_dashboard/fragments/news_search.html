@@ -1,0 +1,41 @@
+<section th:fragment="news_search" xmlns:th="http://www.thymeleaf.org">
+    <section class="my-3">
+        <div class="row">
+            <div class="col-5">
+                <div class="input-group">
+                    <label class="input-group-text" for="firstName">Autor</label>
+                    <input type="text" aria-label="First name" id="firstName" class="form-control mainSearch" placeholder="Nombre"
+                        name="reporterName">
+                    <input type="text" aria-label="Last name" class="form-control mainSearch" placeholder="Apellido"
+                        name="reporterLastname">
+                </div>
+            </div>
+            <div class="col-7 mb-3">
+                <div class="input-group">
+                    <label for="newsTitle" class="input-group-text">Titulo</label>
+                    <input type="text" class="form-control mainSearch" id="newsTitle" name="newsTitle">
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-5 mb-3">
+                <div class="input-group">
+                    <label for="newsDate" class="input-group-text">Fecha</label>
+                    <input type="date" id="newsDate" class="form-control mainSearch" name="newsDate">
+                </div>
+            </div>
+            <div class="col-7 mb-3">
+                <div class="input-group">
+                    <label class="input-group-text" for="newsCategory">Categoria</label>
+                    <select class="form-select" id="newsCategory">
+                        <option selected>Elegir...</option>
+                        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                    
+                </div>
+            </div>
+        </div>
+        <button id="searchBtn" class="col-3 btn btn-primary">Filtrar</button>
+    </section>
+</section>

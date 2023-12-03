@@ -32,7 +32,6 @@ $searchBtn.addEventListener("click", async (e) => {
         console.log(urlParams)
         if (index < (maxIndex -1)) urlParams += '&'
     });
-console.log(urlParams)
     searchMainNews(urlParams)
 })
 

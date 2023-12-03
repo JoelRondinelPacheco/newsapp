@@ -1,10 +1,12 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.Employee;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
+import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.entities.User;
 import org.springframework.stereotype.Component;
 
@@ -66,5 +68,19 @@ public class BuildDTOs {
             userInfo.setProfilePictureId(user.getImage().getId());
         }
         return new EmployeeDTO(employee.getMonthlySalary(), employee.getEnabled(), employee.getId(), userInfo);
+    }
+
+    public List<CategoryDTO> createListCategoryDTO(List<NewsCategory> categories) {
+        List<CategoryDTO> dto = new ArrayList<>();
+        for (NewsCategory c : categories) {
+            dto.add(
+                    CategoryDTO.builder()
+                            .name(c.getName())
+                            .id(c.getId())
+                            .selected(false)
+                    .build()
+        );
+        }
+        return dto;
     }
 }

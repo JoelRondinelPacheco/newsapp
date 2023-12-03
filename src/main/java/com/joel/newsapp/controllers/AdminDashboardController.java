@@ -1,6 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
+import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
@@ -43,13 +44,14 @@ public class AdminDashboardController {
         } else {
             List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role, state);
             model.addAttribute("employees", employees);
-            if (role == Role.REPORTER) {
+            return "admin_dashboard/admin_employees";
+            /*if (role == Role.REPORTER) {
                 return "admin_dashboard/admin_reporters";
             } else if (role == Role.ADMIN) {
                 return "admin_dashboard/admin_admins";
             } else {
                 return "admin_dashboard/admin_moderators";
-            }
+            }*/
         }
     }
 
@@ -101,6 +103,7 @@ public class AdminDashboardController {
     @GetMapping("/news/all")
     public String adminNewsAll(ModelMap model) {
         List<News> news = this.newsService.getAll();
+        List<CategoryDTO> categories = this.categoryService.findAllDTO();
         if(news.size() > 0) {
             model.addAttribute("listNews", news);
         } else {
@@ -108,10 +111,8 @@ public class AdminDashboardController {
         }
         System.out.println("noticias");
         System.out.println(news.size());
-        for (News n : news) {
-            System.out.println(n.getTitle());
-        };
         model.addAttribute("news", "all");
+        model.addAttribute("categories", categories);
         return "admin_dashboard/admin_news_all";
     }
 
