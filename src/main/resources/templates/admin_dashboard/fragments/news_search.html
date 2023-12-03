@@ -1,0 +1,27 @@
+<section th:fragment="news_search" xmlns:th="http://www.thymeleaf.org">
+    <section class="my-3">
+        <div class="row">
+            <div class="col-4">
+                <div class="input-group">
+                    <span class="input-group-text">Autor</span>
+                    <input type="text" aria-label="First name" class="form-control mainSearch" placeholder="Nombre" name="reporterName">
+                    <input type="text" aria-label="Last name" class="form-control mainSearch" placeholder="Apellido"
+                        name="reporterLastname">
+                </div>
+            </div>
+            <div class="col-6 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Titulo</span>
+                    <input type="text" class="form-control mainSearch" id="exampleInputPassword1"
+                        name="newsTitle">
+                </div>
+            </div>
+            <div class="col-2 mb-3">
+                <div class="input-group">
+                    <input type="date" class="form-control mainSearch" name="newsDate">
+                </div>
+            </div>
+        </div>
+        <button id="searchBtn" class="col-3 btn btn-primary">Filtrar</button>
+    </section>
+</section>
