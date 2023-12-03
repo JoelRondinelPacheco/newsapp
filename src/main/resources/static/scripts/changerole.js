@@ -7,7 +7,7 @@ const $saveBtn = d.getElementById('modal-save')
 const $modalBody = d.querySelector('.modal-body')
 const $template = d.getElementById('modal-body-template')
 
-const $rolesList = d.getElementById('modal-roles-menu')
+var $rolesList
 const $roleDefault = d.getElementById('role-default')
 
 const rolesUrl = "http://localhost:8080/utils/roles"
@@ -44,6 +44,7 @@ $editBtn.forEach(btn => {
         const $name = clone.getElementById('modal-user-name')
         const $email = clone.getElementById('modal-user-email')
         const $role = clone.getElementById('modal-current-rol')
+        const $salaryContainer = clone.getElementById('modal-salary')
         const $modalRolesMenu = clone.getElementById('modal-roles-menu')
 
         $name.innerHTML = e.currentTarget.getAttribute('data-name')
@@ -60,22 +61,31 @@ $editBtn.forEach(btn => {
         })
 
         if (role != "User") {
-            let $salary = d.createElement("div")
-            $salary.classList.add("col")
-            $salary.innerHTML = `<label for="salary" class="form-label">Email address</label>
-            <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
-            clone.appendChild($salary)
+            $salaryContainer.innerHTML = `<label for="salary" class="form-label">Email address</label>
+            <input type="text" class="form-control" id="salary" value=${salary != (null || false) ? salary : 0}>`
         }
 
         $modalBody.appendChild(clone)
 
+        $rolesList = d.getElementById('modal-roles-menu')
+        $rolesList.addEventListener("change", (e) => {
+            console.log($rolesList.value)
+            if ($rolesList.value != "User" && role) {
+                
+            }
+        })
+        
     })
 })
 
-$rolesList.addEventListener("change", (e) => {
-    console.log("cambio")
-    console.log(e.value)
-})
+function createSalary(salary) {
+    let $salary = d.createElement("div")
+    $salary.classList.add("col")
+    $salary.id = "salary-input"
+    $salary.innerHTML = `<label for="salary" class="form-label">Email address</label>
+    <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
+    return $salary
+}
 
 console.log($closeBtn)
 $closeBtn.forEach(btn => {
