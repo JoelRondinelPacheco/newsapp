@@ -1,24 +1,38 @@
 <section th:fragment="news_search" xmlns:th="http://www.thymeleaf.org">
     <section class="my-3">
         <div class="row">
-            <div class="col-4">
+            <div class="col-5">
                 <div class="input-group">
-                    <span class="input-group-text">Autor</span>
-                    <input type="text" aria-label="First name" class="form-control mainSearch" placeholder="Nombre" name="reporterName">
+                    <label class="input-group-text" for="firstName">Autor</label>
+                    <input type="text" aria-label="First name" id="firstName" class="form-control mainSearch" placeholder="Nombre"
+                        name="reporterName">
                     <input type="text" aria-label="Last name" class="form-control mainSearch" placeholder="Apellido"
                         name="reporterLastname">
                 </div>
             </div>
-            <div class="col-6 mb-3">
+            <div class="col-7 mb-3">
                 <div class="input-group">
-                    <span class="input-group-text">Titulo</span>
-                    <input type="text" class="form-control mainSearch" id="exampleInputPassword1"
-                        name="newsTitle">
+                    <label for="newsTitle" class="input-group-text">Titulo</label>
+                    <input type="text" class="form-control mainSearch" id="newsTitle" name="newsTitle">
                 </div>
             </div>
-            <div class="col-2 mb-3">
+
+        </div>
+        <div class="row">
+            <div class="col-5 mb-3">
                 <div class="input-group">
-                    <input type="date" class="form-control mainSearch" name="newsDate">
+                    <label for="newsDate" class="input-group-text">Fecha</label>
+                    <input type="date" id="newsDate" class="form-control mainSearch" name="newsDate">
+                </div>
+            </div>
+            <div class="col-7 mb-3">
+                <div class="input-group">
+                    <label class="input-group-text" for="newsCategory">Categoria</label>
+                    <select class="form-select" id="newsCategory">
+                        <option selected>Elegir...</option>
+                        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                    
                 </div>
             </div>
         </div>
