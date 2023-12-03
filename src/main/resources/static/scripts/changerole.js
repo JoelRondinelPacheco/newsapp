@@ -7,13 +7,12 @@ const $saveBtn = d.getElementById('modal-save')
 const $modalBody = d.querySelector('.modal-body')
 const $template = d.getElementById('modal-body-template')
 
-const $rolesList = d.getElementById('roles-list')
+const $rolesList = d.getElementById('modal-roles-menu')
 const $roleDefault = d.getElementById('role-default')
 
 const rolesUrl = "http://localhost:8080/utils/roles"
-var roles;
 
-var $listRolesFragment = d.createDocumentFragment()
+var roles;
 
 const toPascalCase = str =>
     str
@@ -40,6 +39,7 @@ $editBtn.forEach(btn => {
         let role = toPascalCase(e.currentTarget.getAttribute('data-role'))
 
         const clone = d.importNode($template.content, true)
+        const salary = e.currentTarget.getAttribute('data-salary')
 
         const $name = clone.getElementById('modal-user-name')
         const $email = clone.getElementById('modal-user-email')
@@ -59,9 +59,22 @@ $editBtn.forEach(btn => {
             }
         })
 
+        if (role != "User") {
+            let $salary = d.createElement("div")
+            $salary.classList.add("col")
+            $salary.innerHTML = `<label for="salary" class="form-label">Email address</label>
+            <input type="text" class="form-control" id="salary" value=${salary != null ? salary : 0}>`
+            clone.appendChild($salary)
+        }
+
         $modalBody.appendChild(clone)
 
     })
+})
+
+$rolesList.addEventListener("change", (e) => {
+    console.log("cambio")
+    console.log(e.value)
 })
 
 console.log($closeBtn)
