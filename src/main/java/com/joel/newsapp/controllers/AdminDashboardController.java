@@ -3,6 +3,7 @@ package com.joel.newsapp.controllers;
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.search.AllNewsForm;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.entities.News;
@@ -101,7 +102,16 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/news/all")
-    public String adminNewsAll(ModelMap model) {
+    public String adminNewsAll(@RequestParam(required = false) String reporterName, @RequestParam(required = false) String reporterLastname, @RequestParam(required = false) String newsTitle, @RequestParam(required = false) String newsDate, @RequestParam(required = false) String newsCategory, ModelMap model) {
+
+        AllNewsForm form = AllNewsForm.builder()
+                .reporterName(reporterName != null ? reporterName : "")
+                .reporterLastname(reporterLastname != null ? reporterLastname : "")
+                .newsTitle(newsTitle != null ? newsTitle : "")
+                .newsDate(newsDate != newsDate ? newsDate : "")
+                .newsCategory(newsTitle != null ? newsTitle : "")
+                .build();
+
         List<News> news = this.newsService.getAll();
         List<CategoryDTO> categories = this.categoryService.findAllDTO();
         if(news.size() > 0) {
@@ -113,6 +123,7 @@ public class AdminDashboardController {
         System.out.println(news.size());
         model.addAttribute("news", "all");
         model.addAttribute("categories", categories);
+        model.addAttribute("form", form);
         return "admin_dashboard/admin_news_all";
     }
 

@@ -5,7 +5,8 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <section class="row">
-       <div th:if="${mainFeaturedEmpty}" th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}">
+       <div th:if="${mainFeaturedEmpty}" th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}"></div>
+        <div th:if="${mainFeatured != null}" th:replace="~{fragments/home/main_featured :: main_featured}"></div>
        </div>
         <div class="col-lg-4">
             <h4 class="fs-4 fw-normal" >Últimas noticias</h4>

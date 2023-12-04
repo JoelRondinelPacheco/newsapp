@@ -1,7 +1,10 @@
 const d = document
 const urlMain = "http://localhost:8080/search/main?";
 const urlCategory = "http://localhost:8080/search/category?";
+const urlSetMainFeatured = "http://localhost:8080/admin/news/main/";
 var searchUrl;
+
+const $changeMain = d.getElementById("change-main-featured")
 
 const $searchBtn = d.getElementById("searchBtn")
 const $clearSearchBtn = d.getElementById("clearSearchBtn")
@@ -65,7 +68,7 @@ async function searchMainNews(url) {
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
             $newsDate.innerText = el.newsDate
-            $setBtn.innerHTML = `<a class="btn btn-primary setMainNewsBtn" id="${el.newsId}">Seleccionar</a>`
+            $setBtn.innerHTML = `<a class="btn btn-primary setMainNewsBtn" href="${urlSetMainFeatured}${el.newsId}">Seleccionar</a>`
 
 
             $tr.appendChild($category)

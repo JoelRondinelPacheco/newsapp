@@ -33,8 +33,10 @@ public class HomeController {
 
         try {
             News mainFeatured = this.newsService.mainFeatured();
+            System.out.println(mainFeatured.getTitle());
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
+            System.out.println("main empty");
             model.addAttribute("mainFeaturedEmpty", true);
         }
 

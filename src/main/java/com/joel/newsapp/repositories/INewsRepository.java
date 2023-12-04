@@ -66,4 +66,6 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
 
     @Query(value = "SELECT n.* FROM news_table n WHERE n.title = :title AND DATE(n.date) = :newsDate", nativeQuery = true)
     List<News> getNewsByTitleAndDate(@Param("title") String title, @Param("newsDate") LocalDate date);
+
+    List<News> findAllByMainFeatured(boolean b);
 }

@@ -222,6 +222,19 @@ public class NewsService implements INewsService {
         return null;
     }
 
+    @Override
+    public News setMainFeatured(String newsId) throws NotFoundException {
+        News news = this.getById(newsId);
+        List<News> main = this.newsRepository.findAllByMainFeatured(true);
+        for (News n : main) {
+            n.setMainFeatured(false);
+            this.newsRepository.save(n);
+        }
+        news.setMainFeatured(true);
+        News newsSaved = this.newsRepository.save(news);
+        return newsSaved;
+    }
+
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();
