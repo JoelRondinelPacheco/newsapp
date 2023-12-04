@@ -36,7 +36,7 @@ public class News extends Base{
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private NewsCategory mainCategory;
 
