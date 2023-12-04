@@ -54,15 +54,18 @@
         </thead>
         <tbody>
         <tr th:each="featured : ${featuredByCategory}" class="align-items-center">
-            <th colspan="3" th:text="${featured.categoryName}"></th>
-                <td th:unless="${hasFeatured}" colspan="2" class="row align-items-center">
+            <th th:text="${featured.categoryName}"></th>
+                <td th:if="${featured.hasFeatured == false}" class="row align-items-center">
                     <p class="color-danger col-9">No hay ninguna noticia destacada para esta categoria</p>
                     <button type="button" th:id="${featured.categoryId}" class="btn btn-primary categoryBtn col-3" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button>
                 </td>
         
-            <div th:if="${hasFeatured}">
-            <td th:text="${featured.newsTitle}"></td>
-            <td th:text="${featured.newsAuthor}"></td>
+            <div th:if="${featured.hasFeatured == true}">
+            <td th:text="${featured.news.newsTitle}"></td>
+            <td th:text="${featured.news.newsDate}"></td>
+            <td th:text="${featured.news.reporterName}"></td>
+            <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured">Cambiar</button></td>
+
 
             </div>
         </tr>

@@ -27,7 +27,7 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
 
     List<News> findByFeaturedCategory(Boolean b);
 
-    List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
+    List<News> findByFeaturedCategoryAndMainCategory_Id(boolean b, String category);
 
     List<News> findByAuthor_User_NameAndAuthor_User_Lastname(String name, String lastname);
     List<News> findByAuthor_User_NameAndAuthor_User_LastnameAndTitle(String name, String lastname, String title);
@@ -73,4 +73,8 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
             "JOIN users u ON r.user_id = u.id " +
             "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND n.category_id = :id", nativeQuery = true)
     List<News> getByNameAndCategory(@Param("reporterName") String name, @Param("id") String id);
+
+    List<News> findAllByFeaturedCategoryAndMainCategory_Id(boolean b, String id);
+
+    List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
 }

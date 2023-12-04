@@ -2,27 +2,41 @@ const d = document
 const urlMain = "http://localhost:8080/search/main?";
 const urlCategory = "http://localhost:8080/search/category?";
 const urlSetMainFeatured = "http://localhost:8080/admin/news/main/";
+const urlSetCategoryFeatured = "http://localhost:8080/admin/news/category/";
 var searchUrl;
+var setMain = true
 
 const $changeMain = d.getElementById("change-main-featured")
 
 const $searchBtn = d.getElementById("searchBtn")
+
 const $clearSearchBtn = d.getElementById("clearSearchBtn")
+const $closeBtn = d.querySelectorAll(".modal-close-btn")
+
+const $mainBtn = d.getElementById("mainBtn")
+const $categoryBtn = d.querySelectorAll(".categoryBtn");
+
 const $mainSearchInput = d.querySelectorAll(".mainSearch")
 const $mainSearchList = d.getElementById("mainSearchList")
 const $mainFragment = d.createDocumentFragment();
-const $mainBtn = d.getElementById("mainBtn")
-const $categoryBtn = d.querySelectorAll(".categoryBtn");
+
+$closeBtn.forEach(btn => {
+    btn.addEventListener("click", () => {
+    $mainSearchList.innerHTML = ''
+    })
+})
 
 $categoryBtn.forEach(btn => {
     btn.addEventListener("click", () => {
        searchUrl = `${urlCategory}categoryId=${btn.id}&`
+       setMain = false
 
     })
 })
 
 $mainBtn.addEventListener("click", () => {
     searchUrl = urlMain
+    setMain = true
 })
 
 $searchBtn.addEventListener("click", async (e) => {
@@ -68,7 +82,7 @@ async function searchMainNews(url) {
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
             $newsDate.innerText = el.newsDate
-            $setBtn.innerHTML = `<a class="btn btn-primary setMainNewsBtn" href="${urlSetMainFeatured}${el.newsId}">Seleccionar</a>`
+            $setBtn.innerHTML = `<a class="btn btn-primary" href="${setMain ? urlSetMainFeatured : urlSetCategoryFeatured}${el.newsId}">Seleccionar</a>`
 
 
             $tr.appendChild($category)
