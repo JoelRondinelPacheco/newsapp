@@ -48,8 +48,10 @@ public class HomeController {
         List<NewsByCategoryDTO> news = new ArrayList<>();
         for (NewsCategory category : categories) {
             List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
-            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat)));
+            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat), newsCat.isEmpty() ? true : false));
+
         }
+
 
         List<News> latestNews = this.newsService.latest(5);
         List<NewsHomeDTO> latest = this.dtos.createListNewsHomeDTO(latestNews);

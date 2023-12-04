@@ -68,4 +68,9 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> getNewsByTitleAndDate(@Param("title") String title, @Param("newsDate") LocalDate date);
 
     List<News> findAllByMainFeatured(boolean b);
+    @Query(value = "SELECT n.* FROM news_table n " +
+            "LEFT JOIN reporters r ON n.author_id = r.id " +
+            "JOIN users u ON r.user_id = u.id " +
+            "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND n.category_id = :id", nativeQuery = true)
+    List<News> getByNameAndCategory(@Param("reporterName") String name, @Param("id") String id);
 }

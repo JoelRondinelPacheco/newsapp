@@ -98,6 +98,7 @@ public class BuildDTOs {
                 .newsCategory(news.getMainCategory().getName())
                 .reporterId(news.getAuthor().getUser().getId())
                 .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
+                .reporterEmail(news.getAuthor().getUser().getEmail())
                 .build();
 
     }

@@ -183,7 +183,7 @@ public class NewsService implements INewsService {
                     news = this.newsRepository.findByReporterName(name);
                 } else {
                     System.out.println("busco por nombre: " + name + ". Category id: " + category);
-
+                    news = this.newsRepository.getByNameAndCategory(name, category);
                 }
             }
         } else if (!body.getNewsTitle().isBlank()) {
@@ -210,7 +210,6 @@ public class NewsService implements INewsService {
             return res;
         }
         res = this.createListNewsSearchRes(news);
-        System.out.println(res.get(0).getNewsDate());
         return res;
 
     }
