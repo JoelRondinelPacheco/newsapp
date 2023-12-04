@@ -28,7 +28,7 @@
             <div class="col-7 mb-3">
                 <div class="input-group">
                     <label class="input-group-text" for="newsCategory">Categoria</label>
-                    <select class="form-select" id="newsCategory">
+                    <select class="form-select" id="newsCategory" name="newsCategory">
                         <option selected>Elegir...</option>
                         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                         </select>
@@ -36,6 +36,7 @@
                 </div>
             </div>
         </div>
-        <button id="searchBtn" class="col-3 btn btn-primary">Filtrar</button>
+        <button id="searchBtn" class="col-3 btn btn-primary">Filtrar</button>        <button id="searchBtn" class="col-3 btn btn-primary">Limpiar busqueda</button>
+
     </section>
 </section>

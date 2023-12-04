@@ -5,21 +5,19 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <section class="row">
-       <div th:if="${mainFeaturedEmpty}" th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}">
+       <div th:if="${mainFeaturedEmpty}" th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}"></div>
+        <div th:if="${mainFeatured != null}" th:replace="~{fragments/home/main_featured :: main_featured}"></div>
        </div>
         <div class="col-lg-4">
             <h4 class="fs-4 fw-normal" >Últimas noticias</h4>
+            <div class="ms-3 mb-2" th:each="latestNew : ${latest}">
+                <h4 class="fs-6 fw-light m-0" th:text="${latestNew.newsHour}"></h4><h4 class="fs-5 fw-normal lh-1 ps-2" th:text="${latestNew.newsTitle}">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+            </div>
             <div class="ms-3 mb-2">
-                <h4 class="fs-6 fw-light m-0">16:30</h4><h4 class="fs-5 fw-normal lh-1">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+                <h4 class="fs-6 fw-light m-0">16:30</h4><h4 class="fs-5 fw-normal lh-1 ps-2">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
             </div>
             <div class="ms-3">
-                <h4 class="fs-6 fw-light m-0">16:00</h4><h4 class="fs-5 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
-            </div>
-            <div class="ms-3">
-                <h4 class="fs-6 fw-light m-0">15:30</h4><h4 class="fs-5 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
-            </div>
-            <div class="ms-3">
-                <h4 class="fs-6 fw-light m-0">15:00</h4><h4 class="fs-5 fw-normal">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+                <h4 class="fs-6 fw-light m-0">16:00</h4><h4 class="fs-5 fw-normal lh-1 ps-2">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
             </div>
 
         </div>
@@ -43,28 +41,18 @@
         </div>
 
     </section>
-    <h2 th:if="${categoriesEmpty}" class="bg-warning px-3 py-2">No se encontraron categorias</h2>
+    <div th:if="${categoriesEmpty}">
+        <section th:replace="~{fragments/home/categories_empty :: categories_empty}"></section>
+    </div>
     <div th:unless="${categoriesEmpty}"  th:each="newsC : ${news}" class="mb-4">
         <h2 class="bg-info-subtle fs-2 fw-normal ps-3 py-2 mb-3 border-top border-warning border-4" th:text="${newsC.categoryName}"></h2>
-        <div class="row">
+        <div th:if="${newsC.noNews == true}">
+            <section th:replace="~{fragments/home/news_list_empty :: news_list_empty}"></section>
+        </div>
+        <div th:each="newsListC : ${newsC.news}" class="row">
             <div class="col-3">
                 <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
-                <h4 class="fs-3 fw-medium">Noticia de la categoria correspondiente</h4>
-            </div>
-
-            <div class="col-3">
-                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
-                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
-            </div>
-
-            <div class="col-3">
-                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
-                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
-            </div>
-
-            <div class="col-3">
-                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
-                <h4 class="fs-3">Noticia de la categoria correspondiente</h4>
+                <h4 class="fs-3 fw-medium" th:text="${newsListC.newsTitle}"></h4>
             </div>
         </div>
     </div>
