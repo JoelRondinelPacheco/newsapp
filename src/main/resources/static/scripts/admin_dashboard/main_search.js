@@ -36,7 +36,7 @@ $categoryBtn.forEach(btn => {
 
 $mainBtn.addEventListener("click", () => {
     searchUrl = urlMain
-    setMain = false
+    setMain = true
 })
 
 $searchBtn.addEventListener("click", async (e) => {

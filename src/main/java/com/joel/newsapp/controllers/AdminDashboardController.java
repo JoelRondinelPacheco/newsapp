@@ -113,7 +113,7 @@ public class AdminDashboardController {
                 .newsCategory(newsTitle != null ? newsTitle : "")
                 .build();
 
-        List<News> news = this.newsService.getAll();
+        List<NewsHomeDTO> news = this.newsService.getAll();
         List<CategoryDTO> categories = this.categoryService.findAllDTO();
         if(news.size() > 0) {
             model.addAttribute("listNews", news);

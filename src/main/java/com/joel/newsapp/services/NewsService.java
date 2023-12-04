@@ -74,9 +74,9 @@ public class NewsService implements INewsService {
         return "News deleted";
     }
     @Override
-    public List<News> getAll() {
+    public List<NewsHomeDTO> getAll() {
         List<News> news = this.newsRepository.findAll();
-        return news;
+        return this.dtos.createListNewsHomeDTO(news);
     }
     @Override
     public List<News> getNewsByUser(String email){

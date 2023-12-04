@@ -34,12 +34,6 @@ public class AdminController {
     @Autowired
     private IAdminManageUsers adminService;
 
-    @GetMapping("/news")
-    public String newsPanel(ModelMap model) throws NotFoundException {
-        List<News> news = this.newsService.getAll();
-        model.addAttribute("noticias", news);
-        return "admin_news.html";
-    }
 
     @PostMapping("/category/save")
     public String createCategory(@RequestParam String category, ModelMap model) {

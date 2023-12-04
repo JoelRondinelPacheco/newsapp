@@ -29,17 +29,17 @@
       <th th:text="${allNewsError}"></th>
     </tr>
     <tr th:each="newsL : ${listNews}">
-      <th th:text="${newsL.title}"></th>
-      <th th:text="${newsL.createdAt}"></th>
-      <th th:text="${newsL.author.user.email}"></th>
-      <th th:text="${newsL.mainCategory.name}"></th>
+      <th th:text="${newsL.newsTitle}"></th>
+      <th th:text="${newsL.newsDate}"></th>
+      <th th:text="${newsL.reporterName}"></th>
+      <th th:text="${newsL.newsCategory}"></th>
       <th>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Seleccionar
           </button>
-          <ul class="dropdown-menu" th:id="${newsL.id}">
-            <li> <button th:attr="data-title=${newsL.title}, data-author=${newsL.author.user.name} + ' ' + ${newsL.author.user.lastname}" class="dropdown-item selectMain" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal</button></li>
+          <ul class="dropdown-menu" th:id="${newsL.newsId}">
+            <li> <button th:attr="data-title=${newsL.newsTitle}, data-author=${newsL.reporterName}" class="dropdown-item selectMain" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal</button></li>
             <li><button class="dropdown-item selectByCategory" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal por categoria</button></li>
           </ul>
         </div>
