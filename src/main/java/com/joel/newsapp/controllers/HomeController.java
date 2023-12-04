@@ -33,7 +33,6 @@ public class HomeController {
 
         try {
             NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
-
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
             System.out.println("main empty");
