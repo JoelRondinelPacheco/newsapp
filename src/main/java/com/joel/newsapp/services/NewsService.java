@@ -5,6 +5,7 @@ import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.INewsService;
+import com.joel.newsapp.utils.BuildDTOs;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,14 +18,11 @@ import java.util.Optional;
 
 @Service
 public class NewsService implements INewsService {
-    @Autowired
-    private INewsRepository newsRepository;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
-    private ReporterService employeeService;
-    @Autowired
-    private NewsCategoryService newsCategoryService;
+    @Autowired private INewsRepository newsRepository;
+    @Autowired private ImageService imageService;
+    @Autowired private ReporterService employeeService;
+    @Autowired private NewsCategoryService newsCategoryService;
+    @Autowired private BuildDTOs dtos;
 
     @Override
     public News save(NewsPostReqDTO newsDTO) throws NotFoundException{
@@ -87,10 +85,10 @@ public class NewsService implements INewsService {
 
     }
     @Override
-    public News mainFeatured() throws NotFoundException {
+    public NewsHomeDTO mainFeatured() throws NotFoundException {
         Optional<News> newsOptional = this.newsRepository.findByMainFeatured(true);
         if(newsOptional.isPresent()){
-            return newsOptional.get();
+            return this.dtos.createNewsHomeDTO(newsOptional.get());
         }
         throw new NotFoundException("Main featured new not found");
     }
@@ -185,7 +183,7 @@ public class NewsService implements INewsService {
                     news = this.newsRepository.findByReporterName(name);
                 } else {
                     System.out.println("busco por nombre: " + name + ". Category id: " + category);
-
+                    news = this.newsRepository.getByNameAndCategory(name, category);
                 }
             }
         } else if (!body.getNewsTitle().isBlank()) {
@@ -212,7 +210,6 @@ public class NewsService implements INewsService {
             return res;
         }
         res = this.createListNewsSearchRes(news);
-        System.out.println(res.get(0).getNewsDate());
         return res;
 
     }
@@ -220,6 +217,19 @@ public class NewsService implements INewsService {
     @Override
     public List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException {
         return null;
+    }
+
+    @Override
+    public News setMainFeatured(String newsId) throws NotFoundException {
+        News news = this.getById(newsId);
+        List<News> main = this.newsRepository.findAllByMainFeatured(true);
+        for (News n : main) {
+            n.setMainFeatured(false);
+            this.newsRepository.save(n);
+        }
+        news.setMainFeatured(true);
+        News newsSaved = this.newsRepository.save(news);
+        return newsSaved;
     }
 
 

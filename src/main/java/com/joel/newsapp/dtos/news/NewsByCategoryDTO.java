@@ -13,5 +13,12 @@ import java.util.List;
 public class NewsByCategoryDTO {
     private String categoryId;
     private String categoryName;
-    private List<News> news;
+    private List<NewsHomeDTO> news;
+    private Boolean noNews;
+
+    public NewsByCategoryDTO(String categoryId, String categoryName, List<NewsHomeDTO> news) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.news = news;
+    }
 }

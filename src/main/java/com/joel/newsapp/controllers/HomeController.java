@@ -1,6 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.NewsByCategoryDTO;
+import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -8,6 +9,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.ICommentService;
 import com.joel.newsapp.services.interfaces.INewsCategoryService;
 import com.joel.newsapp.services.interfaces.INewsService;
+import com.joel.newsapp.utils.BuildDTOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -22,19 +24,19 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class HomeController {
-    @Autowired
-    private INewsService newsService;
-    @Autowired
-    private INewsCategoryService categoryService;
-    @Autowired
-    private ICommentService commentService;
+    @Autowired private INewsService newsService;
+    @Autowired private INewsCategoryService categoryService;
+    @Autowired private ICommentService commentService;
+    @Autowired private BuildDTOs dtos;
     @GetMapping("/")
     public String index(ModelMap model) {
 
         try {
-            News mainFeatured = this.newsService.mainFeatured();
+            NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
+
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
+            System.out.println("main empty");
             model.addAttribute("mainFeaturedEmpty", true);
         }
 
@@ -46,10 +48,13 @@ public class HomeController {
         List<NewsByCategoryDTO> news = new ArrayList<>();
         for (NewsCategory category : categories) {
             List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
-            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), newsCat));
+            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat), newsCat.isEmpty() ? true : false));
+
         }
 
-        List<News> latest = this.newsService.latest(5);
+
+        List<News> latestNews = this.newsService.latest(5);
+        List<NewsHomeDTO> latest = this.dtos.createListNewsHomeDTO(latestNews);
 
         model.addAttribute("categories", categories);
         model.addAttribute("news", news);

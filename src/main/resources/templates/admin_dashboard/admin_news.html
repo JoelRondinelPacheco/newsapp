@@ -29,11 +29,11 @@
             </tr>
         </div>
             <tr th:if="${mainFeatured != null}">
-                <td th:text="${mainFeatured.title}"></td>
-                <td th:text="${mainFeatured.createdAt}"></td>
-                <td th:text="${mainFeatured.author.user.email}"></td>
-                <td th:text="${mainFeatured.mainCategory.name}"></td>
-                <td><button class="btn btn-primary">Cambiar</button></td>
+                <td th:text="${mainFeatured.newsTitle}"></td>
+                <td th:text="${mainFeatured.newsDate}"></td>
+                <td th:text="${mainFeatured.reporterEmail}"></td>
+                <td th:text="${mainFeatured.newsCategory}"></td>
+                <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
 
             </tr>
         </tbody>
