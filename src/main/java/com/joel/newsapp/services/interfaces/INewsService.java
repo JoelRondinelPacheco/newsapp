@@ -9,7 +9,7 @@ import java.util.List;
 public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEditReqDTO, String>{
     List<News> getAll();
     List<News> getNewsByUser(String userId);
-    News mainFeatured() throws NotFoundException;
+    NewsHomeDTO mainFeatured() throws NotFoundException;
     List<News> featuredByCategory(String category) throws NotFoundException;
     List<FeaturedByCategoryDTO> allFeaturedByCategory();
     List<News> findByCategory(String category, int quantity);

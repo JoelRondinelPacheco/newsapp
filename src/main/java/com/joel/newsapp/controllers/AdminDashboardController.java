@@ -1,6 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
+import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.search.AllNewsForm;
@@ -74,7 +75,7 @@ public class AdminDashboardController {
         // TODO manage if returns more than one
 
         try {
-            News mainFeatured = this.newsService.mainFeatured();
+            NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
         } catch (NotFoundException e) {
             model.put("mainFeaturedError", e.getMessage());

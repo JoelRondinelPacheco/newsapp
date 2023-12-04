@@ -1,11 +1,13 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.Employee;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
+import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.entities.User;
 import org.springframework.stereotype.Component;
@@ -82,5 +84,29 @@ public class BuildDTOs {
         );
         }
         return dto;
+    }
+
+    public NewsHomeDTO createNewsHomeDTO(News news) {
+        String date = news.getCreatedAt().toString().split("T")[0];
+        String hour = news.getCreatedAt().toString().split("T")[1].substring(0,5);
+        return NewsHomeDTO.builder()
+                .newsId(news.getId())
+                .newsTitle(news.getTitle())
+                .newsDate(date)
+                .newsHour(hour)
+                .newsSubtitle(news.getSubtitle())
+                .newsCategory(news.getMainCategory().getName())
+                .reporterId(news.getAuthor().getUser().getId())
+                .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
+                .build();
+
+    }
+
+    public List<NewsHomeDTO> createListNewsHomeDTO(List<News> news) {
+        List<NewsHomeDTO> dtos = new ArrayList<>();
+        for (News n : news) {
+            dtos.add(this.createNewsHomeDTO(n));
+        }
+        return dtos;
     }
 }

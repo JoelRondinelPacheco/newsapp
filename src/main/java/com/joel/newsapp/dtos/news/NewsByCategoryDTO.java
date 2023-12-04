@@ -13,5 +13,5 @@ import java.util.List;
 public class NewsByCategoryDTO {
     private String categoryId;
     private String categoryName;
-    private List<News> news;
+    private List<NewsHomeDTO> news;
 }
