@@ -40,7 +40,7 @@
           </button>
           <ul class="dropdown-menu" th:id="${newsL.newsId}">
             <li> <button th:attr="data-title=${newsL.newsTitle}, data-author=${newsL.reporterName}" class="dropdown-item selectMain" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal</button></li>
-            <li><button class="dropdown-item selectByCategory" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal por categoria</button></li>
+            <li><button th:attr="data-title=${newsL.newsTitle}, data-author=${newsL.reporterName}" class="dropdown-item selectByCategory" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal por categoria</button></li>
           </ul>
         </div>
     </tr>
@@ -53,7 +53,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeBtn"></button>
         </div>
         <div class="modal-body">

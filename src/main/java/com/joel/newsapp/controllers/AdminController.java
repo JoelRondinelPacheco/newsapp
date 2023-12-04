@@ -85,7 +85,8 @@ public class AdminController {
             model.addAttribute("error", e.getMessage());
         }
 
-        return "admin_dashboard/admin_news";
+       // return "redirect:admin_dashboard/admin_news";
+        return "redirect:/dashboard/news";
     }
 
     @GetMapping("/news/category/{newsId}")
@@ -97,7 +98,8 @@ public class AdminController {
             model.addAttribute("error", e.getMessage());
         }
 
-        return "admin_dashboard/admin_news";
+        //return "redirect:admin_dashboard/admin_news";
+        return "redirect:/dashboard/news";
     }
 
 }

@@ -105,24 +105,21 @@ public class NewsService implements INewsService {
     public List<FeaturedByCategoryDTO> allFeaturedByCategory() {
         List<NewsCategory> categories = this.newsCategoryService.findAll();
         List<FeaturedByCategoryDTO> featured = new ArrayList<>();
+
         for (NewsCategory c : categories) {
             FeaturedByCategoryDTO featuredC = FeaturedByCategoryDTO.builder()
                     .categoryId(c.getId())
                     .categoryName(c.getName())
                     .build();
-            List<News> allNews = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, c.getName());
+            List<News> allNews = this.newsRepository.findByFeaturedCategoryAndMainCategory_Id(true, c.getId());
             if (!allNews.isEmpty()) {
                 News featuredNew = allNews.get(0);
                 featuredC.setHasFeatured(true);
-                featuredC.setNewsId(featuredNew.getId());
-                featuredC.setNewsTitle(featuredNew.getTitle());
-                featuredC.setAuthor(featuredNew.getAuthor().getUser().getDisplayName());
+                featuredC.setNews(this.dtos.createNewsHomeDTO(featuredNew));
                 featured.add(featuredC);
+                continue;
             }
             featuredC.setHasFeatured(false);
-            featuredC.setNewsId("");
-            featuredC.setNewsTitle("");
-            featuredC.setAuthor("");
             featured.add(featuredC);
         }
        return featured;
@@ -235,7 +232,7 @@ public class NewsService implements INewsService {
     @Override
     public News setCategoryFeatured(String newsId) throws NotFoundException {
         News news = this.getById(newsId);
-        List<News> categoryFeatured = this.newsRepository.findAllByFeaturedCategory(true);
+        List<News> categoryFeatured = this.newsRepository.findAllByFeaturedCategoryAndMainCategory_Id(true, news.getMainCategory().getId());
         for (News n : categoryFeatured) {
             n.setFeaturedCategory(false);
             this.newsRepository.save(n);

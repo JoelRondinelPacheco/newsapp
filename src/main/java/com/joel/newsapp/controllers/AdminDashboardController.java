@@ -84,7 +84,6 @@ public class AdminDashboardController {
         List<NewsCategory> categories = this.categoryService.findAll();
 
         List<FeaturedByCategoryDTO> featuredByCategory = this.newsService.allFeaturedByCategory();
-
         if (!featuredByCategory.isEmpty()) {
             model.addAttribute("featuredByCategory", featuredByCategory);
         } else {
