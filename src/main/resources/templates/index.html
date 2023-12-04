@@ -11,7 +11,7 @@
         <div class="col-lg-4">
             <h4 class="fs-4 fw-normal" >Últimas noticias</h4>
             <div class="ms-3 mb-2" th:each="latestNew : ${latest}">
-                <h4 class="fs-6 fw-light m-0">16:30</h4><h4 class="fs-5 fw-normal lh-1" th:text="${latestNew.title}">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
+                <h4 class="fs-6 fw-light m-0" th:text="${latestNew.newsHour}"></h4><h4 class="fs-5 fw-normal lh-1" th:text="${latestNew.newsTitle}">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>
             </div>
             <div class="ms-3 mb-2">
                 <h4 class="fs-6 fw-light m-0">16:30</h4><h4 class="fs-5 fw-normal lh-1">Aquí se mostrarán las últimas noticias, ordenadas por hora</h4>

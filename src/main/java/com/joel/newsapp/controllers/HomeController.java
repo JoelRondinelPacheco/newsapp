@@ -51,7 +51,8 @@ public class HomeController {
             news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat)));
         }
 
-        List<News> latest = this.newsService.latest(5);
+        List<News> latestNews = this.newsService.latest(5);
+        List<NewsHomeDTO> latest = this.dtos.createListNewsHomeDTO(latestNews);
 
         model.addAttribute("categories", categories);
         model.addAttribute("news", news);
