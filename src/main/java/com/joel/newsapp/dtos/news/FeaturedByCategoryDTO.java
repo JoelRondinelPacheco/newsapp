@@ -11,7 +11,5 @@ public class FeaturedByCategoryDTO {
     private String categoryId;
     private String categoryName;
     private boolean hasFeatured;
-    private String newsId;
-    private String newsTitle;
-    private String author;
+    private NewsHomeDTO news;
 }

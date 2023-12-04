@@ -7,7 +7,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import java.util.List;
 
 public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEditReqDTO, String>{
-    List<News> getAll();
+    List<NewsHomeDTO> getAll();
     List<News> getNewsByUser(String userId);
     NewsHomeDTO mainFeatured() throws NotFoundException;
     List<News> featuredByCategory(String category) throws NotFoundException;
@@ -19,4 +19,6 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
 
     List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException;
     News setMainFeatured(String newsId) throws NotFoundException;
+
+    News setCategoryFeatured(String newsId) throws NotFoundException;
 }
