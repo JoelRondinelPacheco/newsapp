@@ -73,4 +73,6 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
             "JOIN users u ON r.user_id = u.id " +
             "WHERE CONCAT(LOWER(u.name), ' ', LOWER(u.lastname)) = :reporterName AND n.category_id = :id", nativeQuery = true)
     List<News> getByNameAndCategory(@Param("reporterName") String name, @Param("id") String id);
+
+    List<News> findAllByFeaturedCategory(boolean b);
 }

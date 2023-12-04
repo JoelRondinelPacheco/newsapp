@@ -94,4 +94,16 @@ public class AdminController {
         return "admin_dashboard/admin_news";
     }
 
+    @GetMapping("/news/category/{newsId}")
+    public String setCategoryFeatured(@PathVariable String newsId, ModelMap model) {
+        try {
+            News news = this.newsService.setCategoryFeatured(newsId);
+            model.addAttribute("mainFeaturedUpdated", news);
+        } catch (NotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
+        return "admin_dashboard/admin_news";
+    }
+
 }

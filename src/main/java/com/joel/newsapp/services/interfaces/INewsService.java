@@ -19,4 +19,6 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
 
     List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException;
     News setMainFeatured(String newsId) throws NotFoundException;
+
+    News setCategoryFeatured(String newsId) throws NotFoundException;
 }

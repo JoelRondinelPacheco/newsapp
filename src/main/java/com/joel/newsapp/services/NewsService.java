@@ -232,6 +232,18 @@ public class NewsService implements INewsService {
         return newsSaved;
     }
 
+    @Override
+    public News setCategoryFeatured(String newsId) throws NotFoundException {
+        News news = this.getById(newsId);
+        List<News> categoryFeatured = this.newsRepository.findAllByFeaturedCategory(true);
+        for (News n : categoryFeatured) {
+            n.setFeaturedCategory(false);
+            this.newsRepository.save(n);
+        }
+        news.setFeaturedCategory(true);
+        return this.newsRepository.save(news);
+    }
+
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();
@@ -265,4 +277,6 @@ public class NewsService implements INewsService {
         }
         return newsDTO;
     }
+
+
 }
