@@ -11,6 +11,5 @@ public interface IPasswordTokenService {
     String validateAccount(String token) throws ValidateAccountException;
     PasswordToken saveToken(User user, PasswordTokenType type, boolean valid);
     PasswordToken getByToken(String token) throws NotFoundException;
-    String setPassword(String token, String password) throws ValidateAccountException;
 
 }

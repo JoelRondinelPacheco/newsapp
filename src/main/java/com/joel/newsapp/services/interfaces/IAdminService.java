@@ -8,10 +8,8 @@ import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.AdminRegisterEmployeeDTO;
 import com.joel.newsapp.dtos.users.RegisterUserDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
-import com.joel.newsapp.entities.Admin;
 import com.joel.newsapp.exceptions.NotFoundException;
 
 public interface IAdminService extends ICrudService<AdminInfoDTO, RegisterAdminDTO, EditAdminDTO, String> {
 
-    Admin findByUserId(String userId) throws NotFoundException;
 }

@@ -8,7 +8,6 @@ import com.joel.newsapp.repositories.IPasswordTokenRepository;
 import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.services.interfaces.IPasswordTokenService;
 import com.joel.newsapp.utils.PasswordTokenType;
-import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.Validate;
@@ -24,8 +23,6 @@ public class PasswordTokenService implements IPasswordTokenService {
     private IUserRepository userRepository;
     @Autowired
     private IPasswordTokenRepository passwordTokenRepository;
-    @Autowired
-    private Utils utils;
 
     @Override
     public String validateAccount(String token) throws ValidateAccountException {
@@ -68,26 +65,5 @@ public class PasswordTokenService implements IPasswordTokenService {
             return tokenO.get();
         }
         throw new NotFoundException("Token not found");
-    }
-
-    @Override
-    public String setPassword(String token, String password) throws ValidateAccountException {
-        //TODO validate same password
-        try {
-            PasswordToken passwordToken = this.getByToken(token);
-            if (!passwordToken.isValid() || !(passwordToken.getType() == PasswordTokenType.SET)) {
-                throw new ValidateAccountException("Token invalid");
-            }
-            User user = passwordToken.getUser();
-            String pass = this.utils.encryptPassword(password);
-            user.setPassword(pass);
-            user.setVerified(true);
-            this.userRepository.save(user);
-            passwordToken.setValid(false);
-            this.passwordTokenRepository.save(passwordToken);
-            return "User credentials verified";
-        } catch (NotFoundException e) {
-            throw new ValidateAccountException(e.getMessage());
-        }
     }
 }

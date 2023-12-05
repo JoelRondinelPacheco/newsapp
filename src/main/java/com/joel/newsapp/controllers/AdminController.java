@@ -34,6 +34,12 @@ public class AdminController {
     @Autowired
     private IAdminManageUsers adminService;
 
+    @GetMapping("/news")
+    public String newsPanel(ModelMap model) throws NotFoundException {
+        List<News> news = this.newsService.getAll();
+        model.addAttribute("noticias", news);
+        return "admin_news.html";
+    }
 
     @PostMapping("/category/save")
     public String createCategory(@RequestParam String category, ModelMap model) {
@@ -74,32 +80,6 @@ public class AdminController {
             return "redirect:/";
 
         }
-    }
-
-    @GetMapping("/news/main/{newsId}")
-    public String setMainFeatured(@PathVariable String newsId, ModelMap model) {
-        try {
-            News news = this.newsService.setMainFeatured(newsId);
-            model.addAttribute("mainFeaturedUpdated", news);
-        } catch (NotFoundException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-
-       // return "redirect:admin_dashboard/admin_news";
-        return "redirect:/dashboard/news";
-    }
-
-    @GetMapping("/news/category/{newsId}")
-    public String setCategoryFeatured(@PathVariable String newsId, ModelMap model) {
-        try {
-            News news = this.newsService.setCategoryFeatured(newsId);
-            model.addAttribute("mainFeaturedUpdated", news);
-        } catch (NotFoundException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-
-        //return "redirect:admin_dashboard/admin_news";
-        return "redirect:/dashboard/news";
     }
 
 }

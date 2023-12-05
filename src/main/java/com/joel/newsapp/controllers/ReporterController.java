@@ -1,12 +1,10 @@
 package com.joel.newsapp.controllers;
 
-import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.services.NewsCategoryService;
 import com.joel.newsapp.services.NewsService;
-import com.joel.newsapp.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,23 +23,26 @@ public class ReporterController {
     @Autowired
     private NewsService newsService;
     @Autowired
-    private NewsCategoryService categoryService;
+    private IUserRepository userRepository;
     @Autowired
-    private IUserService userService;
+    private NewsCategoryService categoryService;
 
     @GetMapping("/panel")
     public String newsPanel(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        System.out.println(username);
-        List<News> userNews = this.newsService.getNewsByUser(username);
-        System.out.println(userNews.size());
-        for (News n : userNews) {
-            System.out.println(n.getTitle());
-            System.out.println(n.getAuthor().getUser().getEmail());
-        }
-        model.addAttribute("userNews", userNews);
-        return "reporter/news_panel.html";
+        //TODO Refactorizar que busque las noticias solo por email, porque si entro a este controller
+        // el usuario ya existe (esta logeado)
+        // TODO hacer que el correo de logeo sea unico
+      //  Optional<User> userOptional = this.userRepository.findUser(username);
+/*
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<News> userNews = this.newsService.getNewsByUser(user.getId());
+            model.addAttribute("noticias", userNews);
+
+        }*/
+        return "news_panel.html";
     }
 
     @GetMapping("/form")
