@@ -22,9 +22,6 @@ public class NewsCategory extends Base {
     @JoinTable(name = "rel_category_news", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "news_id"))
     private List<News> news;
 
-    @OneToMany(mappedBy = "mainCategory")
-    private List<News> mainNews;
-
     public NewsCategory(String name) {
         this.name = name;
     }

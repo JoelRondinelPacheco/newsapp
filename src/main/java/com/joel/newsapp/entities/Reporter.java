@@ -1,6 +1,5 @@
 package com.joel.newsapp.entities;
 
-import com.joel.newsapp.dtos.users.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +12,7 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @Setter
-public class Reporter extends Base implements Employee {
+public class Reporter extends Base {
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;

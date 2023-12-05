@@ -2,11 +2,9 @@ package com.joel.newsapp.dtos.users;
 
 import com.joel.newsapp.utils.Role;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 @Setter
 @Getter
 @ToString
@@ -16,11 +14,4 @@ public class UserProfileInfoDTO {
     private String displayName;
     private String email;
     private String profilePictureId;
-
-    public UserProfileInfoDTO(String name, String lastname, String displayName, String email) {
-        this.name = name;
-        this.lastname = lastname;
-        this.displayName = displayName;
-        this.email = email;
-    }
 }

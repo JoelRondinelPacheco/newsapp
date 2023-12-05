@@ -1,6 +1,5 @@
 package com.joel.newsapp.entities;
 
-import com.joel.newsapp.dtos.users.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public class Admin extends Base implements Employee {
+public class Admin extends Base {
     private Double monthlySalary;
     private Boolean enabled;
     @OneToOne

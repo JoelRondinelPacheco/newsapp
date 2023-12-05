@@ -87,13 +87,4 @@ public class ImageService {
         throw new NotFoundException("Image not found");
     }
 
-    public byte[] getUserPublicImage() {
-        ClassPathResource imagePath = new ClassPathResource(IMAGE_DIRECTORY);
-        try {
-            return Files.readAllBytes(Path.of(imagePath.getURI()));
-        } catch (IOException e) {
-            byte[] empty = new byte[0];
-            return empty;
-        }
-    }
 }
