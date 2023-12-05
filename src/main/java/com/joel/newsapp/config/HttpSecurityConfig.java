@@ -23,6 +23,7 @@ public class HttpSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrfConfig -> csrfConfig.disable())
+                .cors(c -> c.disable())
                 //.sessionManagement(session -> session
                        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         // URL de sesion vencida .invalidSessionUrl("/invalidSession"))

@@ -1,11 +1,12 @@
 package com.joel.newsapp.services;
 
-import com.joel.newsapp.dtos.news.NewsEditReqDTO;
-import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.news.*;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.INewsService;
+import com.joel.newsapp.utils.BuildDTOs;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +18,11 @@ import java.util.Optional;
 
 @Service
 public class NewsService implements INewsService {
-    @Autowired
-    private INewsRepository newsRepository;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
-    private ReporterService employeeService;
-    @Autowired
-    private NewsCategoryService newsCategoryService;
+    @Autowired private INewsRepository newsRepository;
+    @Autowired private ImageService imageService;
+    @Autowired private ReporterService employeeService;
+    @Autowired private NewsCategoryService newsCategoryService;
+    @Autowired private BuildDTOs dtos;
 
     @Override
     public News save(NewsPostReqDTO newsDTO) throws NotFoundException{
@@ -76,48 +74,69 @@ public class NewsService implements INewsService {
         return "News deleted";
     }
     @Override
-    public List<News> getAll() {
+    public List<NewsHomeDTO> getAll() {
         List<News> news = this.newsRepository.findAll();
-        return news;
+        return this.dtos.createListNewsHomeDTO(news);
     }
     @Override
-    public List<News> getNewsByUser(String userId){
-        List<News> news = this.newsRepository.getNewsByAuthorId(userId);
+    public List<News> getNewsByUser(String email){
+        List<News> news = this.newsRepository.findByAuthor_User_email(email);
         return news;
 
     }
     @Override
-    public News mainFeatured() throws NotFoundException {
+    public NewsHomeDTO mainFeatured() throws NotFoundException {
         Optional<News> newsOptional = this.newsRepository.findByMainFeatured(true);
         if(newsOptional.isPresent()){
-            return newsOptional.get();
+            return this.dtos.createNewsHomeDTO(newsOptional.get());
         }
         throw new NotFoundException("Main featured new not found");
     }
 
 
     @Override
-    public News featuredByCategory(String category) throws NotFoundException {
+    public List<News> featuredByCategory(String category) throws NotFoundException {
         // TODO CKECK CATEGORY EXISTS
-        News news = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, category);
+        List<News> news = this.newsRepository.findByFeaturedCategoryAndMainCategory_Name(true, category);
         return news;
     }
 
     @Override
-    public List<News> allFeaturedByCategory() {
-        return this.newsRepository.findByFeaturedCategory(true);
+    public List<FeaturedByCategoryDTO> allFeaturedByCategory() {
+        List<NewsCategory> categories = this.newsCategoryService.findAll();
+        List<FeaturedByCategoryDTO> featured = new ArrayList<>();
+
+        for (NewsCategory c : categories) {
+            FeaturedByCategoryDTO featuredC = FeaturedByCategoryDTO.builder()
+                    .categoryId(c.getId())
+                    .categoryName(c.getName())
+                    .build();
+            List<News> allNews = this.newsRepository.findByFeaturedCategoryAndMainCategory_Id(true, c.getId());
+            if (!allNews.isEmpty()) {
+                News featuredNew = allNews.get(0);
+                featuredC.setHasFeatured(true);
+                featuredC.setNews(this.dtos.createNewsHomeDTO(featuredNew));
+                featured.add(featuredC);
+                continue;
+            }
+            featuredC.setHasFeatured(false);
+            featured.add(featuredC);
+        }
+       return featured;
+
     }
 
     @Override
-    public List<News> findByCategory(String category, int quantity) {
-        //List<News> news = this.newsRepository.findByMainCategory
-        return null;
+    public List<News> findByCategory(String categoryId, int quantity) {
+        Pageable page = PageRequest.of(0, quantity);
+        List<News> news = this.newsRepository.findByMainCategory_Id(categoryId, page);
+        return news;
     }
     @Override
     public List<News> latest(int quantity) {
         Pageable pageable = PageRequest.of(0, quantity);
-       // return this.newsRepository.findLatest(pageable);
-        return null;
+        return this.newsRepository.findAllByOrderByCreatedAtAsc();
+
     }
 
     @Override
@@ -128,6 +147,99 @@ public class NewsService implements INewsService {
         return null;
     }
 
+    @Override
+    public List<NewsSearchResDTO> searchNews(NewsSearchReqDTO body, String category){
+
+        List<News> news = new ArrayList<>();
+        List<NewsSearchResDTO> res = new ArrayList<>();
+        String name = (body.getReporterName() + " " + body.getReporterLastname()).toLowerCase();
+
+        if (!body.getReporterName().isBlank()) {
+            if (!body.getNewsTitle().isBlank()) {
+                if (body.getNewsDate() == null) {
+                    if (category.isBlank()) {
+                        news = this.newsRepository.findByReporterNameAndNewsTitle(name, body.getNewsTitle());
+                    } else {
+
+                    }
+                } else {
+                    if (category.isBlank()) {
+                        news = this.newsRepository.findByReporterNameAndNewsTitleAndDate(name, body.getNewsTitle(), body.getNewsDate());
+                    } else {
+
+                    }
+                }
+            } else if (body.getNewsDate() != null) {
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByReporterNameAndDate(name, body.getNewsDate());
+                } else {
+
+                }
+            } else {
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByReporterName(name);
+                } else {
+                    System.out.println("busco por nombre: " + name + ". Category id: " + category);
+                    news = this.newsRepository.getByNameAndCategory(name, category);
+                }
+            }
+        } else if (!body.getNewsTitle().isBlank()) {
+            if (body.getNewsDate() != null) {
+                if (category.isBlank()) {
+                    news = this.newsRepository.getNewsByTitleAndDate(body.getNewsTitle(), body.getNewsDate());
+                } else {
+
+                }
+            } else {
+                if (category.isBlank()) {
+                    news = this.newsRepository.findByTitle(body.getNewsTitle());
+                } else {
+
+                }
+            }
+        } else if (body.getNewsDate() != null) {
+            if (category.isBlank()) {
+                news = this.newsRepository.findByDate(body.getNewsDate());
+            } else {
+
+            }
+        } else {
+            return res;
+        }
+        res = this.createListNewsSearchRes(news);
+        return res;
+
+    }
+
+    @Override
+    public List<NewsSearchResDTO> searchByCategory(NewsSearchReqDTO body, String categoryId) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public News setMainFeatured(String newsId) throws NotFoundException {
+        News news = this.getById(newsId);
+        List<News> main = this.newsRepository.findAllByMainFeatured(true);
+        for (News n : main) {
+            n.setMainFeatured(false);
+            this.newsRepository.save(n);
+        }
+        news.setMainFeatured(true);
+        News newsSaved = this.newsRepository.save(news);
+        return newsSaved;
+    }
+
+    @Override
+    public News setCategoryFeatured(String newsId) throws NotFoundException {
+        News news = this.getById(newsId);
+        List<News> categoryFeatured = this.newsRepository.findAllByFeaturedCategoryAndMainCategory_Id(true, news.getMainCategory().getId());
+        for (News n : categoryFeatured) {
+            n.setFeaturedCategory(false);
+            this.newsRepository.save(n);
+        }
+        news.setFeaturedCategory(true);
+        return this.newsRepository.save(news);
+    }
 
 
     private List<NewsCategory> findCategories(List<String> categories) {
@@ -142,4 +254,26 @@ public class NewsService implements INewsService {
         }
         return newsCategories;
     }
+
+    private NewsSearchResDTO createNewsSearchRes(News news) {
+        return NewsSearchResDTO.builder()
+                .newsId(news.getId())
+                .newsTitle(news.getTitle())
+                .newsDate(news.getCreatedAt().toLocalDate().toString())
+                .newsCategory(news.getMainCategory().getName())
+                .newsCategoryId(news.getMainCategory().getId())
+                .reporterId(news.getAuthor().getId())
+                .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
+                .build();
+    }
+
+    private List<NewsSearchResDTO> createListNewsSearchRes(List<News> news) {
+        List<NewsSearchResDTO> newsDTO = new ArrayList<>();
+        for(News n : news) {
+            newsDTO.add(this.createNewsSearchRes(n));
+        }
+        return newsDTO;
+    }
+
+
 }

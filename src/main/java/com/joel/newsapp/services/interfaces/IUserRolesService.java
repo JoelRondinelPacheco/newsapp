@@ -1,10 +1,8 @@
 package com.joel.newsapp.services.interfaces;
 
 import com.joel.newsapp.exceptions.NotFoundException;
+import com.joel.newsapp.utils.Role;
 
 public interface IUserRolesService {
-    String changeReporterRole(String userId, String newRole) throws NotFoundException;
-    String changeUserRole(String userId, String newRole) throws NotFoundException;
-    String changeAdminRole(String userId, String newRole) throws NotFoundException;
-    String changeModeratorRole(String userId, String newRole) throws NotFoundException;
+    String changeRole(String userId, Role newRole) throws NotFoundException;
 }

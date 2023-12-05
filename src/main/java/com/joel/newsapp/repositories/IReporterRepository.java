@@ -15,4 +15,7 @@ import java.util.Optional;
 @Repository
 public interface IReporterRepository extends JpaRepository<Reporter, String> {
     Optional<Reporter> findByUser_Email(String email);
+    Optional<Reporter> findByUser_Id(String id);
+    List<Reporter> findAllByEnabledAndUser_Verified(Boolean enabled, Boolean verified);
+    List<Reporter> findAllByEnabled(Boolean enabled);
 }

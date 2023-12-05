@@ -36,7 +36,7 @@ public class News extends Base{
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private NewsCategory mainCategory;
 
@@ -52,5 +52,12 @@ public class News extends Base{
         this.mainCategory = mainCategory;
         this.author = author;
         this.image = image;
+    }
+
+    @PrePersist
+    private void prePersist(){
+        this.featured = false;
+        this.featuredCategory = false;
+        this.mainFeatured = false;
     }
 }
