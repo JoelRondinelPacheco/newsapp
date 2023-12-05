@@ -20,8 +20,6 @@ public interface IUserService {
     UserInfoDTO findByEmail(String username) throws NotFoundException;
     User findUserByEmail(String email) throws UsernameNotFoundException;
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;
-    Boolean checkUserEmail(String email);
-    User findById(String id) throws NotFoundException;
 
 
 }

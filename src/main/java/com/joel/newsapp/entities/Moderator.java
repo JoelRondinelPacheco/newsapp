@@ -1,6 +1,5 @@
 package com.joel.newsapp.entities;
 
-import com.joel.newsapp.dtos.users.Employee;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -17,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public class Moderator extends Base implements Employee {
+public class Moderator extends Base {
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;

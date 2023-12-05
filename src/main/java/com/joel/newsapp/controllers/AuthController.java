@@ -4,7 +4,6 @@ import com.joel.newsapp.dtos.users.RegisterUserDTO;
 import com.joel.newsapp.exceptions.ValidateAccountException;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
 import com.joel.newsapp.services.interfaces.IPasswordTokenService;
-import com.joel.newsapp.services.interfaces.IUserService;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/")
 public class AuthController {
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     @Autowired
     private HomeController homeController;
     @Autowired
@@ -37,10 +36,6 @@ public class AuthController {
     public String registro(@RequestParam String name, @RequestParam  String lastname, @RequestParam String email, @RequestParam String password, @RequestParam String confirmpassword, ModelMap model, MultipartFile archive) {
         if (!password.equals(confirmpassword)) {
             model.put("passworderror", "Las contraseñas no coinciden");
-            return "register.html";
-        }
-        if (this.userService.checkUserEmail(email)) {
-            model.addAttribute("emailError", "Email already registered");
             return "register.html";
         }
         RegisterUserDTO userDTO = new RegisterUserDTO(name, lastname, email, password, archive, Role.USER);
@@ -72,27 +67,6 @@ public class AuthController {
         } catch (ValidateAccountException e) {
             model.addAttribute("verify_error", e.getMessage());
             return "login";
-        }
-    }
-
-    @GetMapping("/account/password/{token}")
-    public String setPassword(@PathVariable String token, ModelMap model) {
-        model.addAttribute("token", token);
-        return "set_password";
-    }
-    @PostMapping("/account/password/{token}")
-    public String postSetPassword(@PathVariable String token, @RequestParam String password, @RequestParam String confirmPassword, ModelMap model) {
-        if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "Password dosnt match");
-            return "set_password";
-        }
-        try {
-            String res = this.passwordTokenService.setPassword(token, password);
-            model.addAttribute("set_success", res);
-            return "login";
-        } catch (ValidateAccountException e) {
-            model.addAttribute("set_error", e.getMessage());
-            return "set_password";
         }
     }
 

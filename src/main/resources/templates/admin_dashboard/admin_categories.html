@@ -7,34 +7,24 @@
     <div th:if="${success != null}">
         <h3 th:text="${success}"></h3>
     </div>
-    <div th:replace="~{/admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
     <form th:action="@{/admin/category/save}" method="post">
-        <div class="row align-items-center">
-            <div class="col-auto">
-        <label class="form-label" for="category">Categoria nueva</label>
-    </div>
-    <div class="col-4">
-        <input class="form-control" type="text" id="category" name="category">
-    </div>
-    <div class="col-auto">
-        <input class="btn btn-primary" type="submit" value="Agregar">
-    </div>
-    </div>
+        <label for="category">Categoria nueva</label>
+        <input type="text" id="category" name="category">
+        <input type="submit" value="enviar">
     </form>
     <section>
-        <table class="table">
+        <table>
             <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Noticias</th>
-                <th></th>
+                <th>id</th>
+                <th>nombre</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="category : ${categories}">
+                <th th:text="${category.id}"></th>
                 <th th:text="${category.name}"></th>
-                <th>1000</th>
-                <th><a class="btn btn-primary" th:href="@{/}">Ver todas</a></th>
             </tr>
             </tbody>
         </table>
