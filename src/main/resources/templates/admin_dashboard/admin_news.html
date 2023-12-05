@@ -64,7 +64,7 @@
             <td th:text="${featured.news.newsTitle}"></td>
             <td th:text="${featured.news.newsDate}"></td>
             <td th:text="${featured.news.reporterName}"></td>
-            <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured">Cambiar</button></td>
+            <td><button class="btn btn-primary categoryBtn" th:id="${featured.categoryId}" data-bs-toggle="modal" data-bs-target="#mainFeatured">Cambiar</button></td>
 
 
             </div>
