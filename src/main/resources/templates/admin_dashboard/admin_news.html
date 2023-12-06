@@ -4,10 +4,11 @@
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
-<div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
-    <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
+
 <main class="container">
+    <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_news :: admin_nav_news}"></div>
+    <section>
     <table class="table">
         <thead>
             <tr class="text-center">
@@ -21,14 +22,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:if="${mainFeatured == null}" colspan="3" class="text-center">
-                <th th:text="${mainFeaturedError}"></th>
+        <div th:if="${mainFeatured == null}">
+            <tr>
+                <td colspan="3">No se encontro ninguna noticia destacada</td>
+                <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Seleccionar</button></td>
             </tr>
+        </div>
             <tr th:if="${mainFeatured != null}">
-                <th th:text="${mainFeatured.title}"></th>
-                <th th:text="${mainFeatured.createdAt}"></th>
-                <th th:text="${mainFeatured.author.email}"></th>
-                <th th:text="${mainFeatured.mainCategory.name}"></th>
+                <td th:text="${mainFeatured.newsTitle}"></td>
+                <td th:text="${mainFeatured.newsDate}"></td>
+                <td th:text="${mainFeatured.reporterEmail}"></td>
+                <td th:text="${mainFeatured.newsCategory}"></td>
+                <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
+
             </tr>
         </tbody>
     </table>
@@ -39,27 +45,37 @@
             <th colspan="5">Princial por categoria</th>
         </tr>
         <tr>
-            <th>Categoria</th>
-            <th>Titulo</th>
-            <th>Fecha</th>
-            <th>Autor</th>
-            <th>Cambiar</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Titulo</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Autor</th>
+            <th scope="col">Cambiar</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${featuredByCategory == null}" colspan="4" class="text-center">
-            <th th:text="${featuredError}"></th>
-        </tr>
-        <tr th:if="${featuredByCategory != null}" th:each="featured : ${featuredByCategory}">
-            <th th:text="${featured.mainCategory.name}"></th>
-            <th th:text="${featured.title}"></th>
-            <th th:text="${featured.author}"></th>
-            <th th:text="${featured.createdAt}"></th>
-            <th>modal cambiar</th>
+        <tr th:each="featured : ${featuredByCategory}" class="align-items-center">
+            <th th:text="${featured.categoryName}"></th>
+                <td th:if="${featured.hasFeatured == false}" class="row align-items-center">
+                    <p class="color-danger col-9">No hay ninguna noticia destacada para esta categoria</p>
+                    <button type="button" th:id="${featured.categoryId}" class="btn btn-primary categoryBtn col-3" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button>
+                </td>
+        
+            <div th:if="${featured.hasFeatured == true}">
+            <td th:text="${featured.news.newsTitle}"></td>
+            <td th:text="${featured.news.newsDate}"></td>
+            <td th:text="${featured.news.reporterName}"></td>
+            <td><button class="btn btn-primary categoryBtn" th:id="${featured.categoryId}" data-bs-toggle="modal" data-bs-target="#mainFeatured">Cambiar</button></td>
+
+
+            </div>
         </tr>
         </tbody>
     </table>
+    </section>
+
+    <section th:replace="~{admin_dashboard/fragments/change_main_featured :: change_main_featured}"></section>
 
 </main>
+<script type="module" th:src="@{/scripts/admin_dashboard/main_search.js}"></script>
 </body>
 </html>

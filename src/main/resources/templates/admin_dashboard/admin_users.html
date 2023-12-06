@@ -4,37 +4,28 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-    <div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
-    <div th:replace="~{fragments/admin_nav_users :: admin_nav_users}"></div>
-    <div th:replace="~{fragments/admin_nav_users_state :: admin_nav_users_state}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_users :: admin_nav_users}"></div>
+    <div th:replace="~{admin_dashboard/fragments/admin_nav_users_state :: admin_nav_users_state (${role})}"></div>
     <section>
         <table class="table">
             <thead>
             <tr class="table-primary">
                 <th scope="col">Nombre</th>
-                <th scope="col">Nickname</th>
                 <th scope="col">Email</th>
-                <th scope="col">Rol</th>
-                <th scope="col">Estado</th>
                 <th scope="col">Cambiar estado</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
                 <th th:text="${user.name}+' '+${user.lastname}"></th>
-                <th th:text="${user.displayName}"></th>
                 <th th:text="${user.email}"></th>
-                <th th:text="${user.enabled}"></th>
                 <th>
-                    <select name="role" id="role">
-                        <option value="User" th:selected="${user.role.name == 'USER'}">Client</option>
-                        <option value="Reporter" th:selected="${user.role.name == 'REPORTER'}">Reporter</option>
-                        <option value="Moderator" th:selected="${user.role.name == 'MODERATOR'}">Moderator</option>
-                        <option value="Administrator" th:selected="${user.role.name == 'ADMIN'}">Administrator</option>
-                    </select>
+                    <button class="btn btn-primary"></button>
                 </th>
                 <th>
-
                     <a class="btn"
                        th:classappend="${user.enabled ? 'btn-danger' : 'btn-success'}"
                        th:href="@{'/admin/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'}}"

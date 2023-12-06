@@ -3,6 +3,7 @@ package com.joel.newsapp.services.interfaces;
 import com.joel.newsapp.dtos.reporter.EditReporterDTO;
 import com.joel.newsapp.dtos.reporter.RegisterReporterDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
+import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.entities.Reporter;
 import com.joel.newsapp.exceptions.NotFoundException;
 
@@ -12,4 +13,7 @@ public interface IReporterService extends ICrudService<ReporterInfoDTO, Register
     List<ReporterInfoDTO> getAllReporters();
     Reporter findByEmail(String email) throws NotFoundException;
     Reporter findById(String id) throws NotFoundException;
+    Reporter findByUserId(String id) throws NotFoundException;
+    EmployeeDTO reporterInfo(String id) throws NotFoundException;
+    List<EmployeeDTO> allReporterInfo();
 }

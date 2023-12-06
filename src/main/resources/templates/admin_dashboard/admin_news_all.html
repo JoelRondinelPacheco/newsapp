@@ -4,10 +4,13 @@
 
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div th:replace="~{fragments/admin_nav :: admin_nav}"></div>
-<div> <a class="btn btn-primary" th:href="@{/dashboard/news}">Destacadas</a>
-  <a class="btn btn-primary" th:href="@{/dashboard/news/all}">Todas las noticias</a></div>
 <main class="container">
+  <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
+  <div th:replace="~{admin_dashboard/fragments/admin_nav_news :: admin_nav_news}"></div>
+  <div th:replace="~{admin_dashboard/fragments/news_search :: news_search}"></div>
+
+
+  <section>
   <table class="table">
     <thead>
     <tr class="text-center">
@@ -18,21 +21,51 @@
       <th>Fecha</th>
       <th>Autor</th>
       <th>Categoria</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${allNewsError}" colspan="3" class="text-center">
       <th th:text="${allNewsError}"></th>
     </tr>
-    <tr th:if="${allNewsError != null}" th:each="newsL : ${news}">
-      <th th:text="${newsL.title}"></th>
-      <th th:text="${newsL.createdAt}"></th>
-      <th th:text="${newsL.author.email}"></th>
-      <th th:text="${newsL.mainCategory.name}"></th>
+    <tr th:each="newsL : ${listNews}">
+      <th th:text="${newsL.newsTitle}"></th>
+      <th th:text="${newsL.newsDate}"></th>
+      <th th:text="${newsL.reporterName}"></th>
+      <th th:text="${newsL.newsCategory}"></th>
+      <th>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Seleccionar
+          </button>
+          <ul class="dropdown-menu" th:id="${newsL.newsId}">
+            <li> <button th:attr="data-title=${newsL.newsTitle}, data-author=${newsL.reporterName}" class="dropdown-item selectMain" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal</button></li>
+            <li><button th:attr="data-title=${newsL.newsTitle}, data-author=${newsL.reporterName}" class="dropdown-item selectByCategory" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Principal por categoria</button></li>
+          </ul>
+        </div>
     </tr>
     </tbody>
   </table>
+  </section>
 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeBtn"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn">Cancelar</button>
+          <a type="button" class="btn btn-primary" id="confirmBtn">Confirmar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" th:src="@{/scripts/admin_dashboard/select_featured.js}"></script>
 
 </main>
 </body>
