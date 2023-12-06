@@ -247,6 +247,15 @@ public class NewsService implements INewsService {
         return this.createNewsView(news);
     }
 
+    @Override
+    public boolean existsById(String id) throws NotFoundException {
+        boolean exists = this.newsRepository.existsById(id);
+        if (exists) {
+            return true;
+        }
+        throw new NotFoundException("News not found");
+    }
+
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();
