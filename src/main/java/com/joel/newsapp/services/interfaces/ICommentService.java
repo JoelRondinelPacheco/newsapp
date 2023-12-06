@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ICommentService extends ICrudService<Comment, CommentPostReqDTO, CommentEditReqDTO, String>  {
     List<Comment> getAllNewsComments(String newsId) throws NotFoundException;
+
 }
