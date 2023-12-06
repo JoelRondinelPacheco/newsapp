@@ -241,6 +241,12 @@ public class NewsService implements INewsService {
         return this.newsRepository.save(news);
     }
 
+    @Override
+    public NewsViewDTO getByIdDTO(String id) throws NotFoundException {
+        News news = this.getById(id);
+        return this.createNewsView(news);
+    }
+
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();
@@ -275,5 +281,15 @@ public class NewsService implements INewsService {
         return newsDTO;
     }
 
+    private NewsViewDTO createNewsView(News news) {
+        NewsHomeDTO dto = this.dtos.createNewsHomeDTO(news);
+        return NewsViewDTO.builder()
+                .newsImage(news.getImage().getId())
+                .newsImageCaption(news.getImageCaption())
+                .newsBody(news.getBody())
+                .newsCategoryId(news.getMainCategory().getId())
+                .newsDetails(dto)
+                .build();
+    }
 
 }

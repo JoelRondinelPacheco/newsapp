@@ -1,6 +1,7 @@
 package com.joel.newsapp.dtos.news;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
