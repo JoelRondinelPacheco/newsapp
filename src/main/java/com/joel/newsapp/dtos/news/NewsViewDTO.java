@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Builder
 @Setter
 @Getter
-public class NewsViewDTO extends NewsHomeDTO {
+public class NewsViewDTO {
     private String newsImage;
     private String newsImageCaption;
     private String newsBody;

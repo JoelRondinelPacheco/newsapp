@@ -4,26 +4,75 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-    <section>
-        <span th:text="">Categoria</span>
-        <h1>Titulo de la noticia</h1>
-        <h2>Subtitulo de la noticia</h2>
+    <section class="row">
+    <div class="col-8">
+        <span th:text="${news.newsDetails.newsCategory}"></span>
+        <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
+        <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
+        <div class="d-flex justify-content-between">
+            <div>
+            <span>Por: </span><span th:text="${news.newsDetails.reporterName}"></span>
+        </div>
         <div>
-            <span>Autor</span>
-            <span>hh:mm dd/MM/yy</span>
+            <span th:text="${news.newsDetails.newsHour + ' ' + news.newsDetails.newsDate}"></span>
+        </div>
         </div>
         <figure>
-            <img src="" alt="Imagen noticia">
-            <figcaption>Pie de foto</figcaption>
+            <img  class="object-fit-cover img-fluid w-100" th:src="@{'/image/' + ${news.newsImage}}"  style="max-height: 400px" alt="Imagen noticia">
+            <figcaption th:text="${news.newsImageCaption}"></figcaption>
         </figure>
-    </section>
-        
-    <section>
-        Cuerpo de la noticia
+    </div>
+    <div class="col-4">Aqui ultimas noticias/relacionadas</div>
+</section>
+    <section th:text="${news.newsBody}">
     </section>
 
-    <section>
-        Comments
+    <section class="w-75">
+        <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-top border-warning border-2">Comentarios</h2>
+
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    Display name del autor
+                </div>
+                <div class="col-4 d-flex justify-content-between">
+                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
+                </div>
+            </div>
+            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
+            <div>
+                Me gusta | No me gusta
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    Display name del autor
+                </div>
+                <div class="col-4 d-flex justify-content-between">
+                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
+                </div>
+            </div>
+            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
+            <div>
+                Me gusta | No me gusta
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    Display name del autor
+                </div>
+                <div class="col-4 d-flex justify-content-between">
+                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
+                </div>
+            </div>
+            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
+            <div>
+                Me gusta | No me gusta
+            </div>
+        </div>
+       
     </section>
 
     <section>
