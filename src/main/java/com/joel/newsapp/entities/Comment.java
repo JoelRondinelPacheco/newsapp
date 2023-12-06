@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
+
 @Entity(name = "comments")
 @SuperBuilder
 @NoArgsConstructor
@@ -13,10 +15,14 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 public class Comment extends Base {
     private String comment;
-    private int complaints;
-    private int positiveScore;
-    private int negativeScore;
     private boolean reviewed;
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentReaction> reactions;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Report> reports;
+
     @ManyToOne
     @JoinColumn(name = "news_id")
     private News news;
@@ -27,9 +33,6 @@ public class Comment extends Base {
 
     @PrePersist
     private void prePersist(){
-        this.complaints = 0;
-        this.positiveScore = 0;
-        this.negativeScore = 0;
         this.reviewed = false;
     }
 

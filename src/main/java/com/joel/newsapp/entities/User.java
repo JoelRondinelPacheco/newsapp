@@ -30,8 +30,15 @@ public class User extends Base implements UserDetails {
     private Role role;
     private Boolean enabled;
     private Boolean verified;
+
     @OneToMany(mappedBy = "authorComment", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user")
+    private List<CommentReaction> reactions;
+
+    @OneToMany(mappedBy = "user")
+    private List<Report> reports;
 
     @OneToOne
     @JoinColumn(name="id_image", referencedColumnName = "id")
