@@ -30,6 +30,9 @@ public class ManageUsersController {
                                 @RequestParam(required = false) Double monthlySalary,
                                 ModelMap model) {
 
+        if (this.userService.checkUserEmail(email)) {
+            model.addAttribute("emailError", "Email already registered");
+        }
         AdminRegisterUserDTO user = new AdminRegisterUserDTO(name, lastname, email, role);
         if ( role == Role.USER) {
             this.adminService.createUser(user);
@@ -42,31 +45,17 @@ public class ManageUsersController {
     }
     //CAMBIAR ROLE
     @GetMapping("/{userId}/{oldRole}/{newRole}")
-    public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable String newRole, ModelMap model) {
+    public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable Role newRole, ModelMap model) {
 
-        if (!newRole.equalsIgnoreCase(Role.USER.name()) && !newRole.equalsIgnoreCase(Role.REPORTER.name()) && !newRole.equalsIgnoreCase(Role.MODERATOR.name()) && !newRole.equalsIgnoreCase(Role.ADMIN.name())) {
+        if (!newRole.name().equalsIgnoreCase(Role.USER.name()) && !newRole.name().equalsIgnoreCase(Role.REPORTER.name()) && !newRole.name().equalsIgnoreCase(Role.MODERATOR.name()) && !newRole.name().equalsIgnoreCase(Role.ADMIN.name())) {
             model.addAttribute("roleError", "No se proporciono un rol valido");
             // TODO HANDLE ERROR
             return "index";
         }
     try {
-        if (oldRole.equalsIgnoreCase("reporter")) {
-            this.userRolesService.changeReporterRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("moderator")) {
-            this.userRolesService.changeModeratorRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("admin")) {
-            this.userRolesService.changeAdminRole(userId, newRole);
-            return "index";
-        } else if (oldRole.equalsIgnoreCase("user")) {
-            /* this.userService.changeUserRole(userId, newRole);*/
-            return "index";
-        } else {
-            model.addAttribute("roleError", "No se proporciono un rol valido");
-            // TODO HANDLE ERROR
-            return "index";
-        }
+        String res = this.userRolesService.changeRole(userId, newRole);
+        model.addAttribute("res", res);
+        return "index";
     } catch (NotFoundException e) {
         System.out.println(e.getMessage());
         return "index";

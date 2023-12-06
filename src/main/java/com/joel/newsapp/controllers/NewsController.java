@@ -2,6 +2,7 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.NewsEditReqDTO;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.news.NewsViewDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -32,6 +33,17 @@ public class NewsController {
     private CommentService commentService;
     @Autowired
     private INewsCategoryService categoryService;
+
+    @GetMapping("/{category}/{id}")
+    public String getNews(@PathVariable String category, @PathVariable String id, ModelMap model) {
+        try {
+            NewsViewDTO news = this.newsService.getByIdDTO(id);
+            model.addAttribute("news", news);
+        } catch (NotFoundException e) {
+            model.addAttribute("newsError", e.getMessage());
+        }
+        return "news_view";
+    }
 
     @PostMapping("/save")
     public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model) {

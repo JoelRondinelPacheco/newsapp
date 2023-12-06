@@ -1,5 +1,7 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.news.NewsByCategoryDTO;
+import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -7,6 +9,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.ICommentService;
 import com.joel.newsapp.services.interfaces.INewsCategoryService;
 import com.joel.newsapp.services.interfaces.INewsService;
+import com.joel.newsapp.utils.BuildDTOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,57 +24,50 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class HomeController {
-    @Autowired
-    private INewsService newsService;
-    @Autowired
-    private INewsCategoryService categoryService;
-    @Autowired
-    private ICommentService commentService;
+    @Autowired private INewsService newsService;
+    @Autowired private INewsCategoryService categoryService;
+    @Autowired private ICommentService commentService;
+    @Autowired private BuildDTOs dtos;
     @GetMapping("/")
-    public String index() {
-/*
-        try {
-            // DESTACADA crear categoria destacada
-            News mainFeatured = this.newsService.mainFeatured();
-            // LISTA DE CATEGORIAS
-            List<String> categories = this.categoryService.getAllCategories();
-            List<List<News>> news = new ArrayList<>();
-            // 10? DE CADA CATEGORIA
-            for (String category : categories) {
-                //TODO POR FECHA?
-                news.add(this.newsService.findByCategory(category, 10));
-            }
-            // 5 ULTIMAS NOTICIAS
-            List<News> latest = this.newsService.latest(5);
-            model.addAttribute("featured", mainFeatured);
-            model.addAttribute("categories", categories);
-            model.addAttribute("news", news);
-            model.addAttribute("latest", latest);
-            return "index";
-        } catch (NotFoundException ex) {
-            model.put("error", ex.getMessage());
-            return "index.html";
-        }*/
-        System.out.println("entro");
-        return "index";
-    }
+    public String index(ModelMap model) {
 
-    //TODO Main controller for repeated values in news
+        try {
+            NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
+            model.addAttribute("mainFeatured", mainFeatured);
+        } catch (NotFoundException e) {
+            System.out.println("main empty");
+            model.addAttribute("mainFeaturedEmpty", true);
+        }
+
+        List<NewsCategory> categories = this.categoryService.findAll();
+        if (categories.isEmpty()) {
+            model.addAttribute("categoriesEmpty", true);
+        }
+
+        List<NewsByCategoryDTO> news = new ArrayList<>();
+        for (NewsCategory category : categories) {
+            List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
+            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat), newsCat.isEmpty() ? true : false));
+
+        }
+
+
+        List<News> latestNews = this.newsService.latest(5);
+        List<NewsHomeDTO> latest = this.dtos.createListNewsHomeDTO(latestNews);
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("news", news);
+        model.addAttribute("latest", latest);
+        return "index";
+
+    }
 
     @GetMapping("/category/{category}")
     public String getByCategory(@PathVariable String category, ModelMap model) throws NotFoundException {
         try {
-            // Main featured
-            NewsCategory categoryEntiy = this.categoryService.findByName(category);
-            // Main featured by category
-            News mainFeatured = this.newsService.featuredByCategory(category);
-            // Featured by category
-            News featuredNews = this.newsService.featuredByCategory(category);
-            // Latest by category
+            NewsCategory categoryEntity = this.categoryService.findByName(category);
             List<News> latest = this.newsService.latestByCategory(category, 5);
-            model.addAttribute("category", categoryEntiy);
-            model.addAttribute("main", mainFeatured);
-            model.addAttribute("featured", featuredNews);
+            model.addAttribute("category", categoryEntity);
             model.addAttribute("latest", latest);
             return "news_category";
 

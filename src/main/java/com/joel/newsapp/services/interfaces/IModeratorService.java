@@ -1,5 +1,8 @@
 package com.joel.newsapp.services.interfaces;
 
+import com.joel.newsapp.entities.Moderator;
+import com.joel.newsapp.exceptions.NotFoundException;
+
 public interface IModeratorService {
-    void changeModeratorRole(String userId, String newRole);
+    Moderator findByUserId(String userId) throws NotFoundException;
 }
