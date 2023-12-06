@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsEditReqDTO;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
 import com.joel.newsapp.dtos.news.NewsViewDTO;
@@ -39,6 +40,11 @@ public class NewsController {
         try {
             NewsViewDTO news = this.newsService.getByIdDTO(id);
             model.addAttribute("news", news);
+            List<CommentViewDTO> comments = this.commentService.getAllNewsComments(id);
+            if (comments.isEmpty()) {
+                model.addAttribute("commentsEmpty", "No comments");
+            }
+            model.addAttribute("comments", comments);
         } catch (NotFoundException e) {
             model.addAttribute("newsError", e.getMessage());
         }

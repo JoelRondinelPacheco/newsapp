@@ -25,31 +25,26 @@ public class CommentService implements ICommentService {
     @Autowired private BuildDTOs dto;
 
     @Transactional
-    @Override
-    public Comment save(CommentPostReqDTO comment) {
+    public Comment save(CommentPostReqDTO comment) throws NotFoundException{
         // TODO AGREGAR VERIFICACION DEL USUARIO QUE REALIZA LA PETICION
-
         try {
             News noticia = this.newsService.getById(comment.getNews_id());
             User autor = this.userService.findUserByEmail(comment.getUser_email());
             Comment newComment = new Comment(comment.getComment(), noticia, autor);
             return this.commentRepository.save(newComment);
         } catch (NotFoundException e) {
-            throw new RuntimeException(e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
-    @Override
     public Comment getById(String s) throws NotFoundException {
         return null;
     }
 
-    @Override
     public Comment edit(CommentEditReqDTO commentEditReqDTO) throws Exception {
         return null;
     }
 
-    @Override
     public String deleteById(String s) {
         return null;
     }

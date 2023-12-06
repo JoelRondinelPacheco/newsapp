@@ -1,83 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:replace="~{fragments/head :: head (title ='NewsApp')}"></div>
+
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-<main class="container">
-    <section class="row">
-    <div class="col-8">
-        <span th:text="${news.newsDetails.newsCategory}"></span>
-        <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
-        <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
-        <div class="d-flex justify-content-between">
-            <div>
-            <span>Por: </span><span th:text="${news.newsDetails.reporterName}"></span>
-        </div>
-        <div>
-            <span th:text="${news.newsDetails.newsHour + ' ' + news.newsDetails.newsDate}"></span>
-        </div>
-        </div>
-        <figure>
-            <img  class="object-fit-cover img-fluid w-100" th:src="@{'/image/' + ${news.newsImage}}"  style="max-height: 400px" alt="Imagen noticia">
-            <figcaption th:text="${news.newsImageCaption}"></figcaption>
-        </figure>
-    </div>
-    <div class="col-4">Aqui ultimas noticias/relacionadas</div>
-</section>
-    <section th:text="${news.newsBody}">
-    </section>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main class="container">
+        <section class="row">
+            <div class="col-8">
+                <span th:text="${news.newsDetails.newsCategory}"></span>
+                <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
+                <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span>Por: </span><span th:text="${news.newsDetails.reporterName}"></span>
+                    </div>
+                    <div>
+                        <span th:text="${news.newsDetails.newsHour + ' ' + news.newsDetails.newsDate}"></span>
+                    </div>
+                </div>
+                <figure>
+                    <img class="object-fit-cover img-fluid w-100" th:src="@{'/image/' + ${news.newsImage}}"
+                        style="max-height: 400px" alt="Imagen noticia">
+                    <figcaption th:text="${news.newsImageCaption}"></figcaption>
+                </figure>
+            </div>
+            <div class="col-4">Aqui ultimas noticias/relacionadas</div>
+        </section>
+        <section th:text="${news.newsBody}">
+        </section>
 
-    <section class="w-75">
-        <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-top border-warning border-2">Comentarios</h2>
+        <section class="w-75">
+            <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-top border-warning border-2">Comentarios</h2>
+            <div th:each="comment : ${comments}">
+                <div>
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 th:text="${comment.authorName}"></h5>
+                        </div>
+                        <div class="col-4 d-flex justify-content-between">
+                            <span th:text="${comment.hour}"></span><span th:Text="${comment.hour}"></span><span>reportar</span>
+                        </div>
+                    </div>
+                    <div><p th:text="${comment.comment}"></p></div>
+                    <div>
+                        Me gusta | No me gusta
+                    </div>
+                </div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-8">
+                            Display name del autor
+                        </div>
+                        <div class="col-4 d-flex justify-content-between">
+                            <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
+                        </div>
+                    </div>
+                    <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa
+                        architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis
+                        obcaecati voluptates qui ipsam illo at molestiae consequatur.
+                    </div>
+                    <div>
+                        Me gusta | No me gusta
+                    </div>
+                </div>
+               
+                    <form th:action="@{'/comment/add/'+ ${news.newsDetails.newsCategory} +'/' + ${news.newsDetails.newsId}}" method="post">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="Deja tu comentario" id="comment" name="comment" style="height: 100px"></textarea>
+                            <label for="comment">Deja tu comentario</label>
+                          </div>
+                        <input class="btn btn-primary" type="submit" value="Enviar">
+                    </form>
+               
+        </section>
 
-        <div>
-            <div class="row">
-                <div class="col-8">
-                    Display name del autor
-                </div>
-                <div class="col-4 d-flex justify-content-between">
-                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
-                </div>
-            </div>
-            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
-            <div>
-                Me gusta | No me gusta
-            </div>
-        </div>
-        <div>
-            <div class="row">
-                <div class="col-8">
-                    Display name del autor
-                </div>
-                <div class="col-4 d-flex justify-content-between">
-                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
-                </div>
-            </div>
-            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
-            <div>
-                Me gusta | No me gusta
-            </div>
-        </div>
-        <div>
-            <div class="row">
-                <div class="col-8">
-                    Display name del autor
-                </div>
-                <div class="col-4 d-flex justify-content-between">
-                    <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
-                </div>
-            </div>
-            <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis obcaecati voluptates qui ipsam illo at molestiae consequatur.</div>
-            <div>
-                Me gusta | No me gusta
-            </div>
-        </div>
-       
-    </section>
-
-    <section>
-        ? relacionadas
-    </section>
-</main>
+        <section>
+            ? relacionadas
+        </section>
+    </main>
 </body>
+
 </html>
