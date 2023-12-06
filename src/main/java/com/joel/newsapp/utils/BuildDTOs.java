@@ -1,5 +1,6 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
@@ -7,11 +8,10 @@ import com.joel.newsapp.dtos.users.Employee;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UserProfileInfoDTO;
-import com.joel.newsapp.entities.News;
-import com.joel.newsapp.entities.NewsCategory;
-import com.joel.newsapp.entities.User;
+import com.joel.newsapp.entities.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,13 +87,12 @@ public class BuildDTOs {
     }
 
     public NewsHomeDTO createNewsHomeDTO(News news) {
-        String date = news.getCreatedAt().toString().split("T")[0];
-        String hour = news.getCreatedAt().toString().split("T")[1].substring(0,5);
+        String[] time = this.hourAndDate(news.getCreatedAt());
         return NewsHomeDTO.builder()
                 .newsId(news.getId())
                 .newsTitle(news.getTitle())
-                .newsDate(date)
-                .newsHour(hour)
+                .newsDate(time[0])
+                .newsHour(time[1])
                 .newsSubtitle(news.getSubtitle())
                 .newsCategory(news.getMainCategory().getName())
                 .reporterId(news.getAuthor().getUser().getId())
@@ -109,5 +108,42 @@ public class BuildDTOs {
             dtos.add(this.createNewsHomeDTO(n));
         }
         return dtos;
+    }
+
+    public CommentViewDTO commentViewDTO(Comment comment) {
+        String[] time = this.hourAndDate(comment.getCreatedAt());
+        int positiveScore = 0;
+        int negativeScore = 0;
+        for (CommentReaction c : comment.getReactions()) {
+            if (c.getIsPositive()) {
+                positiveScore += 1;
+            } else {
+                negativeScore += 1;
+            }
+        }
+        return CommentViewDTO.builder()
+                .authorId(comment.getAuthorComment().getId())
+                .authorName(comment.getAuthorComment().getDisplayName())
+                .comment(comment.getComment())
+                .positiveScore(positiveScore)
+                .negativeScore(negativeScore)
+                .date(time[0])
+                .hour(time[1])
+                .build();
+    }
+
+    public List<CommentViewDTO> commentViewDTOList (List<Comment> comments) {
+        List<CommentViewDTO> dto = new ArrayList<>();
+        for (Comment c : comments) {
+            dto.add(this.commentViewDTO(c));
+        }
+        return dto;
+    }
+
+    public String[] hourAndDate(LocalDateTime date) {
+        String[] time = new String[2];
+        time[0] = date.toString().split("T")[0];
+        time[1] = date.toString().split("T")[1].substring(0,5);
+        return time;
     }
 }

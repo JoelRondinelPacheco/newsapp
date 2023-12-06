@@ -3,8 +3,14 @@ package com.joel.newsapp.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Setter
+@Getter
 public class CommentReaction extends Base {
     private Boolean isPositive;
 

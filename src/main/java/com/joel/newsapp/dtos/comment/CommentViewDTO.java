@@ -1,12 +1,10 @@
 package com.joel.newsapp.dtos.comment;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Setter
 @Getter
 public class CommentViewDTO {
@@ -15,4 +13,6 @@ public class CommentViewDTO {
     private String comment;
     private int negativeScore;
     private int positiveScore;
+    private String hour;
+    private String date;
 }

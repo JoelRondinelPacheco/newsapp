@@ -23,4 +23,5 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
     News setCategoryFeatured(String newsId) throws NotFoundException;
 
     NewsViewDTO getByIdDTO(String id) throws NotFoundException;
+    boolean existsById(String id) throws NotFoundException;
 }
