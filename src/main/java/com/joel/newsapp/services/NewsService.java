@@ -270,8 +270,10 @@ public class NewsService implements INewsService {
         for (String categoryId : categories) {
             try {
                 NewsCategory category = this.newsCategoryService.getById(categoryId);
+                System.out.println(category.getName() + " | " + category.getId());
                 newsCategories.add(category);
             } catch (NotFoundException ex) {
+                System.out.println("no encontro");
                 continue;
             }
         }

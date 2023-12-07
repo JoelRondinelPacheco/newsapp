@@ -40,7 +40,9 @@ public class News extends Base{
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private NewsCategory mainCategory;
 
-    @ManyToMany(mappedBy = "news")
+
+    @ManyToMany
+    @JoinTable(name = "rel_category_news", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "news_id"))
     private List<NewsCategory> categories;
 
     public News(String title, String subtitle, String imageCaption, String body, List<NewsCategory> categories, NewsCategory mainCategory, Reporter author, Image image) {
