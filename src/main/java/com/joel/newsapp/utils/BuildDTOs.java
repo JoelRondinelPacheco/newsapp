@@ -47,7 +47,7 @@ public class BuildDTOs {
     }
 
     public UserProfileInfoDTO createUserProfileInfo(User user) {
-        UserProfileInfoDTO userDTO = new UserProfileInfoDTO(user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail());
+        UserProfileInfoDTO userDTO = new UserProfileInfoDTO(user.getId(), user.getName(), user.getLastname(), user.getDisplayName(), user.getEmail());
         if (user.getImage() == null) {
             userDTO.setProfilePictureId("user_image");
         } else {

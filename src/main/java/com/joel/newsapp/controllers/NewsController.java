@@ -57,21 +57,22 @@ public class NewsController {
                          @RequestParam String subtitle,
                          @RequestParam String imageCaption,
                          @RequestParam String body,
-                         @RequestParam List<String> categories,
+                         @RequestParam(required = false) List<String> categories,
                          @RequestParam String mainCategory,
                          MultipartFile image,
                          ModelMap model) {
         try {
-            for (String c : categories) {
-                System.out.println(c);
+            if (categories == null) {
+                categories = new ArrayList<>();
             }
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
+            System.out.println(body);
             NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, username, image);
             News news = this.newsService.save(newsDTO);
             model.put("title", news.getTitle());
             model.put("body", news.getBody());
-            return "redirect:/news/" + news.getMainCategory().getName() + "/" + news.getId();
+            return this.getNews(news.getMainCategory().getName(), news.getId(), model);
         } catch (NotFoundException ex) {
             System.out.println(ex.getMessage());
             model.put("error", "Error al cargar noticia");
@@ -121,7 +122,17 @@ public class NewsController {
     }
 
     @PostMapping("/edit/{id}")
-    public String postEditNews(@PathVariable String id, @RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model){
+    public String postEditNews(@PathVariable String id,
+                               @RequestParam String title,
+                               @RequestParam String subtitle,
+                               @RequestParam String imageCaption,
+                               @RequestParam String body,
+                               @RequestParam(required = false) List<String> categories,
+                               @RequestParam String mainCategory, MultipartFile image, ModelMap model){
+
+        if (categories == null) {
+            categories = new ArrayList<>();
+        }
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
