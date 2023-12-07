@@ -38,7 +38,7 @@ public class DashboardService implements IDashboardService {
     }
 
     @Override
-    public List<EmployeeDTO> getAllEmployees(Role role, UserState state)  {
+    public List<EmployeeDTO> getAllEmployees(int pageNumber, int pageSize, Role role, UserState state)  {
         System.out.println(role);
         List<EmployeeDTO> employees = new ArrayList<>();
         switch (role) {

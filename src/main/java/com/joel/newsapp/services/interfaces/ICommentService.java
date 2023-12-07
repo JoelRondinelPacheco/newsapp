@@ -8,7 +8,7 @@ import com.joel.newsapp.exceptions.NotFoundException;
 
 import java.util.List;
 
-public interface ICommentService extends ICrudService<Comment, CommentPostReqDTO, CommentEditReqDTO, String>  {
+public interface ICommentService  {
     List<CommentViewDTO> getAllNewsComments(String newsId) throws NotFoundException;
 
 }

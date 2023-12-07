@@ -53,10 +53,12 @@
         <div th:if="${newsC.noNews == true}">
             <section th:replace="~{fragments/home/news_list_empty :: news_list_empty}"></section>
         </div>
-        <div th:each="newsListC : ${newsC.news}" class="row">
-            <div class="col-3">
+        <div class="row">
+            <div  th:each="newsListC : ${newsC.news}" class="col-3">
+                <a class="text-decoration-none link-dark" th:href="@{'/news/' + ${newsC.categoryName} + '/' + ${newsListC.newsId}}">
                 <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
                 <h4 class="fs-3 fw-medium" th:text="${newsListC.newsTitle}"></h4>
+            </a>
             </div>
         </div>
     </div>

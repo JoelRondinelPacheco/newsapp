@@ -2,11 +2,13 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
+import com.joel.newsapp.dtos.news.NewsPaginatedDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.search.AllNewsForm;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.UsersPaginatedDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -14,6 +16,7 @@ import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -32,28 +35,41 @@ public class AdminDashboardController {
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
-        return this.users(Role.USER, UserState.ACTIVE, model);
+        return this.users("user", 1, UserState.ACTIVE, model);
     }
 
     @GetMapping("/role/{role}")
-    public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
+    public String users(@PathVariable String role, @RequestParam(required = false) Integer page_number, @RequestParam UserState state, ModelMap model) {
+        if (page_number == null) {
+            page_number = 1;
+        }
+        System.out.println(role);
         model.addAttribute("role", role);
         model.addAttribute("state", state);
-        if (role == Role.USER) {
-            List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
-            model.addAttribute("users", users);
+        if (role.equalsIgnoreCase(Role.USER.name())) {
+            UsersPaginatedDTO usersPaginated = this.userService.getUsersByEnabledAndRole(page_number, 2, state, Role.USER);
+            model.addAttribute("users", usersPaginated.getUsers());
+            model.addAttribute("totalPages", usersPaginated.getTotalPages());
+            model.addAttribute("currentPage", page_number);
+            model.addAttribute("totalElements", usersPaginated.getTotalElements());
             return "admin_dashboard/admin_users";
         } else {
-            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role, state);
+            Role roleEmployee;
+
+            switch (role) {
+                case "moderator":
+                    roleEmployee = Role.MODERATOR;
+                    break;
+                case "admin":
+                    roleEmployee = Role.ADMIN;
+                    break;
+                default:
+                    roleEmployee = Role.REPORTER;
+            }
+
+            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(page_number, 10, roleEmployee, state);
             model.addAttribute("employees", employees);
             return "admin_dashboard/admin_employees";
-            /*if (role == Role.REPORTER) {
-                return "admin_dashboard/admin_reporters";
-            } else if (role == Role.ADMIN) {
-                return "admin_dashboard/admin_admins";
-            } else {
-                return "admin_dashboard/admin_moderators";
-            }*/
         }
     }
 
@@ -102,7 +118,19 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/news/all")
-    public String adminNewsAll(@RequestParam(required = false) String reporterName, @RequestParam(required = false) String reporterLastname, @RequestParam(required = false) String newsTitle, @RequestParam(required = false) String newsDate, @RequestParam(required = false) String newsCategory, ModelMap model) {
+    public String adminNewsAll(@RequestParam(required = false) String reporterName,
+                               @RequestParam(required = false) String reporterLastname,
+                               @RequestParam(required = false) String newsTitle,
+                               @RequestParam(required = false) String newsDate,
+                               @RequestParam(required = false) String newsCategory,
+                               @RequestParam(required = false) Integer page_number,
+                               ModelMap model) {
+
+        System.out.println(page_number);
+        if (page_number == null) {
+            page_number = 1;
+        }
+        System.out.println(page_number);
 
         AllNewsForm form = AllNewsForm.builder()
                 .reporterName(reporterName != null ? reporterName : "")
@@ -112,8 +140,17 @@ public class AdminDashboardController {
                 .newsCategory(newsTitle != null ? newsTitle : "")
                 .build();
 
-        List<NewsHomeDTO> news = this.newsService.getAll();
+        NewsPaginatedDTO page = this.newsService.getAll(page_number,2);
+        List<NewsHomeDTO> news = page.getNews();
+
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("currentPage", page_number);
+        model.addAttribute("totalElements", page.getTotalElements());
+
         List<CategoryDTO> categories = this.categoryService.findAllDTO();
+
+
+
         if(news.size() > 0) {
             model.addAttribute("listNews", news);
         } else {

@@ -16,7 +16,7 @@ public interface IUserService {
     UserInfoDTO edit(EditUserDTO userDTO) throws NotFoundException;
     String deleteById(String id) throws NotFoundException;
     List<UserInfoDTO> getAllUsers();
-    List<UserInfoDTO> getUsersByEnabledAndRole(UserState state, Role role);
+    UsersPaginatedDTO getUsersByEnabledAndRole(int pageNumber, int pageSize, UserState state, Role role);
     UserInfoDTO findByEmail(String username) throws NotFoundException;
     User findUserByEmail(String email) throws UsernameNotFoundException;
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;

@@ -7,6 +7,8 @@ import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.utils.Role;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +21,7 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
-    List<User> findByRoleAndEnabledAndVerified(Role role, Boolean enabled, Boolean verified);
-    List<User> findByRoleAndEnabled(Role role, Boolean active);
+    Page<User> findByRoleAndEnabledAndVerified(Role role, Boolean enabled, Boolean verified, Pageable pageable);
+    Page<User> findByRoleAndEnabled(Role role, Boolean active, Pageable page);
     Optional<User> findByEmail(String email);
 }
