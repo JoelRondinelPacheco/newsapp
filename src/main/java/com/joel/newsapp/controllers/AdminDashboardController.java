@@ -7,6 +7,7 @@ import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.search.AllNewsForm;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
+import com.joel.newsapp.dtos.users.UsersPaginatedDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -32,28 +33,24 @@ public class AdminDashboardController {
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
-        return this.users(Role.USER, UserState.ACTIVE, model);
+        return this.users(Role.USER, 1, UserState.ACTIVE, model);
     }
 
     @GetMapping("/role/{role}")
-    public String users(@PathVariable Role role, @RequestParam UserState state, ModelMap model) {
+    public String users(@PathVariable Role role, @RequestParam int page_number, @RequestParam UserState state, ModelMap model) {
         model.addAttribute("role", role);
         model.addAttribute("state", state);
         if (role == Role.USER) {
-            List<UserInfoDTO> users = this.userService.getUsersByEnabledAndRole(state, role);
-            model.addAttribute("users", users);
+            UsersPaginatedDTO usersPaginated = this.userService.getUsersByEnabledAndRole(page_number, 10, state, role);
+            model.addAttribute("users", usersPaginated.getUsers());
+            model.addAttribute("totalPages", usersPaginated.getTotalPages());
+            model.addAttribute("actualPage", page_number);
+            model.addAttribute("totalElements", usersPaginated.getTotalElements());
             return "admin_dashboard/admin_users";
         } else {
             List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role, state);
             model.addAttribute("employees", employees);
             return "admin_dashboard/admin_employees";
-            /*if (role == Role.REPORTER) {
-                return "admin_dashboard/admin_reporters";
-            } else if (role == Role.ADMIN) {
-                return "admin_dashboard/admin_admins";
-            } else {
-                return "admin_dashboard/admin_moderators";
-            }*/
         }
     }
 

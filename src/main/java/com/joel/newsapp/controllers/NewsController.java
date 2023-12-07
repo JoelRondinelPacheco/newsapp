@@ -60,7 +60,7 @@ public class NewsController {
             News news = this.newsService.save(newsDTO);
             model.put("title", news.getTitle());
             model.put("body", news.getBody());
-            return "form_news.html";
+            return "redirect:/news/" + news.getMainCategory().getName() + "/" + news.getId();
         } catch (NotFoundException ex) {
             model.put("error", "Error al cargar noticia");
             return "form_news.html";

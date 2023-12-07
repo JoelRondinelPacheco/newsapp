@@ -10,6 +10,9 @@ import com.joel.newsapp.utils.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -126,21 +129,21 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserInfoDTO> getUsersByEnabledAndRole(UserState state, Role role) {
-        List<User> users = new ArrayList<>();
+    public UsersPaginatedDTO getUsersByEnabledAndRole(int pageNumber, int pageSize, UserState state, Role role) {
+        Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+        Page<User> users = Page.empty();
         switch (state) {
             case ACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, true);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, true, page);
                 break;
             case INACTIVE:
-                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, false);
+                users = this.userRepository.findByRoleAndEnabledAndVerified(role, true, false, page);
                 break;
             case BANNED:
-                users = this.userRepository.findByRoleAndEnabled(role, false);
+                users = this.userRepository.findByRoleAndEnabled(role, false, page);
                 break;
         }
-        System.out.println(users.size());
-        return this.dtos.listUserInfoDTO(users);
+        return new UsersPaginatedDTO(this.dtos.listUserInfoDTO(users.getContent()), users.getTotalPages(), users.getTotalElements() );
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
