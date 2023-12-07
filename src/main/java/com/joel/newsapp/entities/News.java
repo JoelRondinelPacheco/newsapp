@@ -27,7 +27,8 @@ public class News extends Base{
     private String title;
     private String subtitle;
     private String imageCaption;
-    // TODO install TipTap
+    // TODO install
+    @Column(columnDefinition = "LONGTEXT")
     private String body;
     private Boolean featured;
     private Boolean featuredCategory;

@@ -7,11 +7,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div th:replace="~{fragments/header :: header}"></div>
     <main class="container">
         <section class="row">
-            <div class="col-9">
+            <div class="col-12">
                 <span th:text="${news.newsDetails.newsCategory}"></span>
                 <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
-                <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
-                <div class="d-flex justify-content-between">
+            </div>
+            <div class="col-9">
+                <h2 class="fs-4 fw-light mb-3" th:text="${news.newsDetails.newsSubtitle}"></h2>
+                <div class="py-2 d-flex justify-content-between border-top border-dark-subtle border-2">
                     <div>
                         <span>Por: </span><span th:text="${news.newsDetails.reporterName}"></span>
                     </div>
@@ -22,7 +24,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                 <figure>
                     <img class="object-fit-cover img-fluid w-100" th:src="@{'/image/' + ${news.newsImage}}"
                         style="max-height: 400px" alt="Imagen noticia">
-                    <figcaption th:text="${news.newsImageCaption}"></figcaption>
+                    <figcaption class="py-2 border-bottom border-dark-subtle border-2" th:text="${news.newsImageCaption}"></figcaption>
                 </figure>
             </div>
             <div class="col-3">Aqui ultimas noticias/relacionadas</div>
