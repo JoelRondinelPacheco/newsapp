@@ -1,7 +1,10 @@
 package com.joel.newsapp.utils;
 
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
+import com.joel.newsapp.dtos.news.NewsForm;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
+import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.newscategory.CategoriesFormDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.users.Employee;
@@ -138,6 +141,34 @@ public class BuildDTOs {
             dto.add(this.commentViewDTO(c));
         }
         return dto;
+    }
+
+    public NewsForm newsForm(News news, List<CategoriesFormDTO> categoriesDTO) {
+        if (news != null) {
+            return NewsForm.builder()
+                    .id(news.getId())
+                    .title(news.getTitle())
+                    .subtitle(news.getSubtitle())
+                    .imageCaption(news.getImageCaption())
+                    .body(news.getBody())
+                    .categories(categoriesDTO)
+                    .mainCategoryId(news.getMainCategory().getId())
+                    .reporterUsername(news.getAuthor().getUser().getEmail())
+                    .imageId(news.getImage().getId())
+                    .build();
+        } else {
+            return NewsForm.builder()
+                    .id("")
+                    .title("")
+                    .subtitle("")
+                    .imageCaption("")
+                    .body("")
+                    .categories(categoriesDTO)
+                    .mainCategoryId("")
+                    .reporterUsername("")
+                    .imageId("")
+                    .build();
+        }
     }
 
     public String[] hourAndDate(LocalDateTime date) {

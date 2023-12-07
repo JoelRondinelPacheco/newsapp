@@ -1,6 +1,8 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.news.NewsForm;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.newscategory.CategoriesFormDTO;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.entities.User;
@@ -9,6 +11,7 @@ import com.joel.newsapp.repositories.IUserRepository;
 import com.joel.newsapp.services.NewsCategoryService;
 import com.joel.newsapp.services.NewsService;
 import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.utils.BuildDTOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,7 @@ public class ReporterController {
     @Autowired private NewsService newsService;
     @Autowired private NewsCategoryService categoryService;
     @Autowired private IUserService userService;
+    @Autowired private BuildDTOs dto;
 
     @GetMapping("/panel")
     public String newsPanel(ModelMap model) {
@@ -39,29 +44,18 @@ public class ReporterController {
     }
 
     @GetMapping("/form")
-    public String formNews(@RequestParam(required = false) String id, ModelMap model) {
-        if (id == null) {
-            List<NewsCategory> categories = this.categoryService.findAll();
-            model.addAttribute("categories", categories);
-        } else {
-            try {
-                News news = this.newsService.getById(id);
-                NewsPostReqDTO newsDTO = NewsPostReqDTO.builder()
-                        .title(news.getTitle())
-                        .subtitle(news.getSubtitle())
-                        .imageCaption(news.getImageCaption())
-                        .body(news.getBody())
-                        .mainCategory(news.getMainCategory().getId())
-                        .reporterUsername(news.getAuthor().getUser().getEmail())
-                        .build()
-            } catch (NotFoundException e) {
-                throw new RuntimeException(e);
-            }
+    public String formNews(ModelMap model) {
+
+        List<NewsCategory> categories = this.categoryService.findAll();
+        List<CategoriesFormDTO> categoriesDTO = new ArrayList<>();
+
+        for (NewsCategory c : categories) {
+            categoriesDTO.add(new CategoriesFormDTO(c.getName(), c.getId(), false));
         }
 
-        return "form_news.html";
+        NewsForm form = this.dto.newsForm(null, categoriesDTO);
+        model.addAttribute("form", form);
+        return "form_news";
     }
-
-
 
 }
