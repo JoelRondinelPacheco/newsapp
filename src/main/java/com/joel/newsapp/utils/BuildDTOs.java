@@ -146,6 +146,7 @@ public class BuildDTOs {
     public NewsForm newsForm(News news, List<CategoriesFormDTO> categoriesDTO) {
         if (news != null) {
             return NewsForm.builder()
+                    .id(news.getId())
                     .title(news.getTitle())
                     .subtitle(news.getSubtitle())
                     .imageCaption(news.getImageCaption())
@@ -157,6 +158,7 @@ public class BuildDTOs {
                     .build();
         } else {
             return NewsForm.builder()
+                    .id("")
                     .title("")
                     .subtitle("")
                     .imageCaption("")

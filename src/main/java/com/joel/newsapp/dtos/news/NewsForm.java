@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 public class NewsForm {
+    private String id;
     private String title;
     private String subtitle;
     private String imageCaption;

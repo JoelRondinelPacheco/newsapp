@@ -115,6 +115,7 @@ public class NewsController {
         }
 
         model.addAttribute("form", form);
+        model.addAttribute("edit", "edit");
         return "form_news";
 
     }
@@ -130,10 +131,13 @@ public class NewsController {
             this.newsService.edit(newsDTO);
 
             model.put("message", "Noticia editada con exito");
+            System.out.println("editada con exito");
         } catch (NotFoundException e) {
             model.put("message", "La noticia no existe");
+            System.out.println("no found exe");
         } finally {
-            return "news_panel.html";
+            System.out.println("Finally");
+            return "redirect:/reporter/panel";
         }
     }
 

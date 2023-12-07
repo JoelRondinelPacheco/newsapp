@@ -9,7 +9,8 @@
 <h1>Agregar Noticia</h1>
 <h1 th:if="${error != null}" th:text="${error}"></h1>
 <div class="d-flex justify-content-center">
-<form class="justify-content-center w-75" th:action="@{/news/save}" method="POST" enctype="multipart/form-data">
+<form class="justify-content-center w-75"
+      th:action="@{${edit != null} ? '/news/edit/' + ${form.id} : '/news/save'}" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="title" class="form-label">Titulo</label>
         <input type="text" class="form-control" id="title" name="title" th:value="${form.title}">
@@ -56,7 +57,8 @@
     </div>
 
 <div class="text-end">
-    <button type="submit" class="btn btn-primary">Agregar</button>
+    <button th:if="${edit}" type="submit" class="btn btn-primary">Editar</button>
+    <button th:unless="${edit}" type="submit" class="btn btn-primary">Agregar</button>
 </div>
 </form>
 </div>
