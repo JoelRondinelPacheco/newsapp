@@ -16,14 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/")
 public class AuthController {
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private HomeController homeController;
-    @Autowired
-    private IAdminManageUsers manageUsers;
-    @Autowired
-    private IPasswordTokenService passwordTokenService;
+    @Autowired private IUserService userService;
+    @Autowired private HomeController homeController;
+    @Autowired private IAdminManageUsers manageUsers;
+    @Autowired private IPasswordTokenService passwordTokenService;
 
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) String error, ModelMap model) {

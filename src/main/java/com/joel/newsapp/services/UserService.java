@@ -29,13 +29,13 @@ public class UserService implements IUserService {
     @Autowired private JwtTokenService jwtService;
     @Autowired private PasswordTokenService tokenService;
     @Autowired private EmailService mailService;
-    @Autowired private BuildDTOs dtos;
+    @Autowired private BuildDTOs dto;
 
 
     @Override
     public UserInfoDTO registerDTO(RegisterUserDTO userDTO){
         User userSaved = this.register(userDTO);
-        return this.dtos.createUserInfoDTO(userSaved);
+        return this.dto.createUserInfoDTO(userSaved);
     }
     @Override
     public User register(RegisterUserDTO userDTO) {
@@ -92,7 +92,7 @@ public class UserService implements IUserService {
     @Override
     public UserInfoDTO getById(String id) throws NotFoundException {
        User user = this.findById(id);
-       return this.dtos.createUserInfoDTO(user);
+       return this.dto.createUserInfoDTO(user);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class UserService implements IUserService {
             this.imageService.update(userDTO.getProfilePicture(), user.getImage().getId());
         }
         User userUpdated = this.userRepository.save(user);
-        return this.dtos.createUserInfoDTO(userUpdated);
+        return this.dto.createUserInfoDTO(userUpdated);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class UserService implements IUserService {
     @Override
     public List<UserInfoDTO> getAllUsers() {
         List<User> users = this.userRepository.findAll();
-        return this.dtos.listUserInfoDTO(users);
+        return this.dto.listUserInfoDTO(users);
     }
 
     @Override
@@ -143,13 +143,13 @@ public class UserService implements IUserService {
                 users = this.userRepository.findByRoleAndEnabled(role, false, page);
                 break;
         }
-        return new UsersPaginatedDTO(this.dtos.listUserInfoDTO(users.getContent()), users.getTotalPages(), users.getTotalElements() );
+        return new UsersPaginatedDTO(this.dto.listUserInfoDTO(users.getContent()), users.getTotalPages(), users.getTotalElements() );
     }
 
     public UserInfoDTO findByEmail(String username) throws NotFoundException {
         Optional<User> userOptional = this.userRepository.findByEmail(username);
         if(userOptional.isPresent()) {
-            return this.dtos.createUserInfoDTO(userOptional.get());
+            return this.dto.createUserInfoDTO(userOptional.get());
         }
         throw new NotFoundException("User not found");
 
@@ -167,7 +167,7 @@ public class UserService implements IUserService {
     @Override
     public UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException {
         User user = this.findUserByEmail(email);
-        return this.dtos.createUserProfileInfo(user);
+        return this.dto.createUserProfileInfo(user);
     }
 
     @Override
