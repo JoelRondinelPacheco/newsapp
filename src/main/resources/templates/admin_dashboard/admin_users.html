@@ -35,13 +35,13 @@
             </tr>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
+        <nav th:if="${totalPages > 1}" aria-label="Page navigation example">
             <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              <li th:each="i : ${#numbers.sequence(1, totalPages)}" class="page-item">
+                <!--<a th:if="${i == 1 and currentPage == 1}"class="page-link">Anterior</a>
+                <a th:if="${i == 1 and currentPage > 1}" th:href="@{'/dashboard/role/' + ${role} + '?page_number=' + ${currentPage-1} + '&state=' + ${state}}" class="page-link">Anterior</a>-->
+                <a th:href="@{'/dashboard/role/' + ${role} + '?page_number=' + ${i} + '&state=' + ${state}}" class="page-link">[[${i}]]</a>
+            </li>
             </ul>
           </nav>
 

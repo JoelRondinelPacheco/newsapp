@@ -33,22 +33,40 @@ public class AdminDashboardController {
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
-        return this.users(Role.USER, 1, UserState.ACTIVE, model);
+        return this.users("user", 1, UserState.ACTIVE, model);
     }
 
     @GetMapping("/role/{role}")
-    public String users(@PathVariable Role role, @RequestParam int page_number, @RequestParam UserState state, ModelMap model) {
+    public String users(@PathVariable String role, @RequestParam(required = false) Integer page_number, @RequestParam UserState state, ModelMap model) {
+        if (page_number == null) {
+            page_number = 1;
+        }
+        System.out.println(role);
         model.addAttribute("role", role);
         model.addAttribute("state", state);
-        if (role == Role.USER) {
-            UsersPaginatedDTO usersPaginated = this.userService.getUsersByEnabledAndRole(page_number, 10, state, role);
+        if (role.equalsIgnoreCase(Role.USER.name())) {
+            UsersPaginatedDTO usersPaginated = this.userService.getUsersByEnabledAndRole(page_number, 2, state, Role.USER);
             model.addAttribute("users", usersPaginated.getUsers());
             model.addAttribute("totalPages", usersPaginated.getTotalPages());
-            model.addAttribute("actualPage", page_number);
+            System.out.println(usersPaginated.getTotalPages());
+            model.addAttribute("currentPage", page_number);
             model.addAttribute("totalElements", usersPaginated.getTotalElements());
             return "admin_dashboard/admin_users";
         } else {
-            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(role, state);
+            Role roleEmployee;
+
+            switch (role) {
+                case "moderator":
+                    roleEmployee = Role.MODERATOR;
+                    break;
+                case "admin":
+                    roleEmployee = Role.ADMIN;
+                    break;
+                default:
+                    roleEmployee = Role.REPORTER;
+            }
+
+            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(roleEmployee, state);
             model.addAttribute("employees", employees);
             return "admin_dashboard/admin_employees";
         }
