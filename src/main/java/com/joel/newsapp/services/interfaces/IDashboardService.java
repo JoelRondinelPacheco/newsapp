@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface IDashboardService {
     EmployeeDTO getEmployee(String id, Role role) throws NotFoundException;
-    List<EmployeeDTO> getAllEmployees(Role role, UserState state);
+    List<EmployeeDTO> getAllEmployees(int pageNumber, int pageSize, Role role, UserState state);
 }

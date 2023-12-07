@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsByCategoryDTO;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.entities.Comment;
@@ -81,7 +82,7 @@ public class HomeController {
     public String getNewById(@PathVariable String category, @PathVariable String id, ModelMap model) throws Exception {
         try {
             News news = this.newsService.getById(id);
-            List<Comment> comments = this.commentService.getAllNewsComments(id);
+            List<CommentViewDTO> comments = this.commentService.getAllNewsComments(id);
             model.addAttribute("comments", comments);
             model.addAttribute("news", news);
             return "noticia";

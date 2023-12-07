@@ -2,6 +2,7 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.comment.CommentPostReqDTO;
 import com.joel.newsapp.entities.Comment;
+import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,13 +20,17 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/add/{id}")
-    public String addComment(@PathVariable String id, @RequestParam String comment, ModelMap model){
+    @PostMapping("/add/{category}/{id}")
+    public String addComment(@PathVariable String category, @PathVariable String id, @RequestParam String comment, ModelMap model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String user = auth.getName();
         CommentPostReqDTO commentDTO = new CommentPostReqDTO(comment, id, user);
-        Comment newComment = this.commentService.save(commentDTO);
-        model.put("commentOk", "Comentario agregado");
-        return "index.html";
+        try {
+            Comment newComment = this.commentService.save(commentDTO);
+            model.addAttribute("commentOk", "Comentario agregado");
+        } catch (NotFoundException e) {
+            model.addAttribute("commentError", e.getMessage());
+        }
+        return "redirect:/news/" + category + "/" + id;
     }
 }
