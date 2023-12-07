@@ -8,6 +8,7 @@ import com.joel.newsapp.services.interfaces.INewsService;
 import com.joel.newsapp.utils.BuildDTOs;
 import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -74,9 +75,16 @@ public class NewsService implements INewsService {
         return "News deleted";
     }
     @Override
-    public List<NewsHomeDTO> getAll() {
-        List<News> news = this.newsRepository.findAll();
-        return this.dtos.createListNewsHomeDTO(news);
+    public NewsPaginatedDTO getAll(int pageNumber, int pageSize) {
+        Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+        Page<News> news = this.newsRepository.findAll(page);
+        List<NewsHomeDTO> newsDTO = this.dtos.createListNewsHomeDTO(news.getContent());
+        return NewsPaginatedDTO.builder()
+                .news(newsDTO)
+                .totalElements(news.getTotalElements())
+                .totalPages(news.getTotalPages())
+                .build();
+
     }
     @Override
     public List<News> getNewsByUser(String email){
