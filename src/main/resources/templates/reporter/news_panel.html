@@ -24,7 +24,7 @@
                 <th th:text="${newsU.title}"></th>
                 <th th:text="${newsU.createdAt}"></th>
                 <th th:text="${newsU.mainCategory.name}"></th>
-                <th><a class="btn btn-primary" th:href="@{/}">Ver</a></th>
+                <th><a class="btn btn-primary" th:href="@{'/news/edit/' + ${newsU.id}}">Editar</a></th>
             </tr>
             </tbody>
         </table>
