@@ -47,7 +47,8 @@ public class HomeController {
 
         List<NewsByCategoryDTO> news = new ArrayList<>();
         for (NewsCategory category : categories) {
-            List<News> newsCat = this.newsService.findByCategory(category.getId(), 10);
+            List<News> newsCat = this.newsService.findByCategory(category.getId(), 4);
+            System.out.println(newsCat.size());
             news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat), newsCat.isEmpty() ? true : false));
 
         }

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:replace="~{fragments/head :: head (title ='NewsApp')}"></div>
+<div th:replace="~{fragments/head :: head (title = ${news.newsDetails.newsTitle})}"></div>
 
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     <main class="container">
         <section class="row">
-            <div class="col-8">
+            <div class="col-9">
                 <span th:text="${news.newsDetails.newsCategory}"></span>
                 <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
                 <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
@@ -25,13 +25,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                     <figcaption th:text="${news.newsImageCaption}"></figcaption>
                 </figure>
             </div>
-            <div class="col-4">Aqui ultimas noticias/relacionadas</div>
+            <div class="col-3">Aqui ultimas noticias/relacionadas</div>
         </section>
         <section th:text="${news.newsBody}">
         </section>
 
         <section class="w-75">
-            <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-top border-warning border-2">Comentarios</h2>
+            <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-start border-warning border-2">Comentarios</h2>
             <div th:each="comment : ${comments}">
                 <div>
                     <div class="row">
@@ -80,6 +80,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
             ? relacionadas
         </section>
     </main>
+<section th:replace="~{fragments/footer :: footer}"></section>
 </body>
 
 </html>
