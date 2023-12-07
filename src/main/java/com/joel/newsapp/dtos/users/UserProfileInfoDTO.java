@@ -11,13 +11,15 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 public class UserProfileInfoDTO {
+    private String id;
     private String name;
     private String lastname;
     private String displayName;
     private String email;
     private String profilePictureId;
 
-    public UserProfileInfoDTO(String name, String lastname, String displayName, String email) {
+    public UserProfileInfoDTO(String id, String name, String lastname, String displayName, String email) {
+        this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.displayName = displayName;

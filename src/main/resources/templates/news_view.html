@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:replace="~{fragments/head :: head (title ='NewsApp')}"></div>
+<div th:replace="~{fragments/head :: head (title = ${news.newsDetails.newsTitle})}"></div>
 
 <body>
     <div th:replace="~{fragments/header :: header}"></div>
     <main class="container">
         <section class="row">
-            <div class="col-8">
-                <span th:text="${news.newsDetails.newsCategory}"></span>
+            <div class="col-12">
+                <p class="py-2 m-0 fs-4 fw-light" th:text="${news.newsDetails.newsCategory}"></p>
                 <h1 class="fs-2 fw-medium m-0" th:text="${news.newsDetails.newsTitle}"></h1>
-                <h2 class="fs-4 fw-normal" th:text="${news.newsDetails.newsSubtitle}"></h2>
-                <div class="d-flex justify-content-between">
+            </div>
+            <div class="col-9">
+                <h2 class="fs-4 fw-light mb-3" th:text="${news.newsDetails.newsSubtitle}"></h2>
+                <div class="py-2 d-flex justify-content-between border-top border-dark-subtle border-2">
                     <div>
                         <span>Por: </span><span th:text="${news.newsDetails.reporterName}"></span>
                     </div>
@@ -22,16 +24,16 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                 <figure>
                     <img class="object-fit-cover img-fluid w-100" th:src="@{'/image/' + ${news.newsImage}}"
                         style="max-height: 400px" alt="Imagen noticia">
-                    <figcaption th:text="${news.newsImageCaption}"></figcaption>
+                    <figcaption class="py-2 border-bottom border-dark-subtle border-2" th:text="${news.newsImageCaption}"></figcaption>
                 </figure>
             </div>
-            <div class="col-4">Aqui ultimas noticias/relacionadas</div>
+            <div class="col-3">Aqui ultimas noticias/relacionadas</div>
         </section>
         <section th:text="${news.newsBody}">
         </section>
 
         <section class="w-75">
-            <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3 border-top border-warning border-2">Comentarios</h2>
+            <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3">Comentarios</h2>
             <div th:each="comment : ${comments}">
                 <div>
                     <div class="row">
@@ -48,24 +50,24 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                     </div>
                 </div>
                 </div>
-                <div>
-                    <div class="row">
-                        <div class="col-8">
-                            Display name del autor
+               
+                <div sec:authorize="not isAuthenticated()">
+                    <form th:action="@{/perform_login}" method="post">
+                        <legend>Ingresa a tu cuenta para dejar un comentario</legend>
+                        <div class="container w-75 row" >
+                        <div class="col-4">
+                            <input type="email" class="form-control" placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
                         </div>
-                        <div class="col-4 d-flex justify-content-between">
-                            <span>mm:dd</span><span> dd/MM/yy</span><span>reportar</span>
+                        <div class="col-4">
+                            <input type="password" class="form-control" placeholder="Contraseña" id="exampleInputPassword1" name="password">
                         </div>
-                    </div>
-                    <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque libero ipsa culpa
-                        architecto repudiandae mollitia, cupiditate doloribus aut, sequi inventore nulla officiis
-                        obcaecati voluptates qui ipsam illo at molestiae consequatur.
-                    </div>
-                    <div>
-                        Me gusta | No me gusta
+                        <div class="col-3">
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </div>
-               
+                    </form>
+                </div>
+                <div sec:authorize="isAuthenticated()">
                     <form th:action="@{'/comment/add/'+ ${news.newsDetails.newsCategory} +'/' + ${news.newsDetails.newsId}}" method="post">
                         <div class="form-floating mb-3">
                             <textarea class="form-control" placeholder="Deja tu comentario" id="comment" name="comment" style="height: 100px"></textarea>
@@ -73,13 +75,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                           </div>
                         <input class="btn btn-primary" type="submit" value="Enviar">
                     </form>
+                    </div>
                
         </section>
 
-        <section>
-            ? relacionadas
-        </section>
+
     </main>
+<section th:replace="~{fragments/footer :: footer}"></section>
 </body>
 
 </html>

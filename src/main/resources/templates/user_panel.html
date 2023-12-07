@@ -5,7 +5,9 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
-    <form th:action="@{/register/save}" method="post" enctype="multipart/form-data" class="container w-50">
+    <div th:if="${error}"> <h4 th:text="${error}"></h4></div>
+    <div th:if="${success}"> <h4 th:text="${success}"></h4></div>
+    <form th:action="@{'/user/edit/' + ${user.id}}" method="post" enctype="multipart/form-data" class="container w-50">
 
         <div class="mb-3  text-center">
             <div class="d-inline-block">
@@ -35,8 +37,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="displayname" class="form-label">Display name</label>
-            <input type="text" class="form-control" id="displayname" name="displayname" th:value="${user.displayName}">
+            <label for="display_name" class="form-label">Display name</label>
+            <input type="text" class="form-control" id="display_name" name="display_name" th:value="${user.displayName}">
         </div>
 
         <!-- IMPLEMETAR CAMBIO DE CONTRASEÑA
@@ -47,7 +49,7 @@
             <input type="password" class="form-control" id="inputConfirmPassword" name="confirmpassword" placeholder="Repetir contraseña">
         </div> -->
         <div class="mb-3 text-center">
-            <button type="submit" class="btn btn-primary w-50">Registrarse</button>
+            <button type="submit" class="btn btn-primary w-50">Editar</button>
         </div>
     </form>
 </main>
