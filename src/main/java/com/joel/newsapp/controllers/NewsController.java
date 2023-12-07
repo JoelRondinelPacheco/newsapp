@@ -2,8 +2,10 @@ package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsEditReqDTO;
+import com.joel.newsapp.dtos.news.NewsForm;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
 import com.joel.newsapp.dtos.news.NewsViewDTO;
+import com.joel.newsapp.dtos.newscategory.CategoriesFormDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
@@ -12,6 +14,7 @@ import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.CommentService;
 import com.joel.newsapp.services.interfaces.INewsCategoryService;
 import com.joel.newsapp.services.interfaces.INewsService;
+import com.joel.newsapp.utils.BuildDTOs;
 import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,19 +24,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/news")
 public class NewsController {
-    @Autowired
-    private INewsService newsService;
-    @Autowired
-    private INewsRepository newsRepository;
-    @Autowired
-    private CommentService commentService;
-    @Autowired
-    private INewsCategoryService categoryService;
+    @Autowired private INewsService newsService;
+    @Autowired private INewsRepository newsRepository;
+    @Autowired private CommentService commentService;
+    @Autowired private INewsCategoryService categoryService;
+    @Autowired private BuildDTOs dto;
 
     @GetMapping("/{category}/{id}")
     public String getNews(@PathVariable String category, @PathVariable String id, ModelMap model) {
@@ -51,9 +52,19 @@ public class NewsController {
         return "news_view";
     }
 
-    @PostMapping("/save")
-    public String addNew(@RequestParam String title, @RequestParam String subtitle, @RequestParam String imageCaption, @RequestParam String body, @RequestParam List<String> categories, @RequestParam String mainCategory, MultipartFile image, ModelMap model) {
+   @PostMapping("/save")
+    public String addNew(@RequestParam String title,
+                         @RequestParam String subtitle,
+                         @RequestParam String imageCaption,
+                         @RequestParam String body,
+                         @RequestParam List<String> categories,
+                         @RequestParam String mainCategory,
+                         MultipartFile image,
+                         ModelMap model) {
         try {
+            for (String c : categories) {
+                System.out.println(c);
+            }
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
             NewsPostReqDTO newsDTO = new NewsPostReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, username, image);
@@ -62,24 +73,50 @@ public class NewsController {
             model.put("body", news.getBody());
             return "redirect:/news/" + news.getMainCategory().getName() + "/" + news.getId();
         } catch (NotFoundException ex) {
+            System.out.println(ex.getMessage());
             model.put("error", "Error al cargar noticia");
-            return "form_news.html";
+            return "index.html";
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             model.put("error", ex.getMessage());
-            return "form_news.html";
+            return "index.html";
         }
     }
 
     @GetMapping("/edit/{id}")
     public String editNews(@PathVariable String id, ModelMap model){
+
+        List<NewsCategory> categories = this.categoryService.findAll();
+        List<CategoriesFormDTO> categoriesDTO = new ArrayList<>();
+        NewsForm form;
+
         try {
             News news = this.newsService.getById(id);
-            model.addAttribute("news", news);
-            return "edit_new.html";
+            List<NewsCategory> newsCategories = news.getCategories();
+            System.out.println(newsCategories.size());
+            for(NewsCategory c : newsCategories) {
+                System.out.println(c.getName());
+            }
+            for (NewsCategory c : categories) {
+                boolean checked;
+                checked = newsCategories.contains(c);
+                System.out.println("cat list: " + c.getName());
+                System.out.println("cat: " + c.getName());
+                System.out.println(checked);
+                categoriesDTO.add(new CategoriesFormDTO(c.getName(), c.getId(), checked));
+            }
+            form = this.dto.newsForm(news, categoriesDTO);
         } catch (NotFoundException e) {
-            model.put("error", e.getMessage());
-            return "edit_new.html";
+            model.addAttribute("error", e.getMessage());
+            for (NewsCategory c : categories) {
+                categoriesDTO.add(new CategoriesFormDTO(c.getName(), c.getId(), false));
+            }
+            form = this.dto.newsForm(null, categoriesDTO);
         }
+
+        model.addAttribute("form", form);
+        return "form_news";
+
     }
 
     @PostMapping("/edit/{id}")

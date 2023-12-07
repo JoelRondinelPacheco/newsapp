@@ -1,10 +1,7 @@
 package com.joel.newsapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -15,11 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class NewsCategory extends Base {
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "rel_category_news", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "news_id"))
+    @ManyToMany(mappedBy = "categories")
     private List<News> news;
 
     @OneToMany(mappedBy = "mainCategory")
