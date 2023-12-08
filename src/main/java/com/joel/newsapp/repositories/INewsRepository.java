@@ -23,7 +23,7 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> findByCategory(@Param("category") String category, @Param("limit") int limit);
 */
 
-    List<News> findAllByOrderByCreatedAtAsc(Pageable page);
+    List<News> findAllByOrderByCreatedAtDesc(Pageable page);
 
     List<News> findByFeaturedCategory(Boolean b);
 
