@@ -9,6 +9,6 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import java.util.List;
 
 public interface ICommentService  {
-    List<CommentViewDTO> getAllNewsComments(String newsId) throws NotFoundException;
+    List<CommentViewDTO> getAllNewsComments(String newsId, String email) throws NotFoundException;
 
 }

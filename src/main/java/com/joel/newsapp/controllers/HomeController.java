@@ -79,19 +79,4 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/category/{category}/{id}")
-    public String getNewById(@PathVariable String category, @PathVariable String id, ModelMap model) throws Exception {
-        try {
-            News news = this.newsService.getById(id);
-            List<CommentViewDTO> comments = this.commentService.getAllNewsComments(id);
-            model.addAttribute("comments", comments);
-            model.addAttribute("news", news);
-            return "noticia";
-        } catch (NotFoundException e) {
-            System.out.println("Ingreso al metodo");
-            throw new Exception("Excepcion del metodo /cat/id");
-        }
-    }
-
-
 }
