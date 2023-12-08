@@ -5,17 +5,17 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <section class="row">
-       <div  class="col-9" th:if="${mainFeaturedEmpty}">
+       <div  class="col-8" th:if="${mainFeaturedEmpty}">
            <section th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}"></section>
        </div>
-       <div  class="col-9" th:unless="${mainFeaturedEmpty}">
+       <div  class="col-8" th:unless="${mainFeaturedEmpty}">
            <section  th:replace="~{fragments/home/main_featured :: main_featured}"></section>
        </div>
        </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <h4 class="fs-4 fw-normal" >Últimas noticias</h4>
             <div class="ms-3 mb-2" th:each="latestNew : ${latest}">
-                <h4 class="fs-6 fw-light m-0" th:text="${latestNew.newsHour}"></h4><a th:href="@{'/news/' + ${latestNew.newsCategory} + '/' + ${latestNew.newsId}}" class="text-decoration-none text-dark"><h4 class="fs-5 fw-normal lh-1 ps-2" th:text="${latestNew.newsTitle}"></h4></a>
+                <h4 class="fs-6 fw-light m-0" th:text="${latestNew.newsHour}"></h4><a th:href="@{'/news/' + ${latestNew.newsCategory} + '/' + ${latestNew.newsId}}" class="text-decoration-none text-dark"><h4 class="fs-5 fw-normal lh-1 ps-3" th:text="${latestNew.newsTitle}"></h4></a>
             </div>
 
         </div>

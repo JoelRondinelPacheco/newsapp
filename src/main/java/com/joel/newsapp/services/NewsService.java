@@ -143,7 +143,12 @@ public class NewsService implements INewsService {
     @Override
     public List<News> latest(int quantity) {
         Pageable pageable = PageRequest.of(0, quantity);
-        return this.newsRepository.findAllByOrderByCreatedAtAsc(pageable);
+        List<News> ne = this.newsRepository.findAllByOrderByCreatedAtDesc(pageable);
+        for (News n : ne) {
+            System.out.println(n.getTitle());
+            System.out.println(n.getCreatedAt());
+        }
+        return this.newsRepository.findAllByOrderByCreatedAtDesc(pageable);
 
     }
 
