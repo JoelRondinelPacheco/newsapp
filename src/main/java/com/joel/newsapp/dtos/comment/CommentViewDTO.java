@@ -11,8 +11,10 @@ public class CommentViewDTO {
     private String authorId;
     private String authorName;
     private String comment;
-    private int negativeScore;
-    private int positiveScore;
     private String hour;
     private String date;
+    private boolean user;
+    private boolean isReported;
+    private boolean like;
+    private boolean dislike;
 }

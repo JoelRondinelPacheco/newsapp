@@ -113,32 +113,46 @@ public class BuildDTOs {
         return dtos;
     }
 
-    public CommentViewDTO commentViewDTO(Comment comment) {
+    public CommentViewDTO commentViewDTO(Comment comment, String email) {
         String[] time = this.hourAndDate(comment.getCreatedAt());
-        int positiveScore = 0;
-        int negativeScore = 0;
-        for (CommentReaction c : comment.getReactions()) {
-            if (c.getIsPositive()) {
-                positiveScore += 1;
-            } else {
-                negativeScore += 1;
-            }
-        }
-        return CommentViewDTO.builder()
+
+        CommentViewDTO commentDTO = CommentViewDTO.builder()
                 .authorId(comment.getAuthorComment().getId())
                 .authorName(comment.getAuthorComment().getDisplayName())
                 .comment(comment.getComment())
-                .positiveScore(positiveScore)
-                .negativeScore(negativeScore)
                 .date(time[0])
                 .hour(time[1])
+                .user(!email.equals("anonymousUser"))
                 .build();
+
+        for (CommentReaction c : comment.getReactions()) {
+            if (!email.equals("anonymousUser")) {
+                String userEmail = c.getUser().getEmail();
+                if (userEmail.equalsIgnoreCase(email)) {
+                    commentDTO.setLike(c.getIsPositive());
+                    commentDTO.setDislike(!c.getIsPositive());
+                }
+            } else {
+                commentDTO.setLike(false);
+                commentDTO.setDislike(false);
+            }
+        }
+
+
+        if (!email.equals("anonymousUser")) {
+            for (Report r : comment.getReports()) {
+                commentDTO.setReported(r.getUser().getEmail().equalsIgnoreCase(email));
+            }
+        } else {
+            commentDTO.setReported(false);
+        }
+            return commentDTO;
     }
 
-    public List<CommentViewDTO> commentViewDTOList (List<Comment> comments) {
+    public List<CommentViewDTO> commentViewDTOList (List<Comment> comments, String email) {
         List<CommentViewDTO> dto = new ArrayList<>();
         for (Comment c : comments) {
-            dto.add(this.commentViewDTO(c));
+            dto.add(this.commentViewDTO(c, email));
         }
         return dto;
     }

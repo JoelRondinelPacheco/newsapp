@@ -12,12 +12,14 @@ import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.CommentService;
+import com.joel.newsapp.services.interfaces.ICommentService;
 import com.joel.newsapp.services.interfaces.INewsCategoryService;
 import com.joel.newsapp.services.interfaces.INewsService;
 import com.joel.newsapp.utils.BuildDTOs;
 import com.joel.newsapp.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,16 +34,22 @@ import java.util.List;
 public class NewsController {
     @Autowired private INewsService newsService;
     @Autowired private INewsRepository newsRepository;
-    @Autowired private CommentService commentService;
+    @Autowired private ICommentService commentService;
     @Autowired private INewsCategoryService categoryService;
     @Autowired private BuildDTOs dto;
 
     @GetMapping("/{category}/{id}")
     public String getNews(@PathVariable String category, @PathVariable String id, ModelMap model) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        if ( name.equals("anonymousUser")) {
+            System.out.println("anonimo");
+        } else {
+            System.out.println("logeado");
+        }
         try {
             NewsViewDTO news = this.newsService.getByIdDTO(id);
             model.addAttribute("news", news);
-            List<CommentViewDTO> comments = this.commentService.getAllNewsComments(id);
+            List<CommentViewDTO> comments = this.commentService.getAllNewsComments(id, name);
             if (comments.isEmpty()) {
                 model.addAttribute("commentsEmpty", "No comments");
             }
