@@ -4,6 +4,7 @@ import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsForm;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.dtos.news.NewsPostReqDTO;
+import com.joel.newsapp.dtos.news.NewsViewDTO;
 import com.joel.newsapp.dtos.newscategory.CategoriesFormDTO;
 import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
@@ -89,7 +90,7 @@ public class BuildDTOs {
         return dto;
     }
 
-    public NewsHomeDTO createNewsHomeDTO(News news) {
+    public NewsHomeDTO newsHomeDTO(News news) {
         String[] time = this.hourAndDate(news.getCreatedAt());
         return NewsHomeDTO.builder()
                 .newsId(news.getId())
@@ -101,16 +102,28 @@ public class BuildDTOs {
                 .reporterId(news.getAuthor().getUser().getId())
                 .reporterName(news.getAuthor().getUser().getName() + " " + news.getAuthor().getUser().getLastname())
                 .reporterEmail(news.getAuthor().getUser().getEmail())
+                .newsImageId(news.getImage().getId())
                 .build();
 
     }
 
-    public List<NewsHomeDTO> createListNewsHomeDTO(List<News> news) {
-        List<NewsHomeDTO> dtos = new ArrayList<>();
+    public NewsViewDTO newsViewDTO(News news) {
+        NewsHomeDTO dto = this.newsHomeDTO(news);
+        return NewsViewDTO.builder()
+                .newsImage(news.getImage().getId())
+                .newsImageCaption(news.getImageCaption())
+                .newsBody(news.getBody())
+                .newsCategoryId(news.getMainCategory().getId())
+                .newsDetails(dto)
+                .build();
+    }
+
+    public List<NewsHomeDTO> newsHomeDTOList(List<News> news) {
+        List<NewsHomeDTO> dto = new ArrayList<>();
         for (News n : news) {
-            dtos.add(this.createNewsHomeDTO(n));
+            dto.add(this.newsHomeDTO(n));
         }
-        return dtos;
+        return dto;
     }
 
     public CommentViewDTO commentViewDTO(Comment comment, String email) {

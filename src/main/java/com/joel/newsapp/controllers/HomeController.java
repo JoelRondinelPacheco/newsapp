@@ -49,13 +49,13 @@ public class HomeController {
         for (NewsCategory category : categories) {
             List<News> newsCat = this.newsService.findByCategory(category.getId(), 4);
             System.out.println(newsCat.size());
-            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.createListNewsHomeDTO(newsCat), newsCat.isEmpty() ? true : false));
+            news.add(new NewsByCategoryDTO(category.getId(), category.getName(), this.dtos.newsHomeDTOList(newsCat), newsCat.isEmpty() ? true : false));
 
         }
 
 
         List<News> latestNews = this.newsService.latest(5);
-        List<NewsHomeDTO> latest = this.dtos.createListNewsHomeDTO(latestNews);
+        List<NewsHomeDTO> latest = this.dtos.newsHomeDTOList(latestNews);
 
         model.addAttribute("categories", categories);
         model.addAttribute("news", news);

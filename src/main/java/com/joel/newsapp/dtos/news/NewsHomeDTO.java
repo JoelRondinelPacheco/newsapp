@@ -18,4 +18,5 @@ public class NewsHomeDTO {
     private String reporterId;
     private String reporterName;
     private String reporterEmail;
+    private String newsImageId;
 }

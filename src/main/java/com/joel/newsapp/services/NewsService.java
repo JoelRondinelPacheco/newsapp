@@ -23,7 +23,7 @@ public class NewsService implements INewsService {
     @Autowired private ImageService imageService;
     @Autowired private ReporterService employeeService;
     @Autowired private NewsCategoryService newsCategoryService;
-    @Autowired private BuildDTOs dtos;
+    @Autowired private BuildDTOs dto;
 
     @Override
     public News save(NewsPostReqDTO newsDTO) throws NotFoundException{
@@ -78,7 +78,7 @@ public class NewsService implements INewsService {
     public NewsPaginatedDTO getAll(int pageNumber, int pageSize) {
         Pageable page = PageRequest.of(pageNumber - 1, pageSize);
         Page<News> news = this.newsRepository.findAll(page);
-        List<NewsHomeDTO> newsDTO = this.dtos.createListNewsHomeDTO(news.getContent());
+        List<NewsHomeDTO> newsDTO = this.dto.newsHomeDTOList(news.getContent());
         return NewsPaginatedDTO.builder()
                 .news(newsDTO)
                 .totalElements(news.getTotalElements())
@@ -96,7 +96,7 @@ public class NewsService implements INewsService {
     public NewsHomeDTO mainFeatured() throws NotFoundException {
         Optional<News> newsOptional = this.newsRepository.findByMainFeatured(true);
         if(newsOptional.isPresent()){
-            return this.dtos.createNewsHomeDTO(newsOptional.get());
+            return this.dto.newsHomeDTO(newsOptional.get());
         }
         throw new NotFoundException("Main featured new not found");
     }
@@ -123,7 +123,7 @@ public class NewsService implements INewsService {
             if (!allNews.isEmpty()) {
                 News featuredNew = allNews.get(0);
                 featuredC.setHasFeatured(true);
-                featuredC.setNews(this.dtos.createNewsHomeDTO(featuredNew));
+                featuredC.setNews(this.dto.newsHomeDTO(featuredNew));
                 featured.add(featuredC);
                 continue;
             }
@@ -257,7 +257,7 @@ public class NewsService implements INewsService {
     @Override
     public NewsViewDTO getByIdDTO(String id) throws NotFoundException {
         News news = this.getById(id);
-        return this.createNewsView(news);
+        return this.dto.newsViewDTO(news);
     }
 
     @Override
@@ -306,7 +306,7 @@ public class NewsService implements INewsService {
     }
 
     private NewsViewDTO createNewsView(News news) {
-        NewsHomeDTO dto = this.dtos.createNewsHomeDTO(news);
+        NewsHomeDTO dto = this.dto.newsHomeDTO(news);
         return NewsViewDTO.builder()
                 .newsImage(news.getImage().getId())
                 .newsImageCaption(news.getImageCaption())
