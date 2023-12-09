@@ -5,6 +5,7 @@ import com.joel.newsapp.dtos.comment.CommentPostReqDTO;
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
+import com.joel.newsapp.entities.Report;
 import com.joel.newsapp.entities.User;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.ICommentRepository;
@@ -49,10 +50,10 @@ public class CommentService implements ICommentService {
         return null;
     }
     @Override
-    public List<CommentViewDTO> getAllNewsComments(String newsId) throws NotFoundException {
+    public List<CommentViewDTO> getAllNewsComments(String newsId, String email) throws NotFoundException {
         this.newsService.existsById(newsId);
         List<Comment> comments = this.commentRepository.findAllByNews_Id(newsId);
-        List<CommentViewDTO> dto = this.dto.commentViewDTOList(comments);
+        List<CommentViewDTO> dto = this.dto.commentViewDTOList(comments, email);
         return dto;
     }
 }
