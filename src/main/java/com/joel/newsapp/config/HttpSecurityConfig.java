@@ -15,8 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class HttpSecurityConfig {
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    @Autowired private AuthenticationProvider authenticationProvider;
+    @Autowired  private MyAuthenticationSuccessHandler authenticationSuccessHandler;
 
 
     @Bean
@@ -48,7 +48,7 @@ public class HttpSecurityConfig {
                         .loginProcessingUrl("/perform_login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        //.defaultSuccessUrl("/")
+                        .successHandler(authenticationSuccessHandler)
                         .failureUrl("/login?error")
                         //.failureHandler(authenticationFailureHandler())
                         )

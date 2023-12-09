@@ -75,7 +75,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                 </div>
                
                 <div sec:authorize="not isAuthenticated()">
-                    <form th:action="@{/perform_login}" method="post">
+                    <form th:action="@{'/perform_login?' + 'redirect=/news/' + ${news.newsDetails.newsCategory} + '/' + ${news.newsDetails.newsId}}" method="post">
                         <legend>Ingresa a tu cuenta para dejar un comentario</legend>
                         <div class="container w-75 row" >
                         <div class="col-4">
