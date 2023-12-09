@@ -44,14 +44,14 @@
         <section th:replace="~{fragments/home/categories_empty :: categories_empty}"></section>
     </div>
     <div th:unless="${categoriesEmpty}"  th:each="newsC : ${news}" class="mb-4">
-        <h2 class="bg-info-subtle fs-3 fw-normal ps-3 py-2 mb-3" th:text="${newsC.categoryName}"></h2>
+        <h2 class="bg-info-subtle fs-4 fw-normal ps-3 py-2 mb-3" th:text="${newsC.categoryName}"></h2>
         <div th:if="${newsC.noNews == true}">
             <section th:replace="~{fragments/home/news_list_empty :: news_list_empty}"></section>
         </div>
         <div class="row">
             <div  th:each="newsListC : ${newsC.news}" class="col-3">
                 <a class="text-decoration-none link-dark" th:href="@{'/news/' + ${newsC.categoryName} + '/' + ${newsListC.newsId}}">
-                <img th:src="@{https://placehold.co/300x200?text=Hello+World}" class="img-fluid m-0 p-0 mb-2" alt="">
+                <img th:src="@{'/image/' + ${newsListC.newsImageId}}" class="img-fluid m-0 p-0 mb-2 w-100 object-fit-fill"  style="max-height: 150px" alt="">
                 <h4 class="fs-5 fw-medium" th:text="${newsListC.newsTitle}"></h4>
             </a>
             </div>
