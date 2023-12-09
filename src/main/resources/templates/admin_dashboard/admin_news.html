@@ -58,13 +58,17 @@
                 <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured" id="featuredBtn">Seleccionar</button></td>
             </tr>
         </div>
-            <tr th:unless="${featuredEmpty}" th:each="featured : ${feturedHome}">
-                <td th:text="${featured.newsTitle}"></td>
-                <td th:text="${featured.newsDate}"></td>
-                <td th:text="${featured.reporterEmail}"></td>
-                <td th:text="${featured.newsCategory}"></td>
-                <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
-
+            <tr th:unless="${featuredEmpty}" th:each="featuredH : ${featured}">
+                <td th:text="${featuredH.newsTitle}"></td>
+                <td th:text="${featuredH.newsDate}"></td>
+                <td th:text="${featuredH.reporterEmail}"></td>
+                <td th:text="${featuredH.newsCategory}"></td>
+                <td>
+                    <a class="btn btn-primary delete-featured"  
+                    th:href="@{'/admin/news/featured/' + ${featuredH.newsId} + '?is_featured=false'}">
+                        Eliminar
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -110,9 +110,13 @@ public class AdminDashboardController {
 
         List<NewsHomeDTO> featured = this.newsService.getFeatured(10);
         if (featured.isEmpty()) {
+            System.out.println("featued empty");
             model.addAttribute("featuredEmpty", "Featured empty");
         }
         model.addAttribute("featured", featured);
+        for(NewsHomeDTO n : featured) {
+            System.out.println(n.getNewsId() + " " + n.getNewsTitle());
+        }
 
         //TODO MANJEAR CATEGORIAS VACIAS
         model.addAttribute("categories", categories);

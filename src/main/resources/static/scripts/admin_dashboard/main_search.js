@@ -1,21 +1,22 @@
 const d = document
 
-const mainUrl = "http://localhost:8080/search/main?";
-const categoryUrl = "http://localhost:8080/search/category?";
-const featuredUrl = "http://localhost:8080/search/main?";
+const mainUrl = "http://localhost:8080/search/main?"
+const categoryUrl = "http://localhost:8080/search/category?"
+const featuredUrl = "http://localhost:8080/search/main?"
 
 
-const setMainFeaturedUrl = "http://localhost:8080/admin/news/main/";
-const setCategoryFeaturedUrl = "http://localhost:8080/admin/news/category/";
-const setFeaturedUrl = "http://localhost:8080/admin/news/featured/";
+const setMainFeaturedUrl = "http://localhost:8080/admin/news/main/"
+const setCategoryFeaturedUrl = "http://localhost:8080/admin/news/category/"
+const setFeaturedUrl = "http://localhost:8080/admin/news/featured/"
 
 var searchUrl
 var setUrl
-var setMain = true
+var setFeatured = false
 
 const $mainBtn = d.getElementById("mainBtn")
-const $categoryBtn = d.querySelectorAll(".categoryBtn");
-const $featuredBtn = d.getElementById("featuredBtn");
+const $categoryBtn = d.querySelectorAll(".categoryBtn")
+const $featuredBtn = d.getElementById("featuredBtn")
+
 
 const $searchBtn = d.getElementById("searchBtn")
 
@@ -26,12 +27,13 @@ const $closeBtn = d.querySelectorAll(".modal-close-btn")
 
 const $mainSearchInput = d.querySelectorAll(".mainSearch")
 const $mainSearchList = d.getElementById("mainSearchList")
-const $mainFragment = d.createDocumentFragment();
+const $mainFragment = d.createDocumentFragment()
 
 
 $featuredBtn.addEventListener("click", () => {
     searchUrl = featuredUrl
     setUrl = setFeaturedUrl
+    setFeatured = true
 })
 
 $closeBtn.forEach(btn => {
@@ -44,6 +46,7 @@ $categoryBtn.forEach(btn => {
     btn.addEventListener("click", () => {
        searchUrl = `${categoryUrl}categoryId=${btn.id}&`
        setUrl = setCategoryFeaturedUrl
+       setFeatured = false
 
     })
 })
@@ -51,6 +54,8 @@ $categoryBtn.forEach(btn => {
 $mainBtn.addEventListener("click", () => {
     searchUrl = mainUrl
     setUrl = setMainFeaturedUrl
+    setFeatured = false
+
 })
 
 $searchBtn.addEventListener("click", async (e) => {
@@ -96,7 +101,7 @@ async function searchMainNews(url) {
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
             $newsDate.innerText = el.newsDate
-            $setBtn.innerHTML = `<a class="btn btn-primary" href="${setUrl}${el.newsId}">Seleccionar</a>`
+            $setBtn.innerHTML = `<a class="btn btn-primary" href="${setUrl}${el.newsId}${setFeatured && '?is_featured=true'}">Seleccionar</a>`
 
 
             $tr.appendChild($category)

@@ -277,11 +277,12 @@ public class NewsService implements INewsService {
     }
 
     @Override
-    public News setFeatured(String newsId) throws NotFoundException {
+    public News setIsFeatured(String newsId, Boolean isFeatured) throws NotFoundException {
         News news = this.getById(newsId);
-        news.setFeatured(true);
+        news.setFeatured(isFeatured);
         return this.newsRepository.save(news);
     }
+
 
 
     private List<NewsCategory> findCategories(List<String> categories) {

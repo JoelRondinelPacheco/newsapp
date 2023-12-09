@@ -94,9 +94,9 @@ public class AdminController {
     }
 
     @GetMapping("/news/featured/{newsId}")
-    public String setFeatured(@PathVariable String newsId, ModelMap model) {
+    public String setIsFeatured(@PathVariable String newsId, @RequestParam Boolean is_featured, ModelMap model) {
         try {
-            News news = this.newsService.setFeatured(newsId);
+            News news = this.newsService.setIsFeatured(newsId, is_featured);
             model.addAttribute("featuredUpdated", news);
         } catch (NotFoundException e) {
             model.addAttribute("error", e.getMessage());
