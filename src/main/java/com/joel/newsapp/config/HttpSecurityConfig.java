@@ -48,7 +48,7 @@ public class HttpSecurityConfig {
                         .loginProcessingUrl("/perform_login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        //.defaultSuccessUrl("/")
                         .failureUrl("/login?error")
                         //.failureHandler(authenticationFailureHandler())
                         )
