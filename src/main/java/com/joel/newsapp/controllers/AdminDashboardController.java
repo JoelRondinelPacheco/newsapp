@@ -87,9 +87,6 @@ public class AdminDashboardController {
 
     @GetMapping("/news")
     public String adminNews(ModelMap model){
-        // TODO Handle, all categories has one and only one featured news
-        // TODO manage if returns more than one
-
         try {
             NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
@@ -110,6 +107,12 @@ public class AdminDashboardController {
         if (latest.isEmpty()) {
             model.addAttribute("latestEmpty", true);
         }
+
+        List<NewsHomeDTO> featured = this.newsService.getFeatured(10);
+        if (featured.isEmpty()) {
+            model.addAttribute("featuredEmpty", "Featured empty");
+        }
+        model.addAttribute("featured", featured);
 
         //TODO MANJEAR CATEGORIAS VACIAS
         model.addAttribute("categories", categories);

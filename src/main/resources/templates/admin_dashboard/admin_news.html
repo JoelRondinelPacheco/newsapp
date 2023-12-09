@@ -12,7 +12,7 @@
     <table class="table">
         <thead>
             <tr class="text-center">
-                <th colspan="4">Princial</th>
+                <th colspan="4">Princial Home</th>
             </tr>
             <tr>
                 <th>Titulo</th>
@@ -33,6 +33,36 @@
                 <td th:text="${mainFeatured.newsDate}"></td>
                 <td th:text="${mainFeatured.reporterEmail}"></td>
                 <td th:text="${mainFeatured.newsCategory}"></td>
+                <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th colspan="4">Destacadas Home</th>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+        <div th:if="${featuredEmpty}">
+            <tr>
+                <td colspan="3">No se encontro ninguna noticia recomendada</td>
+                <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured" id="featuredBtn">Seleccionar</button></td>
+            </tr>
+        </div>
+            <tr th:unless="${featuredEmpty}" th:each="featured : ${feturedHome}">
+                <td th:text="${featured.newsTitle}"></td>
+                <td th:text="${featured.newsDate}"></td>
+                <td th:text="${featured.reporterEmail}"></td>
+                <td th:text="${featured.newsCategory}"></td>
                 <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
 
             </tr>

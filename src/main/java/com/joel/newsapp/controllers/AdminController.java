@@ -19,20 +19,13 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private NewsService newsService;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
-    private ReporterService reporterService;
-    @Autowired
-    private NewsCategoryService categoryService;
-    @Autowired
-    private AdminDashboardController dashboardControllor;
-    @Autowired
-    private IAdminManageUsers adminService;
+    @Autowired private UserService userService;
+    @Autowired private NewsService newsService;
+    @Autowired private ImageService imageService;
+    @Autowired private ReporterService reporterService;
+    @Autowired private NewsCategoryService categoryService;
+    @Autowired private AdminDashboardController dashboardControllor;
+    @Autowired private IAdminManageUsers adminService;
 
 
     @PostMapping("/category/save")
@@ -97,8 +90,17 @@ public class AdminController {
         } catch (NotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
+        return "redirect:/dashboard/news";
+    }
 
-        //return "redirect:admin_dashboard/admin_news";
+    @GetMapping("/news/featured/{newsId}")
+    public String setFeatured(@PathVariable String newsId, ModelMap model) {
+        try {
+            News news = this.newsService.setFeatured(newsId);
+            model.addAttribute("featuredUpdated", news);
+        } catch (NotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "redirect:/dashboard/news";
     }
 
