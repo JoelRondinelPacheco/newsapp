@@ -12,7 +12,7 @@
     <table class="table">
         <thead>
             <tr class="text-center">
-                <th colspan="4">Princial</th>
+                <th colspan="4">Princial Home</th>
             </tr>
             <tr>
                 <th>Titulo</th>
@@ -35,6 +35,44 @@
                 <td th:text="${mainFeatured.newsCategory}"></td>
                 <td><button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#mainFeatured" id="mainBtn">Cambiar</button></td>
 
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th colspan="4">Destacadas Home</th>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+        <div th:if="${featuredEmpty}">
+            <tr>
+                <td colspan="3">No se encontro ninguna noticia recomendada</td>
+                <td colspan="3"><button type="button" class="btn btn-primary featuredBtn" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
+            </tr>
+        </div>
+            <tr th:unless="${featuredEmpty}" th:each="featuredH : ${featured}">
+                <td th:text="${featuredH.newsTitle}"></td>
+                <td th:text="${featuredH.newsDate}"></td>
+                <td th:text="${featuredH.reporterEmail}"></td>
+                <td th:text="${featuredH.newsCategory}"></td>
+                <td>
+                    <a class="btn btn-primary delete-featured"  
+                    th:href="@{'/admin/news/featured/' + ${featuredH.newsId} + '?is_featured=false'}">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+            <tr th:unless="${featuredEmpty}">
+                <td>Agregar otra</td>
+                <td><button type="button" class="btn btn-primary featuredBtn" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
             </tr>
         </tbody>
     </table>

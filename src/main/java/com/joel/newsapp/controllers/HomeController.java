@@ -57,6 +57,13 @@ public class HomeController {
         List<News> latestNews = this.newsService.latest(5);
         List<NewsHomeDTO> latest = this.dtos.newsHomeDTOList(latestNews);
 
+        List<NewsHomeDTO> featured = this.newsService.getFeatured(2);
+        if (featured.isEmpty()) {
+            model.addAttribute("featuredEmpty", true);
+        }
+
+        model.addAttribute("featured", featured);
+
         model.addAttribute("categories", categories);
         model.addAttribute("news", news);
         model.addAttribute("latest", latest);
