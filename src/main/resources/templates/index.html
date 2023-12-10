@@ -33,15 +33,14 @@
         </div>
     </section>
 
-    <section class="row gap-4 justify-content-between py-4 border-top border-3">
-    <div th:unless="${featuredEmpty}" class="col p-0">
-        <div class="position-relative"  th:each="featuredN : ${featured}">
+    <section th:unless="${featuredEmpty}"  class="row gap-4 justify-content-between py-4 border-top border-3">
+        <div class="position-relative p-0 col"  th:each="featuredN : ${featured}">
             <a class="text-decoration-none link-dark" th:href="@{'/news/' + ${featuredN.newsCategory} + '/' + ${featuredN.newsId}}">
             <img th:src="@{'/image/' + ${featuredN.newsImageId}}"  class="img-fluid m-0 p-0 w-100  object-fit-cover" alt="" style="max-height:250px">
             <h4 class="fs-5 position-absolute top-0 p-2 m-3 bg-white" th:text="${featuredN.newsTitle}"></h4>
             </a>
         </div>
-    </div>
+
 
     <div th:if="${#lists.size(featured) == 1}" class="col p-0">
         <div class="position-relative">

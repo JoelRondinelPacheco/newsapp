@@ -15,7 +15,7 @@ var setFeatured = false
 
 const $mainBtn = d.getElementById("mainBtn")
 const $categoryBtn = d.querySelectorAll(".categoryBtn")
-const $featuredBtn = d.getElementById("featuredBtn")
+const $featuredBtn = d.querySelectorAll(".featuredBtn")
 
 
 const $searchBtn = d.getElementById("searchBtn")
@@ -30,23 +30,26 @@ const $mainSearchList = d.getElementById("mainSearchList")
 const $mainFragment = d.createDocumentFragment()
 
 
-$featuredBtn.addEventListener("click", () => {
-    searchUrl = featuredUrl
-    setUrl = setFeaturedUrl
-    setFeatured = true
+$featuredBtn.forEach(btn => {
+
+    btn.addEventListener("click", () => {
+        searchUrl = featuredUrl
+        setUrl = setFeaturedUrl
+        setFeatured = true
+    })
 })
 
 $closeBtn.forEach(btn => {
     btn.addEventListener("click", () => {
-    $mainSearchList.innerHTML = ''
+        $mainSearchList.innerHTML = ''
     })
 })
 
 $categoryBtn.forEach(btn => {
     btn.addEventListener("click", () => {
-       searchUrl = `${categoryUrl}categoryId=${btn.id}&`
-       setUrl = setCategoryFeaturedUrl
-       setFeatured = false
+        searchUrl = `${categoryUrl}categoryId=${btn.id}&`
+        setUrl = setCategoryFeaturedUrl
+        setFeatured = false
 
     })
 })
@@ -66,7 +69,7 @@ $searchBtn.addEventListener("click", async (e) => {
     $mainSearchInput.forEach((input, index) => {
         urlParams += `${input.name}=${input.value}`
         console.log(urlParams)
-        if (index < (maxIndex -1)) urlParams += '&'
+        if (index < (maxIndex - 1)) urlParams += '&'
     });
     searchMainNews(urlParams)
 })
@@ -78,16 +81,16 @@ async function searchMainNews(url) {
 
         let res = await fetch(
             url,
-            { method: 'GET', mode: 'cors', headers: {"Content-type":"application/json"}}
-            )
+            { method: 'GET', mode: 'cors', headers: { "Content-type": "application/json" } }
+        )
 
         let json = await res.json()
         console.log(json)
 
         if (!res.ok) {
             console.log(res)
-            throw { status: res.status, statusText: res.statusText}  
-        } 
+            throw { status: res.status, statusText: res.statusText }
+        }
 
         json.forEach(el => {
             let $tr = d.createElement("tr")
@@ -111,10 +114,10 @@ async function searchMainNews(url) {
             $tr.appendChild($setBtn)
 
             $mainFragment.appendChild($tr)
-            })
+        })
         $mainSearchList.appendChild($mainFragment)
     } catch (error) {
         alert("error: " + error)
 
-    } 
+    }
 }

@@ -55,7 +55,7 @@
         <div th:if="${featuredEmpty}">
             <tr>
                 <td colspan="3">No se encontro ninguna noticia recomendada</td>
-                <td colspan="3"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mainFeatured" id="featuredBtn">Seleccionar</button></td>
+                <td colspan="3"><button type="button" class="btn btn-primary featuredBtn" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
             </tr>
         </div>
             <tr th:unless="${featuredEmpty}" th:each="featuredH : ${featured}">
@@ -69,6 +69,10 @@
                         Eliminar
                     </a>
                 </td>
+            </tr>
+            <tr th:unless="${featuredEmpty}">
+                <td>Agregar otra</td>
+                <td><button type="button" class="btn btn-primary featuredBtn" data-bs-toggle="modal" data-bs-target="#mainFeatured">Seleccionar</button></td>
             </tr>
         </tbody>
     </table>
