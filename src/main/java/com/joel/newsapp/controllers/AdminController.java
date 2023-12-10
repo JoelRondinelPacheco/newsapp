@@ -6,6 +6,8 @@ import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
+import com.joel.newsapp.utils.UserState;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,10 +61,10 @@ public class AdminController {
 
 
     @GetMapping("/active/{userId}")
-    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active) {
+    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active, @RequestParam String role, @RequestParam UserState state) {
         try {
             this.adminService.adminEnabledState(userId, active);
-            return "redirect:/";
+            return "redirect:/dashboard/role/" + role + "?state=" + state;
         } catch (NotFoundException e) {
             return "redirect:/";
 

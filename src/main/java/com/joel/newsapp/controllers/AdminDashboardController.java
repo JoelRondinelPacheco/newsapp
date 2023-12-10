@@ -43,7 +43,6 @@ public class AdminDashboardController {
         if (page_number == null) {
             page_number = 1;
         }
-        System.out.println(role);
         model.addAttribute("role", role);
         model.addAttribute("state", state);
         if (role.equalsIgnoreCase(Role.USER.name())) {
