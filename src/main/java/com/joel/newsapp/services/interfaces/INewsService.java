@@ -24,4 +24,10 @@ public interface INewsService extends ICrudService<News, NewsPostReqDTO, NewsEdi
 
     NewsViewDTO getByIdDTO(String id) throws NotFoundException;
     boolean existsById(String id) throws NotFoundException;
+
+    List<NewsHomeDTO> getFeatured(int quantity);
+
+    News setIsFeatured(String newsId, Boolean isFeatured) throws NotFoundException;
+
+
 }

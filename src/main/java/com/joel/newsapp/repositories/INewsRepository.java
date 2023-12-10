@@ -77,4 +77,6 @@ NO SE PUEDE USAR LIMIT, IMPLEMENTAR PAGEABLE
     List<News> findAllByFeaturedCategoryAndMainCategory_Id(boolean b, String id);
 
     List<News> findByFeaturedCategoryAndMainCategory_Name(boolean b, String category);
+
+    List<News> findAllByFeatured(Boolean b, Pageable page);
 }

@@ -269,6 +269,21 @@ public class NewsService implements INewsService {
         throw new NotFoundException("News not found");
     }
 
+    @Override
+    public List<NewsHomeDTO> getFeatured(int quantity) {
+        Pageable page = PageRequest.of(0, quantity);
+        List<News> news = this.newsRepository.findAllByFeatured(true, page);
+        return this.dto.newsHomeDTOList(news);
+    }
+
+    @Override
+    public News setIsFeatured(String newsId, Boolean isFeatured) throws NotFoundException {
+        News news = this.getById(newsId);
+        news.setFeatured(isFeatured);
+        return this.newsRepository.save(news);
+    }
+
+
 
     private List<NewsCategory> findCategories(List<String> categories) {
         List<NewsCategory> newsCategories = new ArrayList<>();
@@ -315,5 +330,6 @@ public class NewsService implements INewsService {
                 .newsDetails(dto)
                 .build();
     }
+
 
 }
