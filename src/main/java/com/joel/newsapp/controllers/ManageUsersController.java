@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/role")
 public class ManageUsersController {
-    @Autowired
-    private IAdminManageUsers adminService;
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private IModeratorService moderatorService;
-    @Autowired
-    private IUserRolesService userRolesService;
+    @Autowired private IAdminManageUsers adminService;
+    @Autowired private IUserService userService;
+    @Autowired private IModeratorService moderatorService;
+    @Autowired private IUserRolesService userRolesService;
 
     @PostMapping("/register")
     public String adminPostUser(@RequestParam String name,

@@ -6,6 +6,7 @@ import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.*;
 import com.joel.newsapp.services.interfaces.IAdminManageUsers;
+import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.UserState;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +61,25 @@ public class AdminController {
 
 
 
-    @GetMapping("/active/{userId}")
-    public String deleteUser(@PathVariable String userId, @RequestParam Boolean active, @RequestParam Integer pagenumber, @RequestParam String role, @RequestParam UserState state) {
+    @GetMapping("/user/active/{userId}")
+    public String setEnabledUser(@PathVariable String userId, @RequestParam Boolean active, @RequestParam Integer pagenumber, @RequestParam String role, @RequestParam UserState state) {
         try {
             System.out.println(active);
             this.adminService.adminEnabledState(userId, active);
             return "redirect:/dashboard/role/" + role + "?page_number=" + pagenumber + "&state=" + state;
         } catch (NotFoundException e) {
             return "redirect:/";
+        }
+    }
 
+    @GetMapping("/employee/active/{employeeId}")
+    public String setEnabledEmployee(@PathVariable String employeeId, @RequestParam Boolean active, @RequestParam Integer pagenumber, @RequestParam String role, @RequestParam UserState state){
+        try {
+            this.adminService.setEnabledEmployee(employeeId, active, role);
+            return "redirect:/dashboard/role/" + role + "?page_number=" + pagenumber + "&state=" + state;
+        } catch (NotFoundException e) {
+            System.out.println("exption");
+            return "redirect:/dashboard/role/" + role + "?page_number=" + pagenumber + "&state=" + state;
         }
     }
 
