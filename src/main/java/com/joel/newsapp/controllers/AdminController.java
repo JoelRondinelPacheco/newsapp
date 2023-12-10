@@ -58,9 +58,6 @@ public class AdminController {
         return "index.html";
     }
 
-
-
-
     @GetMapping("/user/active/{userId}")
     public String setEnabledUser(@PathVariable String userId, @RequestParam Boolean active, @RequestParam Integer pagenumber, @RequestParam String role, @RequestParam UserState state) {
         try {

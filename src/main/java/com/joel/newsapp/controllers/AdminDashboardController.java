@@ -68,6 +68,9 @@ public class AdminDashboardController {
             }
 
             EmployeePaginatedDTO employeesDTO = this.dashboardService.getAllEmployees(page_number, 10, roleEmployee, state);
+            for(EmployeeDTO e : employeesDTO.getEmployees()) {
+                System.out.println(e.getUserInfo().getEmail()  + " " + e.getUserInfo().getRole());
+            }
             model.addAttribute("employees", employeesDTO.getEmployees());
             model.addAttribute("totalPages", employeesDTO.getTotalPages());
             model.addAttribute("currentPage", page_number);
