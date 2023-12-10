@@ -2,6 +2,8 @@ package com.joel.newsapp.repositories;
 
 import com.joel.newsapp.entities.Admin;
 import com.joel.newsapp.entities.Moderator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +14,7 @@ import java.util.Optional;
 public interface IModeratorRepository extends JpaRepository<Moderator, String> {
     Optional<Moderator> findByUser_Id(String id);
 
-    List<Moderator> findAllByEnabledAndUser_Verified(Boolean enabled, Boolean verified);
+    Page<Moderator> findAllByEnabledAndUser_Verified(Boolean enabled, Boolean verified, Pageable page);
 
-    List<Moderator> findAllByEnabled(boolean b);
+    Page<Moderator> findAllByEnabled(boolean b, Pageable page);
 }
