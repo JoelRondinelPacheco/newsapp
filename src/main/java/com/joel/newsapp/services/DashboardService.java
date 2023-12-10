@@ -2,6 +2,7 @@ package com.joel.newsapp.services;
 
 import com.joel.newsapp.dtos.users.Employee;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
+import com.joel.newsapp.dtos.users.EmployeePaginatedDTO;
 import com.joel.newsapp.entities.Admin;
 import com.joel.newsapp.entities.Moderator;
 import com.joel.newsapp.entities.Reporter;
@@ -17,6 +18,9 @@ import com.joel.newsapp.utils.BuildDTOs;
 import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,63 +42,75 @@ public class DashboardService implements IDashboardService {
     }
 
     @Override
-    public List<EmployeeDTO> getAllEmployees(int pageNumber, int pageSize, Role role, UserState state)  {
-        System.out.println(role);
+    public EmployeePaginatedDTO getAllEmployees(int pageNumber, int pageSize, Role role, UserState state)  {
         List<EmployeeDTO> employees = new ArrayList<>();
+        Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+        EmployeePaginatedDTO dto = new EmployeePaginatedDTO();
         switch (role) {
             case REPORTER:
-                List<Reporter> rep = new ArrayList<>();
+                Page<Reporter> rep = Page.empty();
                 switch (state) {
                     case ACTIVE:
-                        rep = this.reporterRepository.findAllByEnabledAndUser_Verified(true, true);
+                        System.out.println(role + " " + state);
+                        rep = this.reporterRepository.findAllByEnabledAndUser_Verified(true, true, page);
                         break;
                     case INACTIVE:
-                        rep = this.reporterRepository.findAllByEnabledAndUser_Verified(true, false);
+                        rep = this.reporterRepository.findAllByEnabledAndUser_Verified(true, false, page);
                         break;
                     case BANNED:
-                        rep = this.reporterRepository.findAllByEnabled(false);
+                        rep = this.reporterRepository.findAllByEnabled(false, page);
                         break;
                 }
-                for (Reporter r : rep) {
+                for (Reporter r : rep.getContent()) {
                     employees.add(this.dtos.createEmployeeInfo(r));
                 }
+                dto.setEmployees(employees);
+                dto.setTotalPages(rep.getTotalPages());
+                dto.setTotalElements(rep.getTotalElements());
                 break;
             case ADMIN:
-                List<Admin> admins = new ArrayList<>();
+                Page<Admin> admins = Page.empty();
                 switch (state) {
                     case ACTIVE:
-                        admins = this.adminRepository.findAllByEnabledAndUser_Verified(true, true);
+                        admins = this.adminRepository.findAllByEnabledAndUser_Verified(true, true, page);
                         break;
                     case INACTIVE:
-                        admins = this.adminRepository.findAllByEnabledAndUser_Verified(true, false);
+                        admins = this.adminRepository.findAllByEnabledAndUser_Verified(true, false, page);
                         break;
                     case BANNED:
-                        admins = this.adminRepository.findAllByEnabled(false);
+                        admins = this.adminRepository.findAllByEnabled(false, page);
                         break;
                 }
 
-                for (Admin r : admins) {
+                for (Admin r : admins.getContent()) {
                     employees.add(this.dtos.createEmployeeInfo(r));
                 }
-                break;
-            case MODERATOR:
-                List<Moderator> moderators = new ArrayList<>();
+
+                dto.setEmployees(employees);
+                dto.setTotalPages(admins.getTotalPages());
+                dto.setTotalElements(admins.getTotalElements());
+                break;            case MODERATOR:
+                Page<Moderator> moderators = Page.empty();
                 switch (state) {
                     case ACTIVE:
-                        moderators = this.moderatorRepository.findAllByEnabledAndUser_Verified(true, true);
+                        moderators = this.moderatorRepository.findAllByEnabledAndUser_Verified(true, true, page);
                         break;
                     case INACTIVE:
-                        moderators = this.moderatorRepository.findAllByEnabledAndUser_Verified(true, false);
+                        moderators = this.moderatorRepository.findAllByEnabledAndUser_Verified(true, false, page);
                         break;
                     case BANNED:
-                        moderators = this.moderatorRepository.findAllByEnabled(false);
+                        moderators = this.moderatorRepository.findAllByEnabled(false, page);
                         break;
                 }
-                for (Moderator m : moderators) {
+                for (Moderator m : moderators.getContent()) {
                     employees.add(this.dtos.createEmployeeInfo(m));
                 }
+
+                dto.setEmployees(employees);
+                dto.setTotalPages(moderators.getTotalPages());
+                dto.setTotalElements(moderators.getTotalElements());
                 break;
         }
-        return employees;
+        return dto;
     }
 }

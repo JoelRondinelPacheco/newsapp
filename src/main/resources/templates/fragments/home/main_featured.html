@@ -5,7 +5,9 @@
             <p class="bg-warning position-absolute top-0 end-0 m-3 px-3 py-2" th:text="${mainFeatured.newsCategory}"></p>
             <div class="bg-warning position-absolute bottom-0 start-0 m-3 px-3 py-2" th:text="${mainFeatured.reporterName}"></div>
         </div>
+        <a class="text-decoration-none link-dark" th:href="@{'/news/' + ${mainFeatured.newsCategory} + '/' + ${mainFeatured.newsId}}">
         <h1 class="fs-4 my-1" th:text="${mainFeatured.newsTitle}"></h1>
         <p class="fs-6 lh-sm" th:text="${mainFeatured.newsSubtitle}"></p>
+    </a>
 
 </section>

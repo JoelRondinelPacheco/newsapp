@@ -5,14 +5,14 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <main class="container">
     <section class="row">
-       <div th:if="${mainFeaturedEmpty}" class="col-8 border-bottom">
+       <div th:if="${mainFeaturedEmpty}" class="border-bottom col-8">
            <section th:replace="~{fragments/home/main_featured_empty :: main_featured_empty}"></section>
        </div>
-       <div  class="col-8" th:unless="${mainFeaturedEmpty}">
+       <div th:unless="${mainFeaturedEmpty}" class="border-bottom  col-8">
            <section  th:replace="~{fragments/home/main_featured :: main_featured}"></section>
        </div>
        </div>
-        <div class="col-lg-4">
+        <div class="col-4">
             <h4 class="fs-4 fw-normal" >Últimas noticias</h4>
             <div class="ms-3 mb-3" th:each="latestNew : ${latest}">
                 <h4 class="fs-6 fw-medium m-0" th:text="${latestNew.newsHour}"></h4><a th:href="@{'/news/' + ${latestNew.newsCategory} + '/' + ${latestNew.newsId}}" class="text-decoration-none text-dark"><h4 class="fs-6 fw-normal lh-1 ps-3" th:text="${latestNew.newsTitle}"></h4></a>
@@ -22,7 +22,6 @@
     </section>
  
     <section th:if="${featuredEmpty}" class="row gap-3 justify-content-between py-4 border-top border-3">
-    
         <div class="position-relative p-0 col">
             <img th:src="@{https://placehold.co/600x250?text=Hello+World}" class="img-fluid m-0 mb-2 p-0 w-100" alt="" style="max-height:300px">
             <h4 class="fs-5 position-absolute top-0 p-2 m-3 bg-white">Noticias destacadas, de distintas categorías.</h4>
@@ -33,21 +32,18 @@
         </div>
     </section>
 
-    <section th:unless="${featuredEmpty}"  class="row gap-4 justify-content-between py-4 border-top border-3">
-        <div class="position-relative p-0 col"  th:each="featuredN : ${featured}">
+    <section th:unless="${featuredEmpty}"  class="row gap-4 py-4 border-top border-3">
+        <div class="position-relative col"  th:each="featuredN : ${featured}">
             <a class="text-decoration-none link-dark" th:href="@{'/news/' + ${featuredN.newsCategory} + '/' + ${featuredN.newsId}}">
             <img th:src="@{'/image/' + ${featuredN.newsImageId}}"  class="img-fluid m-0 p-0 w-100  object-fit-cover" alt="" style="max-height:250px">
             <h4 class="fs-5 position-absolute top-0 p-2 m-3 bg-white" th:text="${featuredN.newsTitle}"></h4>
             </a>
         </div>
 
-
-    <div th:if="${#lists.size(featured) == 1}" class="col p-0">
-        <div class="position-relative">
+        <div th:if="${#lists.size(featured) == 1}" class="position-relative col">
             <img th:src="@{https://placehold.co/800x600?text=Hello+World}" class="img-fluid m-0 p-0 w-100 object-fit-cover" alt="" style="max-height:250px">
             <h4 class="fs-5 position-absolute top-0 p-2 m-3 bg-white">Noticias destacadas, de distintas categorías.</h4>
-        </div>
-    </div>
+            </div>
     </div>
     </section>
     <div th:if="${categoriesEmpty}">
