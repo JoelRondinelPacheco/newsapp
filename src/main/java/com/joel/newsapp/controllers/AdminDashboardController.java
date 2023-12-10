@@ -7,6 +7,7 @@ import com.joel.newsapp.dtos.newscategory.CategoryDTO;
 import com.joel.newsapp.dtos.reporter.ReporterInfoDTO;
 import com.joel.newsapp.dtos.search.AllNewsForm;
 import com.joel.newsapp.dtos.users.EmployeeDTO;
+import com.joel.newsapp.dtos.users.EmployeePaginatedDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UsersPaginatedDTO;
 import com.joel.newsapp.entities.News;
@@ -66,8 +67,11 @@ public class AdminDashboardController {
                     roleEmployee = Role.REPORTER;
             }
 
-            List<EmployeeDTO> employees = this.dashboardService.getAllEmployees(page_number, 10, roleEmployee, state);
-            model.addAttribute("employees", employees);
+            EmployeePaginatedDTO employeesDTO = this.dashboardService.getAllEmployees(page_number, 10, roleEmployee, state);
+            model.addAttribute("employees", employeesDTO.getEmployees());
+            model.addAttribute("totalPages", employeesDTO.getTotalPages());
+            model.addAttribute("currentPage", page_number);
+            model.addAttribute("totalElements", employeesDTO.getTotalElements());
             return "admin_dashboard/admin_employees";
         }
     }
