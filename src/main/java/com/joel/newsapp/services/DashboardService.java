@@ -51,6 +51,7 @@ public class DashboardService implements IDashboardService {
                 Page<Reporter> rep = Page.empty();
                 switch (state) {
                     case ACTIVE:
+                        System.out.println(role + " " + state);
                         rep = this.reporterRepository.findAllByEnabledAndUser_Verified(true, true, page);
                         break;
                     case INACTIVE:

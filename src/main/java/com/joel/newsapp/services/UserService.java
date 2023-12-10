@@ -54,16 +54,6 @@ public class UserService implements IUserService {
         } else {
             user.setDisplayName("");
         }
-        /*
-        Default image in db
-        if(userDTO.getProfilePicture().isEmpty()) {
-            Image img = this.imageService.defaultImage();
-            user.setImage(img);
-        } else {
-            Image img = this.imageService.save(userDTO.getProfilePicture());
-            user.setImage(img);
-        }
-        */
 
         if(!userDTO.getProfilePicture().isEmpty()) {
             Image img = this.imageService.save(userDTO.getProfilePicture());
