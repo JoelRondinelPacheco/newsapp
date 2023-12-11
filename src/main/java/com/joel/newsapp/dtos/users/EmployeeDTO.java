@@ -10,6 +10,6 @@ import lombok.*;
 public class EmployeeDTO {
     private Double monthlySalary;
     private Boolean employeeEnabled;
-    private String reporterId;
+    private String employeeId;
     private UserInfoDTO userInfo;
 }

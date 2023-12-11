@@ -14,4 +14,6 @@ import com.joel.newsapp.exceptions.NotFoundException;
 public interface IAdminService extends ICrudService<AdminInfoDTO, RegisterAdminDTO, EditAdminDTO, String> {
 
     Admin findByUserId(String userId) throws NotFoundException;
+
+    Admin findById(String employeeId) throws NotFoundException;
 }

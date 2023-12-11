@@ -21,4 +21,13 @@ public class ModeratorService implements IModeratorService {
         }
         throw new NotFoundException("Moderator not found");
     }
+
+    @Override
+    public Moderator findById(String employeeId) throws NotFoundException {
+        Optional<Moderator> moderatorOptional = this.moderatorRepository.findById(employeeId);
+        if ( moderatorOptional.isPresent()) {
+            return moderatorOptional.get();
+        }
+        throw new NotFoundException("Moderator not found");
+    }
 }

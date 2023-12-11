@@ -5,4 +5,5 @@ import com.joel.newsapp.exceptions.NotFoundException;
 
 public interface IModeratorService {
     Moderator findByUserId(String userId) throws NotFoundException;
+    Moderator findById(String employeeId) throws NotFoundException;
 }

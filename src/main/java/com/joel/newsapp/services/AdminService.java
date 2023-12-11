@@ -53,4 +53,13 @@ public class AdminService implements IAdminService {
         }
         throw new NotFoundException("Admin not found");
     }
+
+    @Override
+    public Admin findById(String employeeId) throws NotFoundException {
+        Optional<Admin> adminOptional = this.adminRepository.findById(employeeId);
+        if (adminOptional.isPresent()) {
+            return adminOptional.get();
+        }
+        throw new NotFoundException("Admin not found");
+    }
 }
