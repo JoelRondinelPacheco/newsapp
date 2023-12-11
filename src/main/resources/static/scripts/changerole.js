@@ -53,13 +53,15 @@ $editBtn.forEach(btn => {
         $email.innerHTML = e.currentTarget.getAttribute('data-email')
         $role.innerHTML = role
 
+
         roles.forEach(r => {
-            if (r != role) {
                 let $option = d.createElement("option")
                 $option.value = r
                 $option.innerHTML = r
+                $option.selected = (role === r)
                 $modalRolesMenu.appendChild($option)
-            }
+
+    
         })
 
         if (role != "User") {

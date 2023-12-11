@@ -28,7 +28,25 @@ public class UserRolesService implements IUserRolesService {
     @Override
     public String changeRole(String userId, Role newRole, Double salary) throws NotFoundException {
         User user = this.userService.findById(userId);
-        if (user.getRole() == newRole) { return "Same role"; }
+        if (user.getRole() == newRole) {
+            switch (user.getRole()) {
+                case REPORTER:
+                    Reporter rep = this.reporterService.findByUserId(userId);
+                    rep.setMonthlySalary(salary);
+                    this.reporterRepository.save(rep);
+                    return "Reporter updated";
+                case MODERATOR:
+                    Moderator mod = this.moderatorService.findByUserId(userId);
+                    mod.setMonthlySalary(salary);
+                    this.moderatorRepository.save(mod);
+                    return "Moderator updated";
+                case ADMIN:
+                    Admin admin = this.adminService.findByUserId(userId);
+                    admin.setMonthlySalary(salary);
+                    adminRepository.save(admin);
+                    return "Admin updated";
+            }
+        }
 
         if (user.getRole() == Role.REPORTER) {
             try {
