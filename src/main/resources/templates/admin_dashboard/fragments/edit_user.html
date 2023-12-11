@@ -11,7 +11,7 @@
                 <div class="modal-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary modal-close" data-bs-dismiss="modal">Cerar</button>
-                    <button type="button" class="btn btn-primary" id="modal-save">Guardar cambios</button>
+                    <button type="button" form="roleForm" class="btn btn-primary" id="modal-save">Guardar cambios</button>
 
                 </div>
             </div>
@@ -34,14 +34,18 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="col-3">
-                        <select id="modal-roles-menu" class="form-select" aria-label="Default select example">
-                            <option selected>Nuevo Rol</option>
+                    <form class="col-9" id="roleForm" method="post" action="/role/edit/id">
+                        <div class="row">
+                    <div class="col-5">
+                        <select id="modal-roles-menu" class="form-select" aria-label="Default select example" name="role">
+                            <option value="newRole" selected>Nuevo Rol</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="input-group" id="modal-salary"></div>
                     </div>
+                </div>
+                </form>
                 </div>
 
 

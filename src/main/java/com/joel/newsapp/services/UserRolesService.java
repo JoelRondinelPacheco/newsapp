@@ -26,24 +26,32 @@ public class UserRolesService implements IUserRolesService {
     @Autowired private IModeratorRepository moderatorRepository;
 
     @Override
-    public String changeRole(String userId, Role newRole) throws NotFoundException {
+    public String changeRole(String userId, Role newRole, Double salary) throws NotFoundException {
         User user = this.userService.findById(userId);
         if (user.getRole() == newRole) { return "Same role"; }
 
         if (user.getRole() == Role.REPORTER) {
-            Reporter reporter = this.reporterService.findByUserId(userId);
-            reporter.setEnabled(false);
-            this.reporterRepository.save(reporter);
+            try {
+                Reporter reporter = this.reporterService.findByUserId(userId);
+                reporter.setEnabled(false);
+                this.reporterRepository.save(reporter);
+            } catch (NotFoundException e) {}
         }
 
         if (user.getRole() == Role.ADMIN) {
-            Admin admin = this.adminService.findByUserId(userId);
-            this.adminRepository.delete(admin);
+            try {
+                Admin admin = this.adminService.findByUserId(userId);
+                admin.setEnabled(false);
+                this.adminRepository.save(admin);
+            } catch (NotFoundException e) {}
         }
 
         if (user.getRole() == Role.MODERATOR) {
-            Moderator mod = this.moderatorService.findByUserId(userId);
-            this.moderatorRepository.delete(mod);
+            try {
+                Moderator mod = this.moderatorService.findByUserId(userId);
+                mod.setEnabled(false);
+                this.moderatorRepository.save(mod);
+            } catch (NotFoundException e) {}
         }
 
         switch (newRole) {
@@ -53,33 +61,55 @@ public class UserRolesService implements IUserRolesService {
                 return "Role changed from Reporter to User";
             case REPORTER:
                 user.setRole(Role.REPORTER);
-                Reporter reporter = Reporter.builder()
-                        .user(user)
-                        .monthlySalary(1D)
-                        .enabled(true)
-                        .build();
+                Reporter reporterR;
+                try {
+                    reporterR = this.reporterService.findByUserId(userId);
+                    reporterR.setMonthlySalary(salary);
+                    reporterR.setEnabled(true);
+                } catch (NotFoundException e) {
+                    reporterR = Reporter.builder()
+                            .user(user)
+                            .monthlySalary(salary)
+                            .enabled(true)
+                            .build();
+                }
+                this.reporterRepository.save(reporterR);
                 this.userRepository.save(user);
-                this.reporterRepository.save(reporter);
                 return "Role changed from User to Reporter";
             case ADMIN:
                 user.setRole(Role.ADMIN);
+                Admin adminA;
+                try {
+                    adminA = this.adminService.findByUserId(userId);
+                    adminA.setMonthlySalary(salary);
+                    adminA.setEnabled(true);
+                } catch (NotFoundException e) {
+                    adminA = Admin.builder()
+                            .user(user)
+                            .monthlySalary(salary)
+                            .enabled(true)
+                            .build();
+                }
                 this.userRepository.save(user);
-                Admin admin = Admin.builder()
-                        .user(user)
-                        .monthlySalary(100D)
-                        .enabled(true)
-                        .build();
-                this.adminRepository.save(admin);
+                this.adminRepository.save(adminA);
                 return "Role changed from Reporter to Admin";
             case MODERATOR:
                 user.setRole(Role.MODERATOR);
+                Moderator moderatorM;
+
+                try {
+                    moderatorM = this.moderatorService.findByUserId(userId);
+                    moderatorM.setMonthlySalary(salary);
+                    moderatorM.setEnabled(true);
+                } catch (NotFoundException e) {
+                    moderatorM = Moderator.builder()
+                            .user(user)
+                            .monthlySalary(salary)
+                            .enabled(true)
+                            .build();
+                }
                 this.userRepository.save(user);
-                Moderator mod = Moderator.builder()
-                        .user(user)
-                        .monthlySalary(100D)
-                        .enabled(true)
-                        .build();
-                this.moderatorRepository.save(mod);
+                this.moderatorRepository.save(moderatorM);
                 return "Role changed from Reporter to Moderator";
         }
         return "Invalid Role";

@@ -46,6 +46,8 @@ $editBtn.forEach(btn => {
         const $role = clone.getElementById('modal-current-rol')
         const $salaryContainer = clone.getElementById('modal-salary')
         const $modalRolesMenu = clone.getElementById('modal-roles-menu')
+        const $form = clone.getElementById("roleForm")
+        const userId = e.currentTarget.getAttribute("data-id")
 
         $name.innerHTML = e.currentTarget.getAttribute('data-name')
         $email.innerHTML = e.currentTarget.getAttribute('data-email')
@@ -69,6 +71,8 @@ $editBtn.forEach(btn => {
         $rolesList = d.getElementById('modal-roles-menu')
         $rolesList.addEventListener("change", (e) => {
             console.log($rolesList.value)
+            $form.action = `/role/edit/${userId}`
+
             if ($rolesList.value == "User") {
                 $salaryContainer.innerHTML = ''
             } else {
@@ -83,7 +87,7 @@ $editBtn.forEach(btn => {
 
 function createSalary(salary) {
     return `<span class="input-group-text">Salary</span>
-    <input type="text" class="form-control" placeholder="Salary" id="salary" value=${salary != null ? salary : 0}>`
+    <input type="text" name="salary" class="form-control" placeholder="Salary" id="salary" value=${salary != null ? salary : 0}>`
 }
 
 console.log($closeBtn)
@@ -91,6 +95,11 @@ $closeBtn.forEach(btn => {
     btn.addEventListener("click", function () {
        $modalBody.innerHTML = ''
     })
+})
+
+$saveBtn.addEventListener("click", () => {
+    $formRole = d.getElementById("roleForm")
+    $formRole.submit()
 })
 
 

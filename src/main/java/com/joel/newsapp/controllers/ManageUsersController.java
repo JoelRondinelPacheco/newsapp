@@ -5,6 +5,8 @@ import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.Role;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,21 +42,20 @@ public class ManageUsersController {
 
     }
     //CAMBIAR ROLE
-    @GetMapping("/{userId}/{oldRole}/{newRole}")
-    public String changeRole(@PathVariable String userId, @PathVariable String oldRole, @PathVariable Role newRole, ModelMap model) {
-
-        if (!newRole.name().equalsIgnoreCase(Role.USER.name()) && !newRole.name().equalsIgnoreCase(Role.REPORTER.name()) && !newRole.name().equalsIgnoreCase(Role.MODERATOR.name()) && !newRole.name().equalsIgnoreCase(Role.ADMIN.name())) {
-            model.addAttribute("roleError", "No se proporciono un rol valido");
-            // TODO HANDLE ERROR
-            return "index";
+    @PostMapping("/edit/{userId}")
+    public String changeRole(@PathVariable String userId, @RequestParam(required = false) Role role, @RequestParam(required = false) Double salary, ModelMap model, HttpServletRequest req) {
+        System.out.println(role + " | " + salary);
+        if (salary == null) {
+            salary = 0D;
         }
-    try {
-        String res = this.userRolesService.changeRole(userId, newRole);
+   try {
+        String res = this.userRolesService.changeRole(userId, role, salary);
         model.addAttribute("res", res);
-        return "index";
+       System.out.println(req.getHeader("Referer"));
+       return "redirect:/";
     } catch (NotFoundException e) {
         System.out.println(e.getMessage());
-        return "index";
+        return "redirect:/";
     }
     }
 
