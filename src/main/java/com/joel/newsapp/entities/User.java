@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class User extends Base implements UserDetails {
     private String name;
     private String lastname;

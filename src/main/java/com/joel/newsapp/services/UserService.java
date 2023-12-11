@@ -178,4 +178,14 @@ public class UserService implements IUserService {
         }
         throw new NotFoundException("User not found");
     }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        try {
+            UserInfoDTO user = this.findByEmail(email);
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
 }

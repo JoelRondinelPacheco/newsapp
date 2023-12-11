@@ -7,7 +7,9 @@ import com.joel.newsapp.exceptions.NotFoundException;
 import java.util.List;
 
 public interface ICommentService  {
+    Comment getById(String id) throws NotFoundException;
     List<CommentViewDTO> getAllNewsComments(String newsId, String email) throws NotFoundException;
 
     CommentDashboardPageDTO getByReports(int pageNumber, int pageSize);
+
 }
