@@ -17,25 +17,32 @@
             <tr class="table-primary">
                 <th scope="col">Nombre</th>
                 <th scope="col">Email</th>
-                <th scope="col">Cambiar estado</th>
                 <th>Editar</th>
-                <th>Eliminar</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
                 <th th:text="${user.name}+' '+${user.lastname}"></th>
-                <th th:text="${user.email}"></th>
-                <th>
-                    <button class="btn btn-primary"></button>
-                </th>
-                <th>
-                    <a class="btn"
-                       th:classappend="${user.enabled ? 'btn-danger' : 'btn-success'}"
-                       th:href="@{'/admin/user/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'} + '&role=' + ${role} + '&state=' + ${state} + '&pagenumber=' + ${currentPage}}"
-                       th:text="${user.enabled ? 'Dar de baja' : 'Dar de alta'}">
+                <td th:text="${user.email}"></td>
+                <td>
+                    <button th:if="${user.enabled}" class="btn btn-warning btn-modal"
+                        th:attr="data-id=${user.id}, data-role=${user.role}, data-name=${user.name + ' ' + user.lastname}, data-email=${user.email}, data-salary='0'"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</button>
+                </td>
+                <td>
+                    <a  th:if="${user.enabled}" class="btn btn-danger"
+                    th:href="@{'/admin/user/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'} + '&role=' + ${role} + '&state=' + ${state} + '&pagenumber=' + ${currentPage}}"
+                    >
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                      </svg>
                     </a>
-                </th>
+
+                    <a  th:unless="${user.enabled}" class="btn btn-success"
+                    th:href="@{'/admin/user/active/' + ${user.id} + '?active=' + ${user.enabled ? 'false' : 'true'} + '&role=' + ${role} + '&state=' + ${state} + '&pagenumber=' + ${currentPage}}"
+                    >Activar
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -50,7 +57,11 @@
           </nav>
 
     </section>
+    <section th:replace="~{admin_dashboard/fragments/edit_user}"></section>
+
 </main>
+<script type="text/javascript" th:src="@{/scripts/changerole.js}"></script>
+
 
 </body>
 </html>
