@@ -6,40 +6,29 @@ import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.repositories.*;
-import com.joel.newsapp.services.interfaces.IAdminManageUsers;
-import com.joel.newsapp.services.interfaces.IReporterService;
-import com.joel.newsapp.services.interfaces.IUserService;
+import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.PasswordTokenType;
+import com.joel.newsapp.utils.Role;
 import com.joel.newsapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ManageUsersService implements IAdminManageUsers {
-    @Autowired
-    private IUserRepository userRepository;
-    @Autowired
-    private IReporterService reporterService;
-    @Autowired
-    private JwtTokenService jwtService;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
-    private IReporterRepository reporterRepository;
-    @Autowired
-    private IModeratorRepository moderatorRepository;
-    @Autowired
-    private IAdminRepository adminRepository;
-    @Autowired
-    private EmailService mailService;
-    @Autowired
-    private PasswordTokenService tokenService;
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private Utils utils;
-    @Autowired
-    private IPasswordTokenRepository tokenRepository;
+    @Autowired private IUserRepository userRepository;
+    @Autowired private IReporterService reporterService;
+    @Autowired private JwtTokenService jwtService;
+    @Autowired private ImageService imageService;
+    @Autowired private IReporterRepository reporterRepository;
+    @Autowired private IModeratorRepository moderatorRepository;
+    @Autowired private IAdminRepository adminRepository;
+    @Autowired private IAdminService adminService;
+    @Autowired private EmailService mailService;
+    @Autowired private PasswordTokenService tokenService;
+    @Autowired private IUserService userService;
+    @Autowired private Utils utils;
+    @Autowired private IPasswordTokenRepository tokenRepository;
+    @Autowired private IModeratorService moderatorService;
 
     @Override
     public String createEmployee(AdminRegisterEmployeeDTO employee) {
@@ -120,6 +109,40 @@ public class ManageUsersService implements IAdminManageUsers {
             return "User deleted";
         }
         throw new NotFoundException("User not found");
+    }
+
+    @Override
+    public void setEnabledEmployee(String employeeId, Boolean active, String role) throws NotFoundException {
+        switch (role.toLowerCase()) {
+            case "reporter":
+                System.out.println("reporter: " + role);
+                Reporter rep = this.reporterService.findById(employeeId);
+                User userRep = rep.getUser();
+                rep.setEnabled(active);
+                userRep.setEnabled(active);
+                userRep.setRole(active ? Role.REPORTER : Role.USER);
+                this.reporterRepository.save(rep);
+                this.userRepository.save(userRep);
+                break;
+            case "admin":
+                Admin admin = this.adminService.findById(employeeId);
+                User userAdmin = admin.getUser();
+                admin.setEnabled(active);
+                userAdmin.setEnabled(active);
+                userAdmin.setRole(active ? Role.ADMIN : Role.USER);
+                this.adminRepository.save(admin);
+                this.userRepository.save(userAdmin);
+                break;
+            case "moderator":
+                Moderator mod = this.moderatorService.findById(employeeId);
+                User userMod = mod.getUser();
+                mod.setEnabled(active);
+                userMod.setEnabled(active);
+                userMod.setRole(active ? Role.MODERATOR : Role.USER);
+                this.moderatorRepository.save(mod);
+                this.userRepository.save(userMod);
+                break;
+        }
     }
 
 

@@ -44,6 +44,7 @@ public class AdminDashboardController {
         if (page_number == null) {
             page_number = 1;
         }
+        model.addAttribute("page", "users");
         model.addAttribute("role", role);
         model.addAttribute("state", state);
         if (role.equalsIgnoreCase(Role.USER.name())) {
@@ -68,9 +69,8 @@ public class AdminDashboardController {
             }
 
             EmployeePaginatedDTO employeesDTO = this.dashboardService.getAllEmployees(page_number, 10, roleEmployee, state);
-            for (EmployeeDTO e : employeesDTO.getEmployees()) {
-                System.out.println(e.getUserInfo().getEmail());
-                System.out.println(e.getUserInfo().getEnabled());
+            for(EmployeeDTO e : employeesDTO.getEmployees()) {
+                System.out.println(e.getUserInfo().getEmail()  + " " + e.getUserInfo().getRole());
             }
             model.addAttribute("employees", employeesDTO.getEmployees());
             model.addAttribute("totalPages", employeesDTO.getTotalPages());
@@ -82,6 +82,7 @@ public class AdminDashboardController {
 
     @GetMapping("/categories")
     public String getAllCategories(ModelMap model) {
+        model.addAttribute("page", "categories");
         List<NewsCategory> categories = this.categoryService.findAll();
         model.addAttribute("categories", categories);
         return "admin_dashboard/admin_categories";
@@ -94,6 +95,8 @@ public class AdminDashboardController {
 
     @GetMapping("/news")
     public String adminNews(ModelMap model){
+        model.addAttribute("page", "news");
+
         try {
             NewsHomeDTO mainFeatured = this.newsService.mainFeatured();
             model.addAttribute("mainFeatured", mainFeatured);
@@ -139,6 +142,7 @@ public class AdminDashboardController {
                                @RequestParam(required = false) String newsCategory,
                                @RequestParam(required = false) Integer page_number,
                                ModelMap model) {
+        model.addAttribute("page", "news");
 
         System.out.println(page_number);
         if (page_number == null) {

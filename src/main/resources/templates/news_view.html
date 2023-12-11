@@ -94,7 +94,7 @@
 
             <div sec:authorize="not isAuthenticated()">
                 <form class="mt-2 ps-3"
-                    th:action="@{'/perform_login?' + 'redirect=/news/' + ${news.newsDetails.newsCategory} + '/' + ${news.newsDetails.newsId}}"
+                    th:action="@{/perform_login}"
                     method="post">
                     <legend class="fs-5 mb-2">Ingresa a tu cuenta para dejar un comentario</legend>
                     <div class="container row">
