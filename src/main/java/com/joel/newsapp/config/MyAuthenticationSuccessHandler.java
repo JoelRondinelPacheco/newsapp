@@ -26,9 +26,19 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                                       HttpServletResponse response,
                                       Authentication authentication) {
         String urlString = request.getHeader("Referer");
+
         try {
             URL url = new URL(urlString);
-            return url.getPath();
+            String urlPath =  url.getPath();
+            System.out.println("SOUTS URL");
+            System.out.println("url path: "+ urlPath);
+            System.out.println("url query: " + url.getQuery());
+            String urlFinal = urlPath + "?" + url.getQuery();
+            System.out.println("URL FINAL: " + urlFinal);
+            if (urlPath.equals("/login")) {
+                return "/";
+            }
+            return urlFinal;
         } catch (MalformedURLException e) {
             return "/";
         }
