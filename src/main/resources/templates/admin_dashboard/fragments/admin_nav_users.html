@@ -1,17 +1,9 @@
 <section th:fragment="admin_nav_users" xmlns:th="http://www.thymeleaf.org">
-    <!-- <div class="mb-2">
-        <a class="btn" th:classappend="${role.name == 'USER' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/user?state=active}">Users</a>
-        <a class="btn" th:classappend="${role.name == 'REPORTER' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/reporter?state=active}">Reporters</a>
-        <a class="btn" th:classappend="${role.name == 'MODERATOR' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/moderator?state=active}">Moderators</a>
-        <a class="btn" th:classappend="${role.name == 'ADMIN' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/admin?state=active}">Admins</a>
-        <a class="btn btn-primary" th:href="@{/dashboard/register}">Nuevo usuario</a>
-    </div> -->
-
     <div class="mb-2">
         <a class="btn" th:classappend="${role == 'user' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/user?state=active}">Users</a>
         <a class="btn" th:classappend="${role == 'reporter' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/reporter?state=active}">Reporters</a>
         <a class="btn" th:classappend="${role == 'moderator' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/moderator?state=active}">Moderators</a>
         <a class="btn" th:classappend="${role == 'admin' ? 'btn-primary active' : 'btn-outline-primary'}" th:href="@{/dashboard/role/admin?state=active}">Admins</a>
-        <a class="btn btn-primary" th:href="@{/dashboard/register}">Nuevo usuario</a>
+        <a class="btn btn-success" th:href="@{/dashboard/register}">Nuevo usuario</a>
     </div>
 </section>
