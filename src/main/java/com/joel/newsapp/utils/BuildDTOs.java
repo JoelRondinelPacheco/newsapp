@@ -1,5 +1,6 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.comment.CommentDashboardDTO;
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsForm;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
@@ -203,5 +204,24 @@ public class BuildDTOs {
         time[0] = date.toString().split("T")[0];
         time[1] = date.toString().split("T")[1].substring(0,5);
         return time;
+    }
+
+    public CommentDashboardDTO commentDashboardDTO(Comment comment) {
+        String[] time = this.hourAndDate(comment.getCreatedAt());
+        return CommentDashboardDTO.builder()
+                .commentId(comment.getId())
+                .authorId(comment.getAuthorComment().getId())
+                .authorName(comment.getAuthorComment().getName() + " " + comment.getAuthorComment().getLastname())
+                .date(time[0])
+                .hour(time[1])
+                .reports(comment.getReports().size())
+                .build();
+    }
+    public List<CommentDashboardDTO> commentDashboardDTOList(List<Comment> comments) {
+        List<CommentDashboardDTO> dto = new ArrayList<>();
+        for (Comment c : comments) {
+            dto.add(this.commentDashboardDTO(c));
+        }
+        return dto;
     }
 }

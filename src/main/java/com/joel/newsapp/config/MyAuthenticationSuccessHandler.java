@@ -30,15 +30,10 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         try {
             URL url = new URL(urlString);
             String urlPath =  url.getPath();
-            System.out.println("SOUTS URL");
-            System.out.println("url path: "+ urlPath);
-            System.out.println("url query: " + url.getQuery());
-            String urlFinal = urlPath + "?" + url.getQuery();
-            System.out.println("URL FINAL: " + urlFinal);
             if (urlPath.equals("/login")) {
                 return "/";
             }
-            return urlFinal;
+            return urlPath;
         } catch (MalformedURLException e) {
             return "/";
         }

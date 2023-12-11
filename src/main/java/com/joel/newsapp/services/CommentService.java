@@ -1,8 +1,6 @@
 package com.joel.newsapp.services;
 
-import com.joel.newsapp.dtos.comment.CommentEditReqDTO;
-import com.joel.newsapp.dtos.comment.CommentPostReqDTO;
-import com.joel.newsapp.dtos.comment.CommentViewDTO;
+import com.joel.newsapp.dtos.comment.*;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.Report;
@@ -14,6 +12,9 @@ import com.joel.newsapp.services.interfaces.ICommentService;
 import com.joel.newsapp.utils.BuildDTOs;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +56,16 @@ public class CommentService implements ICommentService {
         List<Comment> comments = this.commentRepository.findAllByNews_Id(newsId);
         List<CommentViewDTO> dto = this.dto.commentViewDTOList(comments, email);
         return dto;
+    }
+
+    @Override
+    public CommentDashboardPageDTO getByReports(int pageNumber, int pageSize) {
+        Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+        Page<Comment> commentsPage = this.commentRepository.selectByReports(page);
+        return CommentDashboardPageDTO.builder()
+                .comments(this.dto.commentDashboardDTOList(commentsPage.getContent()))
+                .totalPages(commentsPage.getTotalPages())
+                .totalElements(commentsPage.getTotalElements())
+                .build();
     }
 }
