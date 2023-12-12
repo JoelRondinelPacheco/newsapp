@@ -26,9 +26,14 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                                       HttpServletResponse response,
                                       Authentication authentication) {
         String urlString = request.getHeader("Referer");
+
         try {
             URL url = new URL(urlString);
-            return url.getPath();
+            String urlPath =  url.getPath();
+            if (urlPath.equals("/login")) {
+                return "/";
+            }
+            return urlPath;
         } catch (MalformedURLException e) {
             return "/";
         }

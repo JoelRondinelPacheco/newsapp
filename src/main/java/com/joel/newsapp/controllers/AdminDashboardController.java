@@ -1,5 +1,7 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.comment.CommentDashboardDTO;
+import com.joel.newsapp.dtos.comment.CommentDashboardPageDTO;
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
 import com.joel.newsapp.dtos.news.NewsHomeDTO;
 import com.joel.newsapp.dtos.news.NewsPaginatedDTO;
@@ -33,6 +35,7 @@ public class AdminDashboardController {
     @Autowired private INewsCategoryService categoryService;
     @Autowired private INewsService newsService;
     @Autowired private IDashboardService dashboardService;
+    @Autowired private ICommentService commentService;
 
     @GetMapping({"/", "", "/users"})
     public String adminDashboard(ModelMap model) {
@@ -182,6 +185,22 @@ public class AdminDashboardController {
         return "admin_dashboard/admin_news_all";
     }
 
+    @GetMapping("/comments")
+    public String comments(@RequestParam(required = false) Integer current_page, @RequestParam(required = false) Integer page_size, ModelMap model) {
+        if (current_page == null) {
+            current_page = 1;
+        }
+        if (page_size == null) {
+            page_size = 10;
+        }
+        model.addAttribute("page", "comments");
+        CommentDashboardPageDTO comments = this.commentService.getByReports(current_page, page_size);
+        model.addAttribute("totalPages", comments.getTotalPages());
+        model.addAttribute("currentPage", current_page);
+        model.addAttribute("totalElements", comments.getTotalElements());
+        model.addAttribute("comments", comments.getComments());
+        return "admin_dashboard/admin_comments";
+    }
 
 }
 

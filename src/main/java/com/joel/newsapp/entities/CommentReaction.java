@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Setter
 @Getter
+@EqualsAndHashCode
 public class CommentReaction extends Base {
     private Boolean isPositive;
 
