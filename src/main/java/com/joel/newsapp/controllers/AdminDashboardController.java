@@ -1,5 +1,6 @@
 package com.joel.newsapp.controllers;
 
+import com.joel.newsapp.dtos.comment.CommentByReportsDTO;
 import com.joel.newsapp.dtos.comment.CommentDashboardDTO;
 import com.joel.newsapp.dtos.comment.CommentDashboardPageDTO;
 import com.joel.newsapp.dtos.news.FeaturedByCategoryDTO;
@@ -12,6 +13,7 @@ import com.joel.newsapp.dtos.users.EmployeeDTO;
 import com.joel.newsapp.dtos.users.EmployeePaginatedDTO;
 import com.joel.newsapp.dtos.users.UserInfoDTO;
 import com.joel.newsapp.dtos.users.UsersPaginatedDTO;
+import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
 import com.joel.newsapp.entities.NewsCategory;
 import com.joel.newsapp.exceptions.NotFoundException;
@@ -199,6 +201,7 @@ public class AdminDashboardController {
         model.addAttribute("currentPage", current_page);
         model.addAttribute("totalElements", comments.getTotalElements());
         model.addAttribute("comments", comments.getComments());
+
         return "admin_dashboard/admin_comments";
     }
 

@@ -1,5 +1,6 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.comment.CommentByReportsDTO;
 import com.joel.newsapp.dtos.comment.CommentDashboardDTO;
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsForm;
@@ -210,18 +211,27 @@ public class BuildDTOs {
     public CommentDashboardDTO commentDashboardDTO(Comment comment) {
         String[] time = this.hourAndDate(comment.getCreatedAt());
         return CommentDashboardDTO.builder()
+                .comment(comment.getComment())
                 .commentId(comment.getId())
                 .authorId(comment.getAuthorComment().getId())
                 .authorName(comment.getAuthorComment().getName() + " " + comment.getAuthorComment().getLastname())
                 .date(time[0])
                 .hour(time[1])
-                .reports(comment.getReports().size())
                 .build();
     }
     public List<CommentDashboardDTO> commentDashboardDTOList(List<Comment> comments) {
         List<CommentDashboardDTO> dto = new ArrayList<>();
         for (Comment c : comments) {
             dto.add(this.commentDashboardDTO(c));
+        }
+        return dto;
+    }
+    public List<CommentDashboardDTO> commentReportsDashboardDTOList(List<CommentByReportsDTO> comments) {
+        List<CommentDashboardDTO> dto = new ArrayList<>();
+        for (CommentByReportsDTO c : comments) {
+            CommentDashboardDTO cDTO = this.commentDashboardDTO(c.getComment());
+            cDTO.setReports(c.getQuantity());
+            dto.add(cDTO);
         }
         return dto;
     }

@@ -14,7 +14,8 @@ public class CommentDashboardDTO {
     private String commentId;
     private String authorId;
     private String authorName;
+    private String comment;
     private String date;
     private String hour;
-    private int reports;
+    private Long reports;
 }

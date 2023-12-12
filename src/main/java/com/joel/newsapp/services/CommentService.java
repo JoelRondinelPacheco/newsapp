@@ -3,6 +3,7 @@ package com.joel.newsapp.services;
 import com.joel.newsapp.dtos.comment.*;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
+import com.joel.newsapp.repositories.ICommentReportRepository;
 import com.joel.newsapp.repositories.ICommentRepository;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.ICommentService;
@@ -24,6 +25,7 @@ public class CommentService implements ICommentService {
     @Autowired private UserService userService;
     @Autowired private NewsService newsService;
     @Autowired private BuildDTOs dto;
+    @Autowired private ICommentReportRepository reportRepository;
 
     @Transactional
     public Comment save(CommentPostReqDTO comment) throws NotFoundException{
@@ -62,12 +64,20 @@ public class CommentService implements ICommentService {
         return dto;
     }
 
-    @Override
+  //  @Override
     public CommentDashboardPageDTO getByReports(int pageNumber, int pageSize) {
+        System.out.println("ntro service");
         Pageable page = PageRequest.of(pageNumber - 1, pageSize);
-        Page<Comment> commentsPage = this.commentRepository.selectByReports(page);
+
+        Page<CommentByReportsDTO> commentsPage = this.reportRepository.comments(page);
+        System.out.println("Antes error");
+        for (CommentByReportsDTO c : commentsPage.getContent()) {
+            System.out.println(c.getQuantity());
+            System.out.println(c.getComment().getComment());
+        }
+
         return CommentDashboardPageDTO.builder()
-                .comments(this.dto.commentDashboardDTOList(commentsPage.getContent()))
+                .comments(this.dto.commentReportsDashboardDTOList(commentsPage.getContent()))
                 .totalPages(commentsPage.getTotalPages())
                 .totalElements(commentsPage.getTotalElements())
                 .build();

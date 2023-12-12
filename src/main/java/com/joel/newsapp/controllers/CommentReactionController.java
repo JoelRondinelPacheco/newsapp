@@ -31,6 +31,7 @@ public class CommentReactionController {
     public ResponseEntity<String> report(@PathVariable String commentId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
+        System.out.println(email);
         try {
             String report = this.reactionService.report(email, commentId);
             return new ResponseEntity<>(report, HttpStatus.OK);

@@ -35,6 +35,7 @@ $reports.forEach( report => {
         let commentId = container.getAttribute("data-commentid")
         let reportURL = `${baseReportURL}${commentId}`
         console.log(reportURL)
+        commentReaction(reportURL)
 })
 })
 
