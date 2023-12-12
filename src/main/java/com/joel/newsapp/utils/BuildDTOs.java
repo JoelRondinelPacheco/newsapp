@@ -131,6 +131,7 @@ public class BuildDTOs {
         String[] time = this.hourAndDate(comment.getCreatedAt());
 
         CommentViewDTO commentDTO = CommentViewDTO.builder()
+                .commentId(comment.getId())
                 .authorId(comment.getAuthorComment().getId())
                 .authorName(comment.getAuthorComment().getDisplayName())
                 .comment(comment.getComment())

@@ -16,11 +16,11 @@ public class CommentReactionController {
     @Autowired private ICommentReactionService reactionService;
 
     @GetMapping("/like/{commentId}")
-    public ResponseEntity<String> like(@PathVariable String commentId, @RequestParam Boolean isPositive) {
+    public ResponseEntity<String> like(@PathVariable String commentId, @RequestParam Boolean is_positive) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         try {
-            String reaction  = this.reactionService.like(email, commentId, isPositive);
+            String reaction  = this.reactionService.like(email, commentId, is_positive);
             return new ResponseEntity<>(reaction, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
