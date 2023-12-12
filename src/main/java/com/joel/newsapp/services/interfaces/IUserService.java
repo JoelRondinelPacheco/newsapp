@@ -22,6 +22,7 @@ public interface IUserService {
     UserProfileInfoDTO userProfileInfo(String email) throws NotFoundException;
     Boolean checkUserEmail(String email);
     User findById(String id) throws NotFoundException;
+    Boolean existsByEmail(String email);
 
 
 }

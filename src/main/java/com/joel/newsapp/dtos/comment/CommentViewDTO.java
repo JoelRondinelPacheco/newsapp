@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 public class CommentViewDTO {
+    private String commentId;
     private String authorId;
     private String authorName;
     private String comment;

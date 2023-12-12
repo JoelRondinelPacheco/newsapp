@@ -5,6 +5,7 @@ import com.joel.newsapp.dtos.users.AdminRegisterUserDTO;
 import com.joel.newsapp.exceptions.NotFoundException;
 import com.joel.newsapp.services.interfaces.*;
 import com.joel.newsapp.utils.Role;
+import com.joel.newsapp.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class ManageUsersController {
     @Autowired private IUserService userService;
     @Autowired private IModeratorService moderatorService;
     @Autowired private IUserRolesService userRolesService;
+    @Autowired private Utils utils;
 
     @PostMapping("/register")
     public String adminPostUser(@RequestParam String name,
@@ -44,15 +46,14 @@ public class ManageUsersController {
     //CAMBIAR ROLE
     @PostMapping("/edit/{userId}")
     public String changeRole(@PathVariable String userId, @RequestParam(required = false) Role role, @RequestParam(required = false) Double salary, ModelMap model, HttpServletRequest req) {
-        System.out.println(role + " | " + salary);
         if (salary == null) {
             salary = 0D;
         }
    try {
         String res = this.userRolesService.changeRole(userId, role, salary);
         model.addAttribute("res", res);
-       System.out.println(req.getHeader("Referer"));
-       return "redirect:/";
+        String previousUrl = this.utils.previousURL(req);
+       return "redirect:" + previousUrl;
     } catch (NotFoundException e) {
         System.out.println(e.getMessage());
         return "redirect:/";
