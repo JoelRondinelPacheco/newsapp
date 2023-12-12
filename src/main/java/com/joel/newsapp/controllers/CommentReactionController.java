@@ -17,13 +17,19 @@ public class CommentReactionController {
 
     @GetMapping("/like/{commentId}")
     public ResponseEntity<String> like(@PathVariable String commentId, @RequestParam Boolean is_positive) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        try {
-            String reaction  = this.reactionService.like(email, commentId, is_positive);
-            return new ResponseEntity<>(reaction, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+
+        if (!email.equals("anonymousUser")) {
+            try {
+                String reaction = this.reactionService.like(email, commentId, is_positive);
+                return new ResponseEntity<>(reaction, HttpStatus.OK);
+            } catch (NotFoundException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>("User not authenticated", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -31,12 +37,15 @@ public class CommentReactionController {
     public ResponseEntity<String> report(@PathVariable String commentId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        System.out.println(email);
-        try {
-            String report = this.reactionService.report(email, commentId);
-            return new ResponseEntity<>(report, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        if (!email.equals("anonymousUser")) {
+            try {
+                String report = this.reactionService.report(email, commentId);
+                return new ResponseEntity<>(report, HttpStatus.OK);
+            } catch (NotFoundException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>("User not authenticated", HttpStatus.NOT_FOUND);
         }
     }
 }

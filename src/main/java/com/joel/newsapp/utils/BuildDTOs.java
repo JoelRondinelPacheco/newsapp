@@ -142,12 +142,9 @@ public class BuildDTOs {
                 .build();
 
         for (CommentReaction c : comment.getReactions()) {
-            if (!email.equals("anonymousUser")) {
-                String userEmail = c.getUser().getEmail();
-                if (userEmail.equalsIgnoreCase(email)) {
+            if (!email.equals("anonymousUser") && c.getUser().getEmail().equalsIgnoreCase(email)) {
                     commentDTO.setLike(c.getIsPositive());
                     commentDTO.setDislike(!c.getIsPositive());
-                }
             } else {
                 commentDTO.setLike(false);
                 commentDTO.setDislike(false);
@@ -157,7 +154,11 @@ public class BuildDTOs {
 
         if (!email.equals("anonymousUser")) {
             for (Report r : comment.getReports()) {
-                commentDTO.setReported(r.getUser().getEmail().equalsIgnoreCase(email));
+                if(r.getUser().getEmail().equalsIgnoreCase(email)) {
+                    System.out.println("AAEmail: " + email + " | " + "report email: " + r.getUser().getEmail());
+                    commentDTO.setReported(r.getUser().getEmail().equalsIgnoreCase(email));
+                    System.out.println(commentDTO.isReported());
+                }
             }
         } else {
             commentDTO.setReported(false);

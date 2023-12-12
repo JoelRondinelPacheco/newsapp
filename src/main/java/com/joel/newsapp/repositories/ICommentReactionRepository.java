@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface ICommentReactionRepository extends JpaRepository<CommentReaction, String> {
     Optional<CommentReaction> findByComment_IdAndUser_Email(String commentId, String userEmail);
 
+    int deleteByComment_Id(String commentId);
 }

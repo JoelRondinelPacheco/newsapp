@@ -201,7 +201,6 @@ public class AdminDashboardController {
         model.addAttribute("currentPage", current_page);
         model.addAttribute("totalElements", comments.getTotalElements());
         model.addAttribute("comments", comments.getComments());
-
         return "admin_dashboard/admin_comments";
     }
 

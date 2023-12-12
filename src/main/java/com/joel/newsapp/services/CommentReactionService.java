@@ -52,6 +52,7 @@ public class CommentReactionService implements ICommentReactionService {
     public String report(String email, String commentId) throws NotFoundException {
         Optional<Report> reportOptional = this.reportRepository.findByComment_IdAndUser_Email(commentId, email);
         if (reportOptional.isPresent()) {
+            System.out.println("Ya lo reporto");
             return "Already reported";
         }
         Comment comment = this.commentService.getById(commentId);

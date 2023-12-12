@@ -7,36 +7,45 @@
     <main class="container">
         <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
         <section>
-            <h3>Ordenar por</h3>
-            <a href="" class="btn btn-primary">Cantidad de denuncias</a>
-            <a href="" class="btn btn-primary">Fecha</a>
-
-           <section>
-            <div th:each="comment : ${comments}" class="border-bottom border-2 py-3 ps-3 pe-2">
-                <div>
-                    <div class="d-flex flex-row justify-content-between">
-                        <div class="col-10 d-flex flex-row gap-3 align-items-end">
-                            <h5 class="fs-5" th:text="${comment.authorName}"></h5>
-                            <h5 class="fs-6 fw-light  align-baseline" th:Text="${comment.date}"></h5>
-                            <h5 class="fs-6 fw-light  align-baseline" th:text="${comment.hour}"></h5>
-                        </div>
-                        <div class="col-2 d-flex flex-row justify-content-between">
-                            <div class="">
-                                <h4 th:text="${comment.reports} + ' Denuncias'"></h4>
-                               
+            <section>
+                <div th:each="comment : ${comments}" class="border-bottom border-2 py-3 ps-3 pe-2">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="d-flex flex-row gap-3 align-items-end">
+                                <h5 class="fs-5" th:text="${comment.authorName}"></h5>
+                                <h5 class="fs-6 fw-light  align-baseline" th:Text="${comment.date}"></h5>
+                                <h5 class="fs-6 fw-light  align-baseline" th:text="${comment.hour}"></h5>
+                            </div>
+                            <div>
+                                <p class="m-0" th:text="${comment.comment}"></p>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <p class="m-0" th:text="${comment.comment}"></p>
-                    </div>
+                        <div class="col-3">
+                            <div class="row align-items-center">
+                            <div class="col-8">
+                                <h4 class="fs-5" th:text="${comment.reports} + ' Denuncias'"></h4>
+                            </div>
+                            <div class="col-4">
+                                <a class="btn btn-danger"
+                                th:href="@{'/comment/delete/' + ${comment.commentId} + '?current_page=' + ${currentPage}}"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        </div>
 
+
+                    </div>
 
                 </div>
-            </div>
-           </section>
+            </section>
         </section>
-      
+
     </main>
 
 </body>
