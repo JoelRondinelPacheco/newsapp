@@ -3,6 +3,8 @@ package com.joel.newsapp.services;
 import com.joel.newsapp.dtos.comment.*;
 import com.joel.newsapp.entities.*;
 import com.joel.newsapp.exceptions.NotFoundException;
+import com.joel.newsapp.repositories.ICommentReactionRepository;
+import com.joel.newsapp.repositories.ICommentReportRepository;
 import com.joel.newsapp.repositories.ICommentRepository;
 import com.joel.newsapp.repositories.INewsRepository;
 import com.joel.newsapp.services.interfaces.ICommentService;
@@ -24,9 +26,12 @@ public class CommentService implements ICommentService {
     @Autowired private UserService userService;
     @Autowired private NewsService newsService;
     @Autowired private BuildDTOs dto;
+    @Autowired private ICommentReportRepository reportRepository;
+    @Autowired private ICommentReactionRepository reactionRepository;
 
+    @Override
     @Transactional
-    public Comment save(CommentPostReqDTO comment) throws NotFoundException{
+    public Comment save(CommentPostReqDTO comment) throws NotFoundException {
         // TODO AGREGAR VERIFICACION DEL USUARIO QUE REALIZA LA PETICION
         try {
             News noticia = this.newsService.getById(comment.getNews_id());
@@ -62,15 +67,33 @@ public class CommentService implements ICommentService {
         return dto;
     }
 
-    @Override
+  //  @Override
     public CommentDashboardPageDTO getByReports(int pageNumber, int pageSize) {
         Pageable page = PageRequest.of(pageNumber - 1, pageSize);
-        Page<Comment> commentsPage = this.commentRepository.selectByReports(page);
+
+        Page<CommentByReportsDTO> commentsPage = this.reportRepository.comments(page);
+        for (CommentByReportsDTO c : commentsPage.getContent()) {
+            System.out.println(c.getQuantity());
+            System.out.println(c.getComment().getComment());
+        }
+
         return CommentDashboardPageDTO.builder()
-                .comments(this.dto.commentDashboardDTOList(commentsPage.getContent()))
+                .comments(this.dto.commentReportsDashboardDTOList(commentsPage.getContent()))
                 .totalPages(commentsPage.getTotalPages())
                 .totalElements(commentsPage.getTotalElements())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void delete(String commentId) throws NotFoundException {
+        Boolean exists = this.commentRepository.existsById(commentId);
+        if (exists) {
+            this.reportRepository.deleteByComment_Id(commentId);
+            this.reactionRepository.deleteByComment_Id(commentId);
+            this.commentRepository.deleteById(commentId);
+        }
+        throw new NotFoundException("Comment not found");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.joel.newsapp.utils;
 
+import com.joel.newsapp.dtos.comment.CommentByReportsDTO;
 import com.joel.newsapp.dtos.comment.CommentDashboardDTO;
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
 import com.joel.newsapp.dtos.news.NewsForm;
@@ -141,12 +142,9 @@ public class BuildDTOs {
                 .build();
 
         for (CommentReaction c : comment.getReactions()) {
-            if (!email.equals("anonymousUser")) {
-                String userEmail = c.getUser().getEmail();
-                if (userEmail.equalsIgnoreCase(email)) {
+            if (!email.equals("anonymousUser") && c.getUser().getEmail().equalsIgnoreCase(email)) {
                     commentDTO.setLike(c.getIsPositive());
                     commentDTO.setDislike(!c.getIsPositive());
-                }
             } else {
                 commentDTO.setLike(false);
                 commentDTO.setDislike(false);
@@ -156,7 +154,11 @@ public class BuildDTOs {
 
         if (!email.equals("anonymousUser")) {
             for (Report r : comment.getReports()) {
-                commentDTO.setReported(r.getUser().getEmail().equalsIgnoreCase(email));
+                if(r.getUser().getEmail().equalsIgnoreCase(email)) {
+                    System.out.println("AAEmail: " + email + " | " + "report email: " + r.getUser().getEmail());
+                    commentDTO.setReported(r.getUser().getEmail().equalsIgnoreCase(email));
+                    System.out.println(commentDTO.isReported());
+                }
             }
         } else {
             commentDTO.setReported(false);
@@ -210,18 +212,27 @@ public class BuildDTOs {
     public CommentDashboardDTO commentDashboardDTO(Comment comment) {
         String[] time = this.hourAndDate(comment.getCreatedAt());
         return CommentDashboardDTO.builder()
+                .comment(comment.getComment())
                 .commentId(comment.getId())
                 .authorId(comment.getAuthorComment().getId())
                 .authorName(comment.getAuthorComment().getName() + " " + comment.getAuthorComment().getLastname())
                 .date(time[0])
                 .hour(time[1])
-                .reports(comment.getReports().size())
                 .build();
     }
     public List<CommentDashboardDTO> commentDashboardDTOList(List<Comment> comments) {
         List<CommentDashboardDTO> dto = new ArrayList<>();
         for (Comment c : comments) {
             dto.add(this.commentDashboardDTO(c));
+        }
+        return dto;
+    }
+    public List<CommentDashboardDTO> commentReportsDashboardDTOList(List<CommentByReportsDTO> comments) {
+        List<CommentDashboardDTO> dto = new ArrayList<>();
+        for (CommentByReportsDTO c : comments) {
+            CommentDashboardDTO cDTO = this.commentDashboardDTO(c.getComment());
+            cDTO.setReports(c.getQuantity());
+            dto.add(cDTO);
         }
         return dto;
     }
