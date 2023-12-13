@@ -56,7 +56,9 @@ public class NewsService implements INewsService {
                 news.setBody(body.getBody());
 
                 String imageId = news.getImage().getId();
-                this.imageService.update(body.getImage(), imageId);
+                if (body.getChange()) {
+                    this.imageService.update(body.getImage(), imageId);
+                }
                 List<NewsCategory> categories = this.findCategories(body.getCategories());
                 NewsCategory mainCategory = this.newsCategoryService.getById(body.getMainCategory());
                 news.setCategories(categories);

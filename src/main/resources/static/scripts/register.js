@@ -1,6 +1,6 @@
 const d = document
 
-const $imageContainer = d.getElementById("input-container")
+const $inputContainer = d.getElementById("input-container")
 const $defaultImage = d.getElementById("default-profile")
 const urlImage = $defaultImage.src
 
@@ -23,14 +23,14 @@ $imgInput.addEventListener("change", (e) => {
 
 $deleteBtn.addEventListener("click", () => {
     $defaultImage.src = localStorage.getItem("defaultImage")
-    $imageContainer.innerHTML = ""
+    $inputContainer.innerHTML = ""
     $imgInput = createInputImage()
     $imgInput.addEventListener("change", (e) => {
         const files = e.target.files
         const dataURL = window.URL.createObjectURL(files[0])
         $defaultImage.src = dataURL
     })
-    $imageContainer.appendChild($imgInput)
+    $inputContainer.appendChild($imgInput)
     
 })
 

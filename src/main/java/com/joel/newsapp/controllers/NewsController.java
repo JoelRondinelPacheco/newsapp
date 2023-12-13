@@ -136,6 +136,7 @@ public class NewsController {
                                @RequestParam String imageCaption,
                                @RequestParam String body,
                                @RequestParam(required = false) List<String> categories,
+                               @RequestParam(required = false) Boolean imgChange,
                                @RequestParam String mainCategory, MultipartFile image, ModelMap model){
 
         if (categories == null) {
@@ -145,7 +146,7 @@ public class NewsController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
             Boolean isAdmin = auth.getAuthorities().contains("ROLE_"+Role.ADMIN);
-            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, author, image, id, isAdmin);
+            NewsEditReqDTO newsDTO = new NewsEditReqDTO(title, subtitle, imageCaption, body, categories, mainCategory, author, image, id, isAdmin, imgChange);
 
             this.newsService.edit(newsDTO);
 
