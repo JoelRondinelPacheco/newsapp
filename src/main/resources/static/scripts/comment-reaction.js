@@ -60,8 +60,13 @@ $reports.forEach(report => {
         let container = report.parentNode
         let commentId = container.getAttribute("data-commentid")
         let reportURL = `${baseReportURL}${commentId}`
-        console.log(reportURL)
         let response = await commentReaction(reportURL)
+        let icons = changeIcon(response, false, true)
+        console.log(response)
+        console.log(icons)
+        if (icons != null) {
+        report.innerHTML = `<span>Reportado ${icons[0]}</span>`
+        }
     })
 })
 
@@ -81,30 +86,29 @@ function changeIcon(responseText, isLike, isReport) {
     switch (responseText) {
         case "Reaction deleted":
             // Poner icono vacio de like o dislike
-            if (isLike) {
+        if (isLike && !isReport) {
                 return [icons.like]
             } else {
                 return [icons.dislike]
             }
         case "Reaction changed":
             // Rellenar el icono nuevo, y cambiar a vacio el icono viejo
-            if (isLike) {
+            if (isLike && !isReport) {
                 return [icons.likeFill, icons.dislike]
             } else {
                 return [icons.dislikeFill, icons.like]
             }
         case "Reaction created":
             // Rellenar icono nuevo
-            if (isLike) {
+            if (isLike && !isReport) {
                 return [icons.likeFill]
             } else {
                 return [icons.dislikeFill]
             }
         case "Already reported":
-            //No hacer nada
-            break
+            return null;
         case "Report saved":
-            if (isReport) {
+        if (isReport) {
                 return [icons.reportFill]
             }
     }

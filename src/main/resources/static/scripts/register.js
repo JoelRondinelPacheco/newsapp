@@ -1,21 +1,52 @@
-/*const $image = document.getElementById("image")
-const $imgInput = document.getElementById("archive")
-const $btn = document.getElementById("btndelete")
+const d = document
+
+const $inputContainer = d.getElementById("input-container")
+const $defaultImage = d.getElementById("default-profile")
+const urlImage = $defaultImage.src
+
+var $imgInput = d.getElementById("archive")
+const $deleteBtn = d.getElementById("profile-img-delete")
+
+getDefaultImage(urlImage)
 
 const reader = new FileReader()
 reader.onload = function (e) {
 $image.src = e.target.result
 }
 
-$btn.addEventListener("click", () => {
-$image.src="http://localhost:8080/publicimg"
+
+$imgInput.addEventListener("change", (e) => {
+    const files = e.target.files
+    const dataURL = window.URL.createObjectURL(files[0])
+    $defaultImage.src = dataURL
 })
 
-$imgInput.addEventListener("change" , () => {
-if ($imgInput.files && $imgInput.files[0]) {
+$deleteBtn.addEventListener("click", () => {
+    $defaultImage.src = localStorage.getItem("defaultImage")
+    $inputContainer.innerHTML = ""
+    $imgInput = createInputImage()
+    $imgInput.addEventListener("change", (e) => {
+        const files = e.target.files
+        const dataURL = window.URL.createObjectURL(files[0])
+        $defaultImage.src = dataURL
+    })
+    $inputContainer.appendChild($imgInput)
+    
+})
 
-    reader.readAsDataURL($imgInput.files[0]);
+async function getDefaultImage(url) {
+    const res = await fetch(url)
+    const blob = await res.blob()
+    const imageDataURL = window.URL.createObjectURL(blob)
+    localStorage.setItem("defaultImage", imageDataURL)
 }
-})*/
 
-console.log("Todo ok")
+function createInputImage() {
+    $input = d.createElement("input")
+    $input.type = "file"
+    $input.id = "archive"
+    $input.name="archive"
+    $input.accept = "image/jpeg"
+    $input.classList.add("form-control")
+    return $input
+}
