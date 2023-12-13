@@ -15,12 +15,17 @@
         <label for="title" class="form-label">Titulo</label>
         <input type="text" class="form-control" id="title" name="title" th:value="${form.title}">
     </div>
+    <div  th:if="${form.imageId != ''}" class="mb-3 position-relative" id="image-container">
+        <img class="img-fluid" th:src="@{'/image/' + ${form.imageId}}" alt="" id="news-img">
+        <button type="button" class="btn btn-warning position-absolute top-0 end-0 m-3" id="delete-img">Eliminar</button>
+        <input type="hidden" id="imgChange" name="imgChange" value="false">
+    </div>
     <div class="mb-3">
         <label for="subtitle" class="form-label">Subtitulo</label>
         <input type="text" class="form-control" id="subtitle" name="subtitle" th:value="${form.subtitle}">
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" id="img-input-container">
         <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
     </div>
 
@@ -86,5 +91,6 @@ form.onsubmit = function() {
     </script> -->
 
 </main>
+<script th:src="@{/scripts/news/edit.js}"  type="text/javascript"></script>
 </body>
 </html>

@@ -12,15 +12,15 @@
         <div class="mb-3  text-center">
             <div class="d-inline-block">
                 <figure class="position-relative">
-                    <img class="logo rounded-circle" id="image" th:src="@{${user.profilePictureId == 'publicimg' ? '/img/user.jpeg' : '/image/' + user.profilePictureId}}"
+                    <img class="logo rounded-circle" id="default-profile" th:src="@{${user.profilePictureId == 'publicimg' ? '/img/user.jpeg' : '/image/' + user.profilePictureId}}"
                     >
                     <figcaption type="button" class="position-absolute top-0 end-0">
-                        <button type="button" class="btn-close" aria-label="Close"></button>
+                        <button type="button"  id="profile-img-delete"  class="btn-close" aria-label="Close"></button>
                     </figcaption>
                 </figure>
 
             </div>
-            <div class="d-flex gap-3">
+            <div class="d-flex gap-3" id="input-container">
                 <input class="form-control" type="file" id="archive" accept="image/jpeg" name="archive">
             </div>
         </div>

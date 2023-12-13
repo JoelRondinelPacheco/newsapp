@@ -30,7 +30,14 @@ public class AuthController {
     public String register() { return "register.html"; }
 
     @PostMapping("/register/save")
-    public String registro(@RequestParam String name, @RequestParam  String lastname, @RequestParam String email, @RequestParam String password, @RequestParam String confirmpassword, ModelMap model, MultipartFile archive) {
+    public String registro(@RequestParam(required = false) String name,
+                           @RequestParam(required = false)  String lastname,
+                           @RequestParam(required = false) String email,
+                           @RequestParam(required = false) String password,
+                           @RequestParam(required = false) String confirmpassword,
+                           @RequestParam(required = false) MultipartFile archive,
+                           ModelMap model) {
+
         if (!password.equals(confirmpassword)) {
             model.put("passworderror", "Las contraseñas no coinciden");
             return "register.html";
