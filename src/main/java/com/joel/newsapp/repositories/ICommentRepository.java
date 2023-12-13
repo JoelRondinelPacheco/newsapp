@@ -14,8 +14,10 @@ import java.util.List;
 @Repository
 public interface ICommentRepository extends JpaRepository<Comment, String> {
     List<Comment> findAllByNews_Id(String id);
+   /* @Query("SELECT c FROM Comment c JOIN (SELECT r.comment_id, COUNT(*) AS reportCount FROM Report r GROUP BY r.comment_id) rc ON c.id = rc.comment_id ORDER BY rc.reportCount DESC")
+    Page<Comment> comments(Pageable page);
+*/
 
-    @Query(value = "SELECT c FROM Comment c ORDER BY (SELECT COUNT(r) FROM Report r WHERE r.comment = c) ASC", nativeQuery = true)
-    Page<Comment> selectByReports(Pageable page);
+
 
 }
