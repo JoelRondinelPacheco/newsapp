@@ -4,70 +4,79 @@
 
 <body>
 
-<div th:replace="~{fragments/header :: header}"></div>
-<main class="container">
-<h1>Agregar Noticia</h1>
-<h1 th:if="${error != null}" th:text="${error}"></h1>
-<div class="d-flex justify-content-center">
-<form class="justify-content-center w-75"
-      th:action="@{${edit != null} ? '/news/edit/' + ${form.id} : '/news/save'}" method="POST" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="title" class="form-label">Titulo</label>
-        <input type="text" class="form-control" id="title" name="title" th:value="${form.title}">
-    </div>
-    <div  th:if="${form.imageId != ''}" class="mb-3 position-relative" id="image-container">
-        <img class="img-fluid" th:src="@{'/image/' + ${form.imageId}}" alt="" id="news-img">
-        <button type="button" class="btn btn-warning position-absolute top-0 end-0 m-3" id="delete-img">Eliminar</button>
-        <input type="hidden" id="imgChange" name="imgChange" value="false">
-    </div>
-    <div class="mb-3">
-        <label for="subtitle" class="form-label">Subtitulo</label>
-        <input type="text" class="form-control" id="subtitle" name="subtitle" th:value="${form.subtitle}">
-    </div>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main class="container">
+        <h1>Agregar Noticia</h1>
+        <h1 th:if="${error != null}" th:text="${error}"></h1>
+        <div class="d-flex justify-content-center">
+            <form class="justify-content-center w-75"
+                th:action="@{${edit != null} ? '/news/edit/' + ${form.id} : '/news/save'}" method="POST"
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="title" name="title" th:value="${form.title}">
+                </div>
+                <div class="mb-3">
+                    <label for="subtitle" class="form-label">Subtitulo</label>
+                    <input type="text" class="form-control" id="subtitle" name="subtitle" th:value="${form.subtitle}">
+                </div>
 
-    <div class="mb-3" id="img-input-container">
-        <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
-    </div>
+                <div class="mb-3" id="img-input-container">
+                    <input class="form-control" type="file" id="archive" accept="image/jpeg" name="image">
+                </div>
+                <div class="image-preview-container" th:id="${form.imageId}">
+                    <div th:if="${form.imageId != ''}" class="position-relative">
+                        <img class="img-fluid image-tag" th:src="@{'/image/' + ${form.imageId}}" alt="">
+                        <button type="button" class="btn btn-warning position-absolute top-0 end-0 m-3"
+                            id="delete-img">Eliminar</button>
+                    </div>
+                    <div th:if="${form.imageId == ''}" class="position-relative">
+                        <img class="img-fluid image-tag" src="" alt="">
+                        <button type="button" class="btn btn-warning position-absolute top-0 end-0 m-3 visually-hidden"
+                            id="delete-img-preview">Eliminar</button>
+                    </div>
+                    <input type="hidden" id="imgChange" name="imgChange" value="false">
 
-    <div class="mb-3">
-        <label for="imageCaption" class="form-label">Pie de fotografia</label>
-        <input type="text" class="form-control" id="imageCaption" name="imageCaption" th:value="${form.imageCaption}">
-    </div>
+                </div>
 
-    <div class="mb-3">
-        <label for="body" class="form-label">Cuerpo de la noticia</label>
-        <textarea class="form-control" id="body" rows="3" name="body" th:text="${form.body}"></textarea>
-    </div>
+                <div class="mb-3">
+                    <label for="imageCaption" class="form-label">Pie de fotografia</label>
+                    <input type="text" class="form-control" id="imageCaption" name="imageCaption"
+                        th:value="${form.imageCaption}">
+                </div>
 
-    <select class="form-select mb-3"
-            aria-label="Default select example"
-            name="mainCategory">
-        <option value="empty" selected>Seleccione la categoria principal</option>
-        <option th:each="categorySelected : ${form.categories}"
-                th:value="${categorySelected.id}"
-                th:text="${categorySelected.name}"
-                th:selected="${categorySelected.id == form.mainCategoryId}"></option>
-    </select>
+                <div class="mb-3">
+                    <label for="body" class="form-label">Cuerpo de la noticia</label>
+                    <textarea class="form-control" id="body" rows="3" name="body" th:text="${form.body}"></textarea>
+                </div>
 
-    <div class="mb-3">
-        <div class="mb-1">
-        <span class="form-label">Categorias secundarias</span>
+                <select class="form-select mb-3" aria-label="Default select example" name="mainCategory">
+                    <option value="empty" selected>Seleccione la categoria principal</option>
+                    <option th:each="categorySelected : ${form.categories}" th:value="${categorySelected.id}"
+                        th:text="${categorySelected.name}" th:selected="${categorySelected.id == form.mainCategoryId}">
+                    </option>
+                </select>
+
+                <div class="mb-3">
+                    <div class="mb-1">
+                        <span class="form-label">Categorias secundarias</span>
+                    </div>
+                    <div th:each="category : ${form.categories}" class="form-check">
+                        <input class="form-check-input" type="checkbox" th:value="${category.id}"
+                            th:id="${category.name}" name="categories" th:checked="${category.checked}">
+                        <label class="form-check-label" th:for="${category.name}" th:text="${category.name}"></label>
+                        <span th:text="${category.checked}"></span>
+                    </div>
+
+                </div>
+
+                <div class="text-end">
+                    <button th:if="${edit}" type="submit" class="btn btn-primary">Editar</button>
+                    <button th:unless="${edit}" type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
         </div>
-        <div th:each="category : ${form.categories}" class="form-check">
-            <input class="form-check-input" type="checkbox" th:value="${category.id}" th:id="${category.name}" name="categories" th:checked="${category.checked}">
-            <label class="form-check-label" th:for="${category.name}" th:text="${category.name}"></label>
-            <span th:text="${category.checked}"></span>
-        </div>
-
-    </div>
-
-<div class="text-end">
-    <button th:if="${edit}" type="submit" class="btn btn-primary">Editar</button>
-    <button th:unless="${edit}" type="submit" class="btn btn-primary">Agregar</button>
-</div>
-</form>
-</div>
-    <!--
+        <!--
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
@@ -90,7 +99,8 @@ form.onsubmit = function() {
 };
     </script> -->
 
-</main>
-<script th:src="@{/scripts/news/edit.js}"  type="text/javascript"></script>
+    </main>
+    <script th:src="@{/scripts/news/edit.js}" type="text/javascript"></script>
 </body>
+
 </html>
