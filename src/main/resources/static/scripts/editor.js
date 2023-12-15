@@ -1,7 +1,26 @@
-import '../scripts/tinymce/js/tinymce/tinymce.min.js'
+const d = document
 
-tinymce.init({
-  selector: "#editor",
-  plugins: ["advlist autolink lists link image charmap preview hr anchor pagebreak", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table contextmenu template paste"],
-  toolbar: "insertfile undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+const $test = d.getElementById("test")
+const $form = d.querySelector('form');
+const $bodyInput = d.getElementById("body")
+
+const quill = new Quill('#editor', {
+    theme: 'snow'
 });
+
+$form.addEventListener("submit", (e) => {
+    let html = quill.root.innerHTML
+    $bodyInput.value = html
+    $form.submit()
+})
+
+/*form.onsubmit = function () {
+    var contents = quill.getContents()
+    var json = JSON.stringify(contents)
+    console.log(json)
+    var html = quill.root.innerHTML;
+    console.log(html)
+    $test.innerHTML = html
+    //form.submit()
+    return false;
+};*/
