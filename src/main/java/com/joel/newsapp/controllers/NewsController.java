@@ -69,7 +69,7 @@ public class NewsController {
                          @RequestParam String mainCategory,
                          MultipartFile image,
                          ModelMap model) {
-        try {
+       try {
             if (categories == null) {
                 categories = new ArrayList<>();
             }
