@@ -49,6 +49,23 @@
                     </tr>
                 </tbody>
             </table>
+            <section>
+                <nav class="d-flex justify-content-center" th:if="${totalPages > 1}" aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a th:if="${currentPage != 1}" th:href="@{'/dashboard/role/' + ${role} + '?page_number=' + ${currentPage - 1} + '&state=' + ${state}}" class="page-link">Anterior</a>
+                            <p th:if="${currentPage == 1}" class="page-link">Anterior</p>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage ? 'page-item active' : 'page-item'}">
+                            <a th:href="@{'/dashboard/role/' + ${role} + '?page_number=' + ${i} + '&state=' + ${state}}" class="page-link">[[${i}]]</a>
+                        </li>
+                        <li class="page-item">
+                            <a th:if="${currentPage != totalPages}" th:href="@{'/dashboard/role/' + ${role} + '?page_number=' + ${currentPage + 1} + '&state=' + ${state}}" class="page-link">Siguiente</a>
+                            <p th:if="${currentPage == totalPages}" class="page-link">Siguiente</p>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
         </section>
        <section th:replace="~{admin_dashboard/fragments/edit_user}"></section>
 

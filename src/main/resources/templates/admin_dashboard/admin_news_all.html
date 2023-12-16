@@ -60,7 +60,7 @@
       </li>
         <li class="page-item">
           <a th:if="${currentPage != totalPages}" th:href="@{'/dashboard/news/all?page_number=' + ${currentPage+1}}" class="page-link">Siguiente</a>
-          <p th:if="${currentPage == totalPages}" class="page-link">Anterior</p>
+          <p th:if="${currentPage == totalPages}" class="page-link">Siguiente</p>
         </li>
       </ul>
     </nav>
