@@ -13,14 +13,3 @@ $form.addEventListener("submit", (e) => {
     $bodyInput.value = html
     $form.submit()
 })
-
-/*form.onsubmit = function () {
-    var contents = quill.getContents()
-    var json = JSON.stringify(contents)
-    console.log(json)
-    var html = quill.root.innerHTML;
-    console.log(html)
-    $test.innerHTML = html
-    //form.submit()
-    return false;
-};*/

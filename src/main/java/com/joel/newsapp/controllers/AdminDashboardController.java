@@ -179,8 +179,6 @@ public class AdminDashboardController {
         } else {
             model.addAttribute("allNewsError", "No hay noticias cargadas");
         }
-        System.out.println("noticias");
-        System.out.println(news.size());
         model.addAttribute("news", "all");
         model.addAttribute("categories", categories);
         model.addAttribute("form", form);
