@@ -13,10 +13,7 @@
   <section>
   <table class="table">
     <thead>
-    <tr class="text-center">
-      <th colspan="4">Princial</th>
-    </tr>
-    <tr>
+    <tr class="table-primary">
       <th>Titulo</th>
       <th>Fecha</th>
       <th>Autor</th>
@@ -30,10 +27,10 @@
     </tr>
     <tr th:each="newsL : ${listNews}">
       <th th:text="${newsL.newsTitle}"></th>
-      <th th:text="${newsL.newsDate}"></th>
-      <th th:text="${newsL.reporterName}"></th>
-      <th th:text="${newsL.newsCategory}"></th>
-      <th>
+      <td th:text="${newsL.newsDate}"></td>
+      <td th:text="${newsL.reporterName}"></td>
+      <td th:text="${newsL.newsCategory}"></td>
+      <td>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Seleccionar
