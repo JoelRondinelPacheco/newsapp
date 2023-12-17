@@ -27,9 +27,14 @@
                         th:text="${news.newsImageCaption}"></figcaption>
                 </figure>
             </div>
-            <div class="col-3">Aqui ultimas noticias/relacionadas</div>
+            <div class="col-3">
+                <h4 class="fs-4 fw-normal" >Últimas noticias</h4>
+                <div class="ms-3 mb-3" th:each="latestNew : ${latest}">
+                    <h4 class="fs-6 fw-medium m-0" th:text="${latestNew.newsHour}"></h4><a th:href="@{'/news/' + ${latestNew.newsCategory} + '/' + ${latestNew.newsId}}" class="text-decoration-none text-dark"><h4 class="fs-6 fw-normal lh-1 ps-3" th:text="${latestNew.newsTitle}"></h4></a>
+                </div>
+            </div>
         </section>
-        <section th:utext="${news.newsBody}">
+        <section class="w-75" th:utext="${news.newsBody}">
         </section>
 
         <section class="w-75 mt-4">

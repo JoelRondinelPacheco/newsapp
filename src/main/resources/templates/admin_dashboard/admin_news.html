@@ -9,16 +9,18 @@
     <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
     <div th:replace="~{admin_dashboard/fragments/admin_nav_news :: admin_nav_news}"></div>
     <section>
-    <table class="table">
+    <table class="table mt-3">
         <thead>
-            <tr class="text-center">
+            <tr class="text-center table-primary">
                 <th colspan="4">Princial Home</th>
+                <th></th>
             </tr>
-            <tr>
+            <tr class="table-primary">
                 <th>Titulo</th>
                 <th>Fecha</th>
                 <th>Autor</th>
                 <th>Categoria</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -41,14 +43,16 @@
 
     <table class="table">
         <thead>
-            <tr class="text-center">
+            <tr class="text-center table-primary">
                 <th colspan="4">Destacadas Home</th>
+                <th></th>
             </tr>
-            <tr>
+            <tr  class="table-primary">
                 <th>Titulo</th>
                 <th>Fecha</th>
                 <th>Autor</th>
                 <th>Categoria</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -79,10 +83,10 @@
 
     <table class="table">
         <thead>
-        <tr class="text-center">
+        <tr class="text-center table-primary">
             <th colspan="5">Princial por categoria</th>
         </tr>
-        <tr>
+        <tr  class="table-primary">
             <th scope="col">Categoria</th>
             <th scope="col">Titulo</th>
             <th scope="col">Fecha</th>

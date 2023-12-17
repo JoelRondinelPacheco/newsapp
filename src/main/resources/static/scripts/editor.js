@@ -1,7 +1,7 @@
 const d = document
 
 const $test = d.getElementById("test")
-const $form = d.querySelector('form');
+const $form = d.getElementById('news-form');
 const $bodyInput = d.getElementById("body")
 
 const quill = new Quill('#editor', {

@@ -8,9 +8,6 @@
         <div th:replace="~{admin_dashboard/fragments/admin_nav :: admin_nav}"></div>
         <div th:replace="~{admin_dashboard/fragments/admin_nav_users :: admin_nav_users}"></div>
         <div th:replace="~{admin_dashboard/fragments/admin_nav_users_state :: admin_nav_users_state (${role})}"></div>
-        <h1 th:text="${role}"></h1>
-        <h1 th:text="${state}"></h1>
-        <h1 th:text="${currentPage}"></h1>
         <section>
             <table class="table">
                 <thead>

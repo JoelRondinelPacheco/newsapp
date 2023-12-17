@@ -1,10 +1,7 @@
 package com.joel.newsapp.controllers;
 
 import com.joel.newsapp.dtos.comment.CommentViewDTO;
-import com.joel.newsapp.dtos.news.NewsEditReqDTO;
-import com.joel.newsapp.dtos.news.NewsForm;
-import com.joel.newsapp.dtos.news.NewsPostReqDTO;
-import com.joel.newsapp.dtos.news.NewsViewDTO;
+import com.joel.newsapp.dtos.news.*;
 import com.joel.newsapp.dtos.newscategory.CategoriesFormDTO;
 import com.joel.newsapp.entities.Comment;
 import com.joel.newsapp.entities.News;
@@ -41,11 +38,6 @@ public class NewsController {
     @GetMapping("/{category}/{id}")
     public String getNews(@PathVariable String category, @PathVariable String id, ModelMap model) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        if ( name.equals("anonymousUser")) {
-            System.out.println("anonimo");
-        } else {
-            System.out.println("logeado");
-        }
         try {
             NewsViewDTO news = this.newsService.getByIdDTO(id);
             model.addAttribute("news", news);
@@ -53,6 +45,9 @@ public class NewsController {
             if (comments.isEmpty()) {
                 model.addAttribute("commentsEmpty", "No comments");
             }
+            List<News> latestNews = this.newsService.latest(5);
+            List<NewsHomeDTO> latest = this.dto.newsHomeDTOList(latestNews);
+            model.addAttribute("latest", latest);
             model.addAttribute("comments", comments);
         } catch (NotFoundException e) {
             model.addAttribute("newsError", e.getMessage());
@@ -142,6 +137,8 @@ public class NewsController {
         if (categories == null) {
             categories = new ArrayList<>();
         }
+        System.out.println("edito");
+        System.out.println(body);
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String author = auth.getName();
