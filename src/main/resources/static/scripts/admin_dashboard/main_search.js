@@ -104,7 +104,7 @@ async function searchMainNews(url) {
             $newsTitle.innerText = el.newsTitle
             $newsAuthor.innerText = el.reporterName
             $newsDate.innerText = el.newsDate
-            $setBtn.innerHTML = `<a class="btn btn-primary" href="${setUrl}${el.newsId}${setFeatured && '?is_featured=true'}">Seleccionar</a>`
+            $setBtn.innerHTML = `<a class="btn btn-primary" href="${setUrl}${el.newsId}${setFeatured ? '?is_featured=true' : ''}">Seleccionar</a>`
 
 
             $tr.appendChild($category)

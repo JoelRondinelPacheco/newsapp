@@ -35,7 +35,7 @@ public class NewsController {
     @Autowired private INewsCategoryService categoryService;
     @Autowired private BuildDTOs dto;
 
-    @GetMapping("/{category}/{id}")
+    @GetMapping("/view/{category}/{id}")
     public String getNews(@PathVariable String category, @PathVariable String id, ModelMap model) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         try {

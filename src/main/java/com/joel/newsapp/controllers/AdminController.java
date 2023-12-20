@@ -38,19 +38,6 @@ public class AdminController {
         return this.dashboardControllor.getAllCategories(model);
     }
 
-    @GetMapping("/image")
-    public String imageForm(){
-        return "postimage.html";
-    }
-
-    @PostMapping("/image")
-    public String postImage(MultipartFile archive, ModelMap model) throws IOException {
-        Image image = this.imageService.save(archive);
-
-        model.put("image", "Imagen cargada");
-        return "postimage.html";
-    }
-
     @PostMapping("/edit/{id}")
     public String editUser(@PathVariable String id, @RequestParam String salary, @RequestParam String active, ModelMap model){
         String response = this.reporterService.updateSalaryAndEnabled(Integer.parseInt(salary), (active.equals("true") ? true : false), id);
